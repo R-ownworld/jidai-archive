@@ -1,0 +1,686 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>時代 Archive — Artist Search</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;700;900&family=Zen+Kaku+Gothic+New:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+/* =====================
+   CONFIG — ここにAPIキーを入力
+   ===================== */
+/* index.htmlと同じフォルダに .env は使えないので
+   下の JS 内の CLIENT_ID / CLIENT_SECRET に直接入力してください */
+
+:root {
+  --bg: #07080f;
+  --bg2: #0c0e1a;
+  --bg3: #111320;
+  --text: #e8e4d9;
+  --text2: rgba(232,228,217,.5);
+  --text3: rgba(232,228,217,.28);
+  --gold: #c9a84c;
+  --gold2: rgba(201,168,76,.15);
+  --gold3: rgba(201,168,76,.06);
+  --border: rgba(232,228,217,.08);
+  --border2: rgba(232,228,217,.14);
+  --green: #1db954;
+  --radius: 8px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Zen Kaku Gothic New', sans-serif;
+  min-height: 100vh;
+  padding-bottom: 4rem;
+}
+
+/* NAV */
+.nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .9rem 2rem;
+  border-bottom: .5px solid var(--border);
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(7,8,15,.92);
+  backdrop-filter: blur(12px);
+}
+.nav-logo {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 17px; font-weight: 700;
+  letter-spacing: .1em; color: var(--gold);
+}
+.nav-right { display: flex; align-items: center; gap: 12px; }
+.spotify-badge {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--green);
+  border: .5px solid rgba(29,185,84,.3);
+  background: rgba(29,185,84,.07);
+  padding: 4px 10px; border-radius: 3px;
+}
+.spotify-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--green);
+  animation: blink 2s ease-in-out infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+/* HERO */
+.hero {
+  padding: 3rem 2rem 2.5rem;
+  border-bottom: .5px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: 'ARCHIVE';
+  position: absolute; right: -20px; top: 10px;
+  font-family: 'Shippori Mincho', serif;
+  font-size: 100px; font-weight: 900;
+  color: rgba(201,168,76,.04);
+  letter-spacing: -.04em;
+  pointer-events: none; user-select: none;
+  line-height: 1;
+}
+.hero-label {
+  font-size: 10px; letter-spacing: .22em; text-transform: uppercase;
+  color: rgba(201,168,76,.55); margin-bottom: .75rem;
+}
+.hero-title {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 32px; font-weight: 700;
+  color: var(--text); line-height: 1.2; margin-bottom: .5rem;
+}
+.hero-sub {
+  font-size: 13px; color: var(--text2); line-height: 1.85;
+  max-width: 480px;
+}
+
+/* SEARCH */
+.search-zone {
+  padding: 1.5rem 2rem;
+  border-bottom: .5px solid var(--border);
+}
+.search-wrap {
+  display: flex; gap: 10px; max-width: 560px; margin-bottom: 1rem;
+}
+.search-input {
+  flex: 1;
+  background: var(--bg2);
+  border: .5px solid var(--border2);
+  border-radius: var(--radius);
+  color: var(--text);
+  font-family: 'Zen Kaku Gothic New', sans-serif;
+  font-size: 15px; padding: 10px 16px;
+  outline: none;
+  transition: border-color .2s;
+}
+.search-input:focus { border-color: rgba(201,168,76,.5); }
+.search-input::placeholder { color: var(--text3); }
+.search-btn {
+  background: var(--gold);
+  color: #07080f;
+  border: none; border-radius: var(--radius);
+  padding: 10px 22px;
+  font-family: 'Zen Kaku Gothic New', sans-serif;
+  font-size: 13px; font-weight: 700;
+  letter-spacing: .06em; cursor: pointer;
+  transition: background .18s;
+  white-space: nowrap;
+}
+.search-btn:hover { background: #e0be6a; }
+.search-btn:disabled { opacity: .5; cursor: not-allowed; }
+
+.quick-labels { font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--text3); margin-bottom: .5rem; }
+.quick-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+.qpill {
+  font-size: 11px; padding: 4px 12px; border-radius: 14px;
+  border: .5px solid var(--border2);
+  background: transparent; color: var(--text2);
+  cursor: pointer; transition: all .18s;
+  font-family: 'Zen Kaku Gothic New', sans-serif;
+}
+.qpill:hover { border-color: rgba(201,168,76,.4); color: var(--gold); }
+
+/* ARTIST RESULT */
+.artist-hero {
+  display: none;
+  padding: 1.5rem 2rem;
+  border-bottom: .5px solid var(--border);
+  animation: fadeIn .3s ease;
+}
+.artist-hero.show { display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+.artist-img-wrap {
+  width: 90px; height: 90px; border-radius: 50%;
+  overflow: hidden; flex-shrink: 0;
+  border: .5px solid var(--border2);
+  background: var(--bg3);
+}
+.artist-img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.artist-img-placeholder {
+  width: 100%; height: 100%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px; opacity: .3;
+}
+.artist-info { flex: 1; min-width: 200px; }
+.artist-name-display {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 22px; font-weight: 700; color: var(--text);
+  margin-bottom: 4px;
+}
+.artist-followers { font-size: 11px; color: var(--text3); margin-bottom: 6px; }
+.artist-genres { display: flex; gap: 5px; flex-wrap: wrap; }
+.genre-tag {
+  font-size: 10px; padding: 2px 9px; border-radius: 10px;
+  border: .5px solid var(--border2); color: var(--text2);
+  letter-spacing: .06em;
+}
+.artist-sp-btn {
+  display: flex; align-items: center; gap: 7px;
+  background: rgba(29,185,84,.1);
+  border: .5px solid rgba(29,185,84,.3);
+  border-radius: var(--radius); padding: 8px 16px;
+  color: var(--green); font-size: 12px; font-weight: 700;
+  cursor: pointer; transition: all .18s; text-decoration: none;
+  letter-spacing: .06em;
+}
+.artist-sp-btn:hover { background: rgba(29,185,84,.18); }
+
+/* ALBUMS */
+.albums-section {
+  display: none;
+  padding: 1.5rem 2rem;
+  animation: fadeIn .3s ease .1s both;
+}
+.albums-section.show { display: block; }
+
+.sec-header {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 1rem;
+}
+.sec-lbl {
+  font-size: 9px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--text3); display: flex; align-items: center; gap: .5rem;
+}
+.sec-lbl::after { content: ''; display: block; width: 40px; height: .5px; background: var(--border); }
+.album-count { font-size: 11px; color: var(--text3); }
+
+.albums-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 10px;
+}
+.album-card {
+  background: var(--bg2);
+  border: .5px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+  cursor: pointer; transition: all .2s;
+}
+.album-card:hover {
+  border-color: rgba(201,168,76,.35);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0,0,0,.45);
+}
+.album-jacket {
+  width: 100%; aspect-ratio: 1; object-fit: cover; display: block;
+  background: var(--bg3);
+}
+.album-jacket-ph {
+  width: 100%; aspect-ratio: 1;
+  background: linear-gradient(135deg, var(--bg3) 0%, var(--bg2) 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px; opacity: .25;
+}
+.album-body { padding: .65rem .75rem; }
+.album-name {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 12px; font-weight: 700; color: var(--text);
+  line-height: 1.4; margin-bottom: 2px;
+  display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.album-year { font-size: 10px; color: var(--text3); margin-bottom: .45rem; }
+.album-links { display: flex; gap: 4px; }
+.alnk {
+  flex: 1; font-size: 9px; padding: 3px 0; border-radius: 3px;
+  border: .5px solid; cursor: pointer; transition: all .15s;
+  letter-spacing: .04em; text-align: center; text-decoration: none;
+  font-family: 'Zen Kaku Gothic New', sans-serif;
+  display: block;
+}
+
+/* TRACKS */
+.tracks-section {
+  display: none;
+  padding: 0 2rem 1.5rem;
+  animation: fadeIn .3s ease .15s both;
+}
+.tracks-section.show { display: block; }
+.tracks-list {
+  display: flex; flex-direction: column; gap: 1px;
+  background: var(--border); border-radius: var(--radius); overflow: hidden;
+  margin-top: 1rem;
+}
+.track-row {
+  display: grid; grid-template-columns: 28px 1fr auto;
+  gap: 10px; align-items: center;
+  padding: .7rem 1rem; background: var(--bg2);
+  cursor: pointer; transition: background .15s;
+}
+.track-row:hover { background: var(--bg3); }
+.track-num { font-size: 11px; color: var(--text3); text-align: center; }
+.track-info { display: flex; flex-direction: column; gap: 2px; }
+.track-name { font-size: 13px; font-weight: 700; color: var(--text); }
+.track-duration { font-size: 10px; color: var(--text3); }
+.track-sp {
+  font-size: 9px; padding: 2px 8px; border-radius: 3px;
+  background: rgba(29,185,84,.08); border: .5px solid rgba(29,185,84,.25);
+  color: var(--green); cursor: pointer; letter-spacing: .04em;
+  text-decoration: none; white-space: nowrap;
+}
+
+/* LOADING */
+.loading {
+  padding: 3rem; text-align: center; display: none;
+}
+.loading.show { display: block; }
+.ld-dots { display: flex; gap: 6px; justify-content: center; margin-bottom: .75rem; }
+.ld-dot {
+  width: 8px; height: 8px; border-radius: 50%;
+  background: rgba(201,168,76,.4);
+  animation: ldpulse 1.2s ease-in-out infinite;
+}
+.ld-dot:nth-child(2) { animation-delay: .2s; }
+.ld-dot:nth-child(3) { animation-delay: .4s; }
+@keyframes ldpulse { 0%,100%{opacity:.3;transform:scale(.8)} 50%{opacity:1;transform:scale(1)} }
+.ld-text { font-size: 12px; color: var(--text3); }
+
+/* ERROR */
+.error-msg {
+  display: none;
+  margin: 1rem 2rem;
+  background: rgba(255,80,80,.07);
+  border: .5px solid rgba(255,80,80,.25);
+  border-radius: var(--radius); padding: .85rem 1rem;
+  font-size: 12px; color: rgba(255,120,120,.8); line-height: 1.7;
+}
+.error-msg.show { display: block; }
+
+/* SETUP MODAL */
+.setup-overlay {
+  position: fixed; inset: 0; background: rgba(7,8,15,.97);
+  z-index: 999; display: flex; align-items: center; justify-content: center;
+  padding: 1.5rem;
+}
+.setup-box {
+  background: var(--bg2); border: .5px solid var(--border2);
+  border-radius: 12px; padding: 2rem; max-width: 440px; width: 100%;
+}
+.setup-title {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 20px; font-weight: 700; color: var(--text);
+  margin-bottom: .4rem;
+}
+.setup-sub { font-size: 12px; color: var(--text2); line-height: 1.8; margin-bottom: 1.25rem; }
+.setup-field { margin-bottom: 1rem; }
+.setup-label {
+  font-size: 10px; letter-spacing: .14em; text-transform: uppercase;
+  color: var(--text3); margin-bottom: .4rem; display: block;
+}
+.setup-input {
+  width: 100%; background: var(--bg);
+  border: .5px solid var(--border2); border-radius: 6px;
+  color: var(--text); font-family: 'Zen Kaku Gothic New', sans-serif;
+  font-size: 13px; padding: 9px 12px; outline: none;
+  transition: border-color .2s;
+}
+.setup-input:focus { border-color: rgba(201,168,76,.5); }
+.setup-input::placeholder { color: var(--text3); }
+.setup-note {
+  font-size: 11px; color: rgba(255,180,60,.7); line-height: 1.7;
+  background: rgba(255,150,30,.06); border: .5px solid rgba(255,150,30,.18);
+  border-radius: 5px; padding: .6rem .8rem; margin-bottom: 1.25rem;
+}
+.setup-save {
+  width: 100%; background: var(--gold); color: #07080f;
+  border: none; border-radius: var(--radius); padding: 11px;
+  font-family: 'Zen Kaku Gothic New', sans-serif;
+  font-size: 14px; font-weight: 700; cursor: pointer;
+  transition: background .18s; letter-spacing: .06em;
+}
+.setup-save:hover { background: #e0be6a; }
+</style>
+</head>
+<body>
+
+<!-- SETUP MODAL -->
+<div class="setup-overlay" id="setup-overlay">
+  <div class="setup-box">
+    <div class="setup-title">Spotify API キー設定</div>
+    <div class="setup-sub">
+      Spotify for Developers で取得した<br>
+      Client ID と Client Secret を入力してください。<br>
+      このページのブラウザ内にのみ保存されます。
+    </div>
+    <div class="setup-field">
+      <label class="setup-label">Client ID</label>
+      <input class="setup-input" id="input-client-id" type="text" placeholder="32文字の英数字" autocomplete="off" />
+    </div>
+    <div class="setup-field">
+      <label class="setup-label">Client Secret</label>
+      <input class="setup-input" id="input-client-secret" type="password" placeholder="32文字の英数字" autocomplete="off" />
+    </div>
+    <div class="setup-note">
+      ⚠️ Client Secret は他人に見せないでください。<br>
+      このキーはブラウザのメモリ内のみに保存され、外部に送信されません。
+    </div>
+    <button class="setup-save" onclick="saveKeys()">保存して始める →</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<nav class="nav">
+  <span class="nav-logo">時代 Archive</span>
+  <div class="nav-right">
+    <div class="spotify-badge">
+      <div class="spotify-dot"></div>
+      Spotify API
+    </div>
+    <button onclick="resetKeys()" style="font-size:10px;background:none;border:.5px solid var(--border2);color:var(--text3);padding:4px 10px;border-radius:3px;cursor:pointer;font-family:inherit;">APIキー変更</button>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-label">Artist Search</div>
+  <h1 class="hero-title">アーティストを探す</h1>
+  <p class="hero-sub">Spotify APIからアーティスト情報・アルバムジャケット・楽曲データをリアルタイムで取得します。</p>
+</div>
+
+<div class="search-zone">
+  <div class="search-wrap">
+    <input class="search-input" id="search-input" type="text"
+      placeholder="アーティスト名を入力 / Enter artist name"
+      onkeydown="if(event.key==='Enter')doSearch()" />
+    <button class="search-btn" id="search-btn" onclick="doSearch()">検索</button>
+  </div>
+  <div class="quick-labels">クイック検索</div>
+  <div class="quick-pills">
+    <button class="qpill" onclick="quickSearch('山下達郎')">山下達郎</button>
+    <button class="qpill" onclick="quickSearch('竹内まりや')">竹内まりや</button>
+    <button class="qpill" onclick="quickSearch('大滝詠一')">大滝詠一</button>
+    <button class="qpill" onclick="quickSearch('Mariya Takeuchi')">Mariya Takeuchi</button>
+    <button class="qpill" onclick="quickSearch('Tatsuro Yamashita')">Tatsuro Yamashita</button>
+    <button class="qpill" onclick="quickSearch('Roka')">Roka</button>
+    <button class="qpill" onclick="quickSearch('SIRUP')">SIRUP</button>
+  </div>
+</div>
+
+<div class="loading" id="loading">
+  <div class="ld-dots">
+    <div class="ld-dot"></div><div class="ld-dot"></div><div class="ld-dot"></div>
+  </div>
+  <div class="ld-text" id="loading-text">Spotify APIに接続中...</div>
+</div>
+
+<div class="error-msg" id="error-msg"></div>
+
+<div class="artist-hero" id="artist-hero">
+  <div class="artist-img-wrap" id="artist-img-wrap"></div>
+  <div class="artist-info">
+    <div class="artist-name-display" id="artist-name-display"></div>
+    <div class="artist-followers" id="artist-followers"></div>
+    <div class="artist-genres" id="artist-genres"></div>
+  </div>
+  <a class="artist-sp-btn" id="artist-sp-btn" target="_blank">
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="#1db954"><path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.66 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.419 1.56-.299.421-1.02.599-1.559.3z"/></svg>
+    Spotifyで見る
+  </a>
+</div>
+
+<div class="albums-section" id="albums-section">
+  <div class="sec-header">
+    <div class="sec-lbl">アルバム</div>
+    <span class="album-count" id="album-count"></span>
+  </div>
+  <div class="albums-grid" id="albums-grid"></div>
+</div>
+
+<div class="tracks-section" id="tracks-section">
+  <div class="sec-header">
+    <div class="sec-lbl">人気曲 TOP10</div>
+  </div>
+  <div class="tracks-list" id="tracks-list"></div>
+</div>
+
+<script>
+// =====================
+// State
+// =====================
+let CLIENT_ID = '';
+let CLIENT_SECRET = '';
+let accessToken = '';
+let tokenExpiry = 0;
+
+// =====================
+// Setup
+// =====================
+function saveKeys() {
+  const id = document.getElementById('input-client-id').value.trim();
+  const secret = document.getElementById('input-client-secret').value.trim();
+  if (!id || !secret) {
+    alert('Client ID と Client Secret の両方を入力してください');
+    return;
+  }
+  CLIENT_ID = id;
+  CLIENT_SECRET = secret;
+  document.getElementById('setup-overlay').style.display = 'none';
+}
+
+function resetKeys() {
+  CLIENT_ID = '';
+  CLIENT_SECRET = '';
+  accessToken = '';
+  document.getElementById('input-client-id').value = '';
+  document.getElementById('input-client-secret').value = '';
+  document.getElementById('setup-overlay').style.display = 'flex';
+  hideResults();
+}
+
+// =====================
+// Token
+// =====================
+async function getToken() {
+  if (accessToken && Date.now() < tokenExpiry) return accessToken;
+  setLoading('Spotifyに認証中...');
+  const res = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Basic ' + btoa(CLIENT_ID + ':' + CLIENT_SECRET)
+    },
+    body: 'grant_type=client_credentials'
+  });
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({}));
+    throw new Error('認証失敗: ' + (err.error_description || res.status) + '\nClient ID / Client Secret を確認してください');
+  }
+  const data = await res.json();
+  accessToken = data.access_token;
+  tokenExpiry = Date.now() + (data.expires_in - 60) * 1000;
+  return accessToken;
+}
+
+// =====================
+// Search
+// =====================
+async function doSearch() {
+  const q = document.getElementById('search-input').value.trim();
+  if (!q) return;
+  await searchArtist(q);
+}
+
+async function quickSearch(name) {
+  document.getElementById('search-input').value = name;
+  await searchArtist(name);
+}
+
+async function searchArtist(query) {
+  hideResults();
+  hideError();
+  setLoading('アーティストを検索中...');
+  document.getElementById('search-btn').disabled = true;
+
+  try {
+    const token = await getToken();
+
+    // アーティスト検索
+    setLoading('アーティスト情報を取得中...');
+    const sRes = await fetch(
+      `https://api.spotify.com/v1/search?q=${encodeURIComponent(query)}&type=artist&limit=1&market=JP`,
+      { headers: { Authorization: 'Bearer ' + token } }
+    );
+    const sData = await sRes.json();
+    const artist = sData.artists?.items?.[0];
+    if (!artist) { showError('アーティストが見つかりませんでした: "' + query + '"'); return; }
+
+    // 並列取得
+    setLoading('アルバム・楽曲データを取得中...');
+    const [albumsRes, tracksRes] = await Promise.all([
+      fetch(`https://api.spotify.com/v1/artists/${artist.id}/albums?include_groups=album,single&market=JP&limit=20`,
+        { headers: { Authorization: 'Bearer ' + token } }),
+      fetch(`https://api.spotify.com/v1/artists/${artist.id}/top-tracks?market=JP`,
+        { headers: { Authorization: 'Bearer ' + token } })
+    ]);
+    const albumsData = await albumsRes.json();
+    const tracksData = await tracksRes.json();
+
+    renderArtist(artist);
+    renderAlbums(albumsData.items || [], artist.name);
+    renderTracks(tracksData.tracks || []);
+    hideLoading();
+  } catch (e) {
+    showError(e.message);
+  } finally {
+    document.getElementById('search-btn').disabled = false;
+  }
+}
+
+// =====================
+// Render
+// =====================
+function renderArtist(a) {
+  const imgWrap = document.getElementById('artist-img-wrap');
+  if (a.images?.[0]?.url) {
+    imgWrap.innerHTML = `<img class="artist-img" src="${a.images[0].url}" alt="${a.name}">`;
+  } else {
+    imgWrap.innerHTML = `<div class="artist-img-placeholder">🎵</div>`;
+  }
+  document.getElementById('artist-name-display').textContent = a.name;
+  document.getElementById('artist-followers').textContent =
+    'フォロワー ' + (a.followers?.total?.toLocaleString() || '—') + '人';
+  const genresEl = document.getElementById('artist-genres');
+  genresEl.innerHTML = (a.genres || []).slice(0, 4)
+    .map(g => `<span class="genre-tag">${g}</span>`).join('');
+  const btn = document.getElementById('artist-sp-btn');
+  btn.href = a.external_urls?.spotify || '#';
+  document.getElementById('artist-hero').classList.add('show');
+}
+
+function renderAlbums(albums, artistName) {
+  // 重複排除
+  const seen = new Set();
+  const unique = albums.filter(a => {
+    const k = a.name.toLowerCase();
+    if (seen.has(k)) return false;
+    seen.add(k); return true;
+  });
+
+  document.getElementById('album-count').textContent = unique.length + '枚';
+  const grid = document.getElementById('albums-grid');
+  grid.innerHTML = '';
+
+  unique.forEach(album => {
+    const img = album.images?.[0]?.url || '';
+    const year = album.release_date?.substring(0, 4) || '';
+    const spUrl = album.external_urls?.spotify || '';
+    const ytQ = encodeURIComponent(artistName + ' ' + album.name);
+
+    const card = document.createElement('div');
+    card.className = 'album-card';
+    card.innerHTML = `
+      ${img
+        ? `<img class="album-jacket" src="${img}" alt="${album.name}" loading="lazy">`
+        : `<div class="album-jacket-ph">🎵</div>`}
+      <div class="album-body">
+        <div class="album-name">${album.name}</div>
+        <div class="album-year">${year}</div>
+        <div class="album-links">
+          <a class="alnk" href="${spUrl}" target="_blank"
+            style="background:rgba(29,185,84,.08);border-color:rgba(29,185,84,.25);color:#1db954">SP</a>
+          <a class="alnk"
+            href="https://www.youtube.com/results?search_query=${ytQ}" target="_blank"
+            style="background:rgba(255,60,60,.08);border-color:rgba(255,60,60,.25);color:#ff8888">YT</a>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+  document.getElementById('albums-section').classList.add('show');
+}
+
+function renderTracks(tracks) {
+  const list = document.getElementById('tracks-list');
+  list.innerHTML = '';
+  tracks.slice(0, 10).forEach((t, i) => {
+    const ms = t.duration_ms || 0;
+    const min = Math.floor(ms / 60000);
+    const sec = String(Math.floor((ms % 60000) / 1000)).padStart(2, '0');
+    const spUrl = t.external_urls?.spotify || '';
+
+    const row = document.createElement('div');
+    row.className = 'track-row';
+    row.innerHTML = `
+      <div class="track-num">${i + 1}</div>
+      <div class="track-info">
+        <div class="track-name">${t.name}</div>
+        <div class="track-duration">${min}:${sec}</div>
+      </div>
+      <a class="track-sp" href="${spUrl}" target="_blank">Spotifyで聴く</a>`;
+    list.appendChild(row);
+  });
+  document.getElementById('tracks-section').classList.add('show');
+}
+
+// =====================
+// UI helpers
+// =====================
+function setLoading(msg) {
+  document.getElementById('loading-text').textContent = msg;
+  document.getElementById('loading').classList.add('show');
+}
+function hideLoading() {
+  document.getElementById('loading').classList.remove('show');
+}
+function hideResults() {
+  hideLoading();
+  document.getElementById('artist-hero').classList.remove('show');
+  document.getElementById('albums-section').classList.remove('show');
+  document.getElementById('tracks-section').classList.remove('show');
+}
+function showError(msg) {
+  hideLoading();
+  const el = document.getElementById('error-msg');
+  el.textContent = msg;
+  el.classList.add('show');
+}
+function hideError() {
+  document.getElementById('error-msg').classList.remove('show');
+}
+</script>
+</body>
+</html>
