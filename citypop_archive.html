@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>時代 Archive — City Pop</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;700;900&family=Zen+Kaku+Gothic+New:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #07080f;
+  --bg2: #0c0e1a;
+  --bg3: #111320;
+  --text: #e8e4d9;
+  --text2: rgba(232,228,217,.5);
+  --text3: rgba(232,228,217,.28);
+  --gold: #c9a84c;
+  --gold2: rgba(201,168,76,.12);
+  --border: rgba(232,228,217,.08);
+  --border2: rgba(232,228,217,.15);
+  --green: #1db954;
+  --radius: 8px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'Zen Kaku Gothic New', sans-serif; min-height: 100vh; padding-bottom: 5rem; }
+
+/* NAV */
+.nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .9rem 2rem;
+  border-bottom: .5px solid var(--border);
+  background: rgba(7,8,15,.95);
+  backdrop-filter: blur(12px);
+  position: sticky; top: 0; z-index: 100;
+}
+.nav-logo { font-family: 'Shippori Mincho', serif; font-size: 17px; font-weight: 700; letter-spacing: .1em; color: var(--gold); }
+.nav-links { display: flex; gap: 1.5rem; }
+.nav-link { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--text3); cursor: pointer; transition: color .15s; text-decoration: none; }
+.nav-link:hover, .nav-link.active { color: var(--text); }
+.nav-link.active { color: var(--gold); }
+
+/* HERO */
+.hero {
+  padding: 3.5rem 2rem 2.5rem;
+  border-bottom: .5px solid var(--border);
+  position: relative; overflow: hidden;
+}
+.hero-watermark {
+  position: absolute; right: -10px; top: 0;
+  font-family: 'Shippori Mincho', serif;
+  font-size: 120px; font-weight: 900;
+  color: rgba(201,168,76,.05);
+  line-height: 1; pointer-events: none; user-select: none;
+  letter-spacing: -.04em;
+}
+.hero-eyebrow { font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: rgba(201,168,76,.55); margin-bottom: .75rem; }
+.hero-title { font-family: 'Shippori Mincho', serif; font-size: 38px; font-weight: 700; color: var(--text); line-height: 1.2; margin-bottom: .5rem; }
+.hero-sub { font-size: 13px; color: var(--text2); line-height: 1.85; max-width: 500px; margin-bottom: 1.25rem; }
+.hero-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.htag { font-size: 10px; padding: 3px 10px; border-radius: 12px; border: .5px solid; letter-spacing: .06em; }
+
+/* ARTIST TABS */
+.artist-tabs {
+  display: flex; gap: 0; overflow-x: auto; scrollbar-width: none;
+  padding: 0 2rem;
+  border-bottom: .5px solid var(--border);
+  background: var(--bg2);
+}
+.artist-tabs::-webkit-scrollbar { display: none; }
+.atab {
+  flex-shrink: 0; font-family: 'Shippori Mincho', serif;
+  font-size: 13px; font-weight: 700;
+  padding: 12px 18px;
+  border: none; background: transparent;
+  color: var(--text3); cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all .18s; letter-spacing: .04em;
+  white-space: nowrap;
+}
+.atab:hover { color: var(--text); }
+.atab.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+/* CONTENT */
+.content { padding: 1.5rem 2rem; }
+.sec-lbl {
+  font-size: 9px; letter-spacing: .22em; text-transform: uppercase;
+  color: var(--text3); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: .5rem;
+}
+.sec-lbl::after { content: ''; flex: 1; height: .5px; background: var(--border); }
+
+/* ARTIST PROFILE */
+.artist-profile {
+  display: flex; gap: 1.5rem; align-items: center;
+  padding: 1.25rem; background: var(--bg2);
+  border: .5px solid var(--border); border-radius: var(--radius);
+  margin-bottom: 1.5rem; flex-wrap: wrap;
+}
+.ap-img-wrap {
+  width: 80px; height: 80px; border-radius: 50%;
+  overflow: hidden; flex-shrink: 0;
+  border: .5px solid var(--border2); background: var(--bg3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; color: var(--text3);
+}
+.ap-img { width: 100%; height: 100%; object-fit: cover; }
+.ap-info { flex: 1; }
+.ap-name { font-family: 'Shippori Mincho', serif; font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
+.ap-desc { font-size: 12px; color: var(--text2); line-height: 1.7; }
+.ap-links { display: flex; gap: 6px; margin-top: .6rem; flex-wrap: wrap; }
+.ap-link {
+  font-size: 10px; padding: 4px 12px; border-radius: 12px;
+  border: .5px solid; cursor: pointer; transition: all .15s;
+  text-decoration: none; letter-spacing: .06em;
+}
+
+/* ALBUMS GRID */
+.albums-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+  gap: 10px; margin-bottom: 2rem;
+}
+.album-card {
+  background: var(--bg2); border: .5px solid var(--border);
+  border-radius: var(--radius); overflow: hidden;
+  cursor: pointer; transition: all .2s;
+}
+.album-card:hover {
+  border-color: rgba(201,168,76,.4);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px rgba(0,0,0,.45);
+}
+.album-jacket {
+  width: 100%; aspect-ratio: 1; object-fit: cover;
+  display: block; background: var(--bg3);
+}
+.album-jacket-ph {
+  width: 100%; aspect-ratio: 1; background: var(--bg3);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 32px; opacity: .2;
+}
+.album-body { padding: .65rem .75rem; }
+.album-name {
+  font-family: 'Shippori Mincho', serif;
+  font-size: 12px; font-weight: 700; color: var(--text);
+  line-height: 1.4; margin-bottom: 2px;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+.album-year { font-size: 10px; color: var(--text3); margin-bottom: .45rem; }
+.album-links { display: flex; gap: 4px; }
+.alnk {
+  flex: 1; font-size: 9px; padding: 3px 0;
+  border-radius: 3px; border: .5px solid;
+  text-align: center; text-decoration: none;
+  display: block; transition: all .15s; letter-spacing: .04em;
+}
+
+/* LOADING */
+.loading { padding: 3rem; text-align: center; display: none; }
+.loading.show { display: block; }
+.ld-dots { display: flex; gap: 6px; justify-content: center; margin-bottom: .75rem; }
+.ld-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(201,168,76,.4); animation: ldp 1.2s ease-in-out infinite; }
+.ld-dot:nth-child(2){animation-delay:.2s} .ld-dot:nth-child(3){animation-delay:.4s}
+@keyframes ldp { 0%,100%{opacity:.3;transform:scale(.8)} 50%{opacity:1;transform:scale(1)} }
+.ld-text { font-size: 12px; color: var(--text3); }
+
+.error-msg { display: none; margin: 1rem 0; background: rgba(255,80,80,.07); border: .5px solid rgba(255,80,80,.2); border-radius: var(--radius); padding: .85rem 1rem; font-size: 12px; color: rgba(255,120,120,.8); line-height: 1.7; }
+.error-msg.show { display: block; }
+
+.api-note {
+  background: rgba(29,185,84,.04); border: .5px solid rgba(29,185,84,.15);
+  border-radius: 6px; padding: .65rem 1rem; margin-bottom: 1.25rem;
+  font-size: 11px; color: rgba(29,185,84,.65); line-height: 1.6;
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <span class="nav-logo">時代 Archive</span>
+  <div class="nav-links">
+    <a class="nav-link active">シティポップ</a>
+    <a class="nav-link">アニメ</a>
+    <a class="nav-link">映画</a>
+    <a class="nav-link">年代</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-watermark">City Pop</div>
+  <div class="hero-eyebrow">1970s — 1980s Japan</div>
+  <h1 class="hero-title">シティポップ</h1>
+  <p class="hero-sub">バブル前夜の東京が夢見た都市のサウンド。ソウル・AOR・フュージョンを吸収し、日本語で洗練されたポップスとして結晶した音楽。今も世界中で聴かれ続けている。</p>
+  <div class="hero-tags">
+    <span class="htag" style="background:rgba(201,168,76,.1);border-color:rgba(201,168,76,.3);color:#c9a84c">1970年代〜80年代</span>
+    <span class="htag" style="background:rgba(100,150,220,.08);border-color:rgba(100,150,220,.2);color:#85b7eb">AOR / ソウル</span>
+    <span class="htag" style="background:rgba(80,180,140,.08);border-color:rgba(80,180,140,.2);color:#5dcaa5">世界で再評価</span>
+    <span class="htag" style="background:rgba(232,228,217,.05);border-color:rgba(232,228,217,.12);color:var(--text2)">iTunes API</span>
+  </div>
+</div>
+
+<div class="artist-tabs" id="artist-tabs">
+  <button class="atab active" onclick="loadArtist(this,'山下達郎','Tatsuro Yamashita','シティポップの象徴的存在。緻密なスタジオワークと圧倒的なライブで半世紀にわたり第一線に立ち続ける。')">山下達郎</button>
+  <button class="atab" onclick="loadArtist(this,'竹内まりや','Mariya Takeuchi','「Plastic Love」の世界的再発見で2020年代に再ブレイク。山下達郎の妻でもあり、二人の音楽は切り離せない。')">竹内まりや</button>
+  <button class="atab" onclick="loadArtist(this,'大滝詠一','Eiichi Ohtaki','1981年「A LONG VACATION」は日本ポップス史上最高傑作の一つ。永井博のジャケットとともに時代を象徴した。')">大滝詠一</button>
+  <button class="atab" onclick="loadArtist(this,'松原みき','Miki Matsubara','「真夜中のドア〜Stay With Me」はYouTubeで世界中に拡散し、シティポップ再評価ブームの火付け役となった。')">松原みき</button>
+  <button class="atab" onclick="loadArtist(this,'角松敏生','Toshiki Kadomatsu','AORとファンクを融合させた独自のサウンドで1980年代を席巻。永井博とのコラボジャケットも有名。')">角松敏生</button>
+  <button class="atab" onclick="loadArtist(this,'杉山清貴','Kiyotaka Sugiyama','オメガトライブとのユニットで「ふたりの夏物語」など夏のアンセムを連発。80年代夏の記憶そのもの。')">杉山清貴</button>
+  <button class="atab" onclick="loadArtist(this,'大貫妙子','Taeko Ohnuki','シュガー・ベイブ出身。フレンチポップとシティポップを融合させた唯一無二のスタイル。')">大貫妙子</button>
+  <button class="atab" onclick="loadArtist(this,'稲垣潤一','Junichi Inagaki','ドラマー兼ボーカリストという異色のスタイル。「夏のクラクション」などAOR色豊かなヒット多数。')">稲垣潤一</button>
+</div>
+
+<div class="content">
+  <div class="api-note">
+    ジャケット画像は <strong>iTunes Search API</strong>（Apple公式・無料・著作権クリア）からリアルタイムで取得しています。
+  </div>
+
+  <div id="artist-profile-area"></div>
+
+  <div class="loading" id="loading">
+    <div class="ld-dots"><div class="ld-dot"></div><div class="ld-dot"></div><div class="ld-dot"></div></div>
+    <div class="ld-text" id="ld-text">iTunes APIからジャケットを取得中...</div>
+  </div>
+  <div class="error-msg" id="error-msg"></div>
+
+  <div class="sec-lbl" id="albums-label" style="display:none">アルバム・シングル</div>
+  <div class="albums-grid" id="albums-grid"></div>
+</div>
+
+<script>
+const artistDescriptions = {};
+
+async function loadArtist(btn, artistJP, artistEN, desc) {
+  document.querySelectorAll('.atab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  hideError();
+  document.getElementById('albums-grid').innerHTML = '';
+  document.getElementById('albums-label').style.display = 'none';
+  document.getElementById('artist-profile-area').innerHTML = '';
+  showLoading('iTunes APIからジャケットを取得中...');
+
+  try {
+    // アーティスト情報表示
+    renderArtistProfile(artistJP, artistEN, desc);
+
+    // iTunes APIでアルバム取得（日本語名で検索）
+    const query = encodeURIComponent(artistJP);
+    const url = `https://itunes.apple.com/search?term=${query}&country=JP&media=music&entity=album&limit=20&lang=ja_jp`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    let albums = data.results || [];
+
+    // 日本語で見つからなければ英語名で再検索
+    if (albums.length === 0 && artistEN) {
+      const url2 = `https://itunes.apple.com/search?term=${encodeURIComponent(artistEN)}&country=JP&media=music&entity=album&limit=20`;
+      const res2 = await fetch(url2);
+      const data2 = await res2.json();
+      albums = data2.results || [];
+    }
+
+    // 重複排除
+    const seen = new Set();
+    const unique = albums.filter(a => {
+      const k = (a.collectionName || '').toLowerCase();
+      if (seen.has(k)) return false;
+      seen.add(k); return true;
+    }).slice(0, 16);
+
+    hideLoading();
+    renderAlbums(unique, artistJP, artistEN);
+  } catch(e) {
+    showError('取得に失敗しました: ' + e.message);
+  }
+}
+
+function renderArtistProfile(nameJP, nameEN, desc) {
+  const area = document.getElementById('artist-profile-area');
+  const ytQ = encodeURIComponent(nameJP + ' 公式');
+  const spQ = encodeURIComponent(nameEN || nameJP);
+  const amQ = encodeURIComponent(nameJP);
+  area.innerHTML = `
+    <div class="artist-profile">
+      <div class="ap-img-wrap">🎵</div>
+      <div class="ap-info">
+        <div class="ap-name">${nameJP}</div>
+        <div class="ap-desc">${desc}</div>
+        <div class="ap-links">
+          <a class="ap-link" href="https://www.youtube.com/results?search_query=${ytQ}" target="_blank"
+            style="background:rgba(255,60,60,.08);border-color:rgba(255,60,60,.25);color:#ff8888">YouTube</a>
+          <a class="ap-link" href="https://open.spotify.com/search/${spQ}" target="_blank"
+            style="background:rgba(29,185,84,.08);border-color:rgba(29,185,84,.25);color:#1db954">Spotify</a>
+          <a class="ap-link" href="https://music.apple.com/jp/search?term=${amQ}" target="_blank"
+            style="background:rgba(252,60,68,.07);border-color:rgba(252,60,68,.2);color:#fc8888">Apple Music</a>
+        </div>
+      </div>
+    </div>`;
+}
+
+function renderAlbums(albums, artistJP, artistEN) {
+  const grid = document.getElementById('albums-grid');
+  grid.innerHTML = '';
+
+  if (albums.length === 0) {
+    showError('アルバムが見つかりませんでした。');
+    return;
+  }
+
+  document.getElementById('albums-label').style.display = 'flex';
+
+  albums.forEach(album => {
+    const title = album.collectionName || '';
+    const img = (album.artworkUrl100 || '').replace('100x100bb', '400x400bb');
+    const year = album.releaseDate ? album.releaseDate.substring(0, 4) : '';
+    const itunesUrl = album.collectionViewUrl || '#';
+    const ytQ = encodeURIComponent((artistJP || artistEN) + ' ' + title);
+    const spQ = encodeURIComponent(title + ' ' + (artistEN || artistJP));
+    const amQ = encodeURIComponent(title + ' ' + artistJP);
+
+    const card = document.createElement('div');
+    card.className = 'album-card';
+    card.innerHTML = `
+      ${img
+        ? `<img class="album-jacket" src="${img}" alt="${title}" loading="lazy" onerror="this.outerHTML='<div class=album-jacket-ph>🎵</div>'">`
+        : `<div class="album-jacket-ph">🎵</div>`}
+      <div class="album-body">
+        <div class="album-name">${title}</div>
+        <div class="album-year">${year}</div>
+        <div class="album-links">
+          <a class="alnk" href="${itunesUrl}" target="_blank"
+            style="background:rgba(252,60,68,.07);border-color:rgba(252,60,68,.2);color:#fc8888">AM</a>
+          <a class="alnk" href="https://open.spotify.com/search/${spQ}" target="_blank"
+            style="background:rgba(29,185,84,.08);border-color:rgba(29,185,84,.25);color:#1db954">SP</a>
+          <a class="alnk" href="https://www.youtube.com/results?search_query=${ytQ}" target="_blank"
+            style="background:rgba(255,60,60,.08);border-color:rgba(255,60,60,.25);color:#ff8888">YT</a>
+        </div>
+      </div>`;
+    grid.appendChild(card);
+  });
+}
+
+function showLoading(msg) { document.getElementById('ld-text').textContent = msg; document.getElementById('loading').classList.add('show'); }
+function hideLoading() { document.getElementById('loading').classList.remove('show'); }
+function showError(msg) { hideLoading(); const el = document.getElementById('error-msg'); el.textContent = msg; el.classList.add('show'); }
+function hideError() { document.getElementById('error-msg').classList.remove('show'); }
+
+// 初回ロード
+document.querySelector('.atab').click();
+</script>
+</body>
+</html>
