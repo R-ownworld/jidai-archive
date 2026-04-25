@@ -502,7 +502,7 @@ async function getToken() {
     method: 'POST',
     headers: {
       'Content-Type': 'application/x-www-form-urlencoded',
-      'Authorization': 'Basic ' + btoa(CLIENT_ID + ':' + CLIENT_SECRET)
+      'Basic ' + btoa(unescape(encodeURIComponent(CLIENT_ID + ':' + CLIENT_SECRET)))
     },
     body: 'grant_type=client_credentials'
   });
