@@ -113,9 +113,14 @@ body { background: var(--bg); color: var(--text); font-family: 'Zen Kaku Gothic 
   display: flex; align-items: center; justify-content: center; font-size: 28px; color: var(--text3);
 }
 .ap-info { flex: 1; }
-.ap-name { font-family: 'Shippori Mincho', serif; font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
-.ap-desc { font-size: 12px; color: var(--text2); line-height: 1.7; }
-.ap-links { display: flex; gap: 6px; margin-top: .6rem; flex-wrap: wrap; align-items: center; }
+.ap-name {
+  font-family: 'Shippori Mincho', serif; font-size: 20px; font-weight: 700;
+  color: var(--text); margin-bottom: 3px; cursor: pointer; transition: color .15s;
+  text-decoration: none; display: block;
+}
+.ap-name:hover { color: var(--gold); }
+.ap-desc { font-size: 12px; color: var(--text2); line-height: 1.7; margin-bottom: .6rem; }
+.ap-links { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
 .ap-link { font-size: 10px; padding: 4px 12px; border-radius: 12px; border: .5px solid; cursor: pointer; transition: all .15s; text-decoration: none; }
 .ap-detail-btn {
   font-size: 11px; padding: 6px 14px; border-radius: 12px;
@@ -187,14 +192,14 @@ body { background: var(--bg); color: var(--text); font-family: 'Zen Kaku Gothic 
 
 <div id="view-artist">
   <div class="sub-tabs">
-    <button class="stab active" onclick="loadArtist(this,'Tatsuro Yamashita','Tatsuro Yamashita','シティポップの象徴的存在。緻密なスタジオワークと圧倒的なライブで半世紀にわたり第一線に立ち続ける。','')">山下達郎</button>
-    <button class="stab" onclick="loadArtist(this,'竹内まりや','Mariya Takeuchi','「Plastic Love」の世界的再発見で2020年代に再ブレイク。山下達郎の妻でもあり、二人の音楽は切り離せない。','')">竹内まりや</button>
-    <button class="stab" onclick="loadArtist(this,'大滝詠一','Eiichi Ohtaki','1981年「A LONG VACATION」は日本ポップス史上最高傑作の一つ。永井博のジャケットとともに時代を象徴した。','')">大滝詠一</button>
-    <button class="stab" onclick="loadArtist(this,'松原みき','Miki Matsubara','「真夜中のドア〜Stay With Me」はYouTubeで世界中に拡散し、シティポップ再評価ブームの火付け役となった。','artist_matsubara.html')">松原みき</button>
-    <button class="stab" onclick="loadArtist(this,'角松敏生','Toshiki Kadomatsu','AORとファンクを融合させた独自のサウンドで1980年代を席巻。永井博とのコラボジャケットも有名。','')">角松敏生</button>
-    <button class="stab" onclick="loadArtist(this,'杉山清貴','Kiyotaka Sugiyama','オメガトライブとのユニットで「ふたりの夏物語」など夏のアンセムを連発。80年代夏の記憶そのもの。','')">杉山清貴</button>
-    <button class="stab" onclick="loadArtist(this,'大貫妙子','Taeko Ohnuki','シュガー・ベイブ出身。フレンチポップとシティポップを融合させた唯一無二のスタイル。','')">大貫妙子</button>
-    <button class="stab" onclick="loadArtist(this,'稲垣潤一','Junichi Inagaki','ドラマー兼ボーカリストという異色のスタイル。「夏のクラクション」などAOR色豊かなヒット多数。','')">稲垣潤一</button>
+    <button class="stab active" onclick="loadArtist(this,'山下達郎','Tatsuro Yamashita','シティポップの象徴的存在。緻密なスタジオワークと圧倒的なライブで半世紀にわたり第一線に立ち続ける。')">山下達郎</button>
+    <button class="stab" onclick="loadArtist(this,'竹内まりや','Mariya Takeuchi','「Plastic Love」の世界的再発見で2020年代に再ブレイク。山下達郎の妻でもあり、二人の音楽は切り離せない。')">竹内まりや</button>
+    <button class="stab" onclick="loadArtist(this,'大滝詠一','Eiichi Ohtaki','1981年「A LONG VACATION」は日本ポップス史上最高傑作の一つ。永井博のジャケットとともに時代を象徴した。')">大滝詠一</button>
+    <button class="stab" onclick="loadArtist(this,'松原みき','Miki Matsubara','「真夜中のドア〜Stay With Me」はYouTubeで世界中に拡散し、シティポップ再評価ブームの火付け役となった。')">松原みき</button>
+    <button class="stab" onclick="loadArtist(this,'角松敏生','Toshiki Kadomatsu','AORとファンクを融合させた独自のサウンドで1980年代を席巻。永井博とのコラボジャケットも有名。')">角松敏生</button>
+    <button class="stab" onclick="loadArtist(this,'杉山清貴','Kiyotaka Sugiyama','オメガトライブとのユニットで「ふたりの夏物語」など夏のアンセムを連発。80年代夏の記憶そのもの。')">杉山清貴</button>
+    <button class="stab" onclick="loadArtist(this,'大貫妙子','Taeko Ohnuki','シュガー・ベイブ出身。フレンチポップとシティポップを融合させた唯一無二のスタイル。')">大貫妙子</button>
+    <button class="stab" onclick="loadArtist(this,'稲垣潤一','Junichi Inagaki','ドラマー兼ボーカリストという異色のスタイル。「夏のクラクション」などAOR色豊かなヒット多数。')">稲垣潤一</button>
   </div>
   <div class="content">
     <div id="artist-profile-area"></div>
@@ -210,7 +215,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Zen Kaku Gothic 
 
 <div id="view-era" style="display:none">
   <div class="era-tabs">
-    <button class="eratab" onclick="loadEra(this,'70s-early')">1970年代前半</button>
+    <button class="eratab active" onclick="loadEra(this,'70s-early')">1970年代前半</button>
     <button class="eratab" onclick="loadEra(this,'70s-late')">1970年代後半</button>
     <button class="eratab" onclick="loadEra(this,'80s-early')">1980年代前半</button>
     <button class="eratab" onclick="loadEra(this,'80s-late')">1980年代後半</button>
@@ -262,6 +267,16 @@ const eraData = {
   }
 };
 
+// 松原みきだけ専用ページあり、それ以外はartist.htmlテンプレートへ
+const detailPages = {
+  '松原みき': 'artist_matsubara.html'
+};
+
+function getArtistUrl(nameJP, nameEN) {
+  if (detailPages[nameJP]) return detailPages[nameJP];
+  return `artist.html?name=${encodeURIComponent(nameJP)}&en=${encodeURIComponent(nameEN || '')}`;
+}
+
 function switchExplore(btn, mode) {
   document.querySelectorAll('.etab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
@@ -273,7 +288,7 @@ function switchExplore(btn, mode) {
   }
 }
 
-async function loadArtist(btn, artistJP, artistEN, desc, detailPage) {
+async function loadArtist(btn, artistJP, artistEN, desc) {
   document.querySelectorAll('.stab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('artist-profile-area').innerHTML = '';
@@ -281,31 +296,25 @@ async function loadArtist(btn, artistJP, artistEN, desc, detailPage) {
   document.getElementById('albums-label-artist').style.display = 'none';
   hideError('artist');
   showLoading('artist', 'iTunes APIからジャケットを取得中...');
-  renderArtistProfile(artistJP, artistEN, desc, detailPage);
-  await fetchAndRenderAlbums(artistJP, artistEN, 'artist');
-}
 
-function renderArtistProfile(nameJP, nameEN, desc, detailPage) {
-  const ytQ = encodeURIComponent(nameJP);
-  const spQ = encodeURIComponent(nameEN || nameJP);
-  const amQ = encodeURIComponent(nameJP);
-  const detailBtn = detailPage
-    ? `<a class="ap-detail-btn" href="${detailPage}">詳細ページを見る →</a>`
-    : '';
+  const detailUrl = getArtistUrl(artistJP, artistEN);
+
   document.getElementById('artist-profile-area').innerHTML = `
     <div class="artist-profile fade-in">
       <div class="ap-img-wrap">🎵</div>
       <div class="ap-info">
-        <div class="ap-name">${nameJP}</div>
+        <a class="ap-name" href="${detailUrl}">${artistJP}</a>
         <div class="ap-desc">${desc}</div>
         <div class="ap-links">
-          <a class="ap-link" href="https://www.youtube.com/results?search_query=${ytQ}" target="_blank" style="background:rgba(255,60,60,.08);border-color:rgba(255,60,60,.25);color:#ff8888">YouTube</a>
-          <a class="ap-link" href="https://open.spotify.com/search/${spQ}" target="_blank" style="background:rgba(29,185,84,.08);border-color:rgba(29,185,84,.25);color:#1db954">Spotify</a>
-          <a class="ap-link" href="https://music.apple.com/jp/search?term=${amQ}" target="_blank" style="background:rgba(252,60,68,.07);border-color:rgba(252,60,68,.2);color:#fc8888">Apple Music</a>
-          ${detailBtn}
+          <a class="ap-link" href="https://www.youtube.com/results?search_query=${encodeURIComponent(artistJP)}" target="_blank" style="background:rgba(255,60,60,.08);border-color:rgba(255,60,60,.25);color:#ff8888">YouTube</a>
+          <a class="ap-link" href="https://open.spotify.com/search/${encodeURIComponent(artistEN||artistJP)}" target="_blank" style="background:rgba(29,185,84,.08);border-color:rgba(29,185,84,.25);color:#1db954">Spotify</a>
+          <a class="ap-link" href="https://music.apple.com/jp/search?term=${encodeURIComponent(artistJP)}" target="_blank" style="background:rgba(252,60,68,.07);border-color:rgba(252,60,68,.2);color:#fc8888">Apple Music</a>
+          <a class="ap-detail-btn" href="${detailUrl}">詳細ページを見る →</a>
         </div>
       </div>
     </div>`;
+
+  await fetchAndRenderAlbums(artistJP, artistEN, 'artist');
 }
 
 async function loadEra(btn, eraKey) {
