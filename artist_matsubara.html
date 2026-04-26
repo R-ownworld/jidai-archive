@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>時代 Archive — 松原みき</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;700;900&family=Zen+Kaku+Gothic+New:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #080a0e;
+  --bg2: #0d1018;
+  --bg3: #121520;
+  --text: #e8e4d9;
+  --text2: rgba(232,228,217,.5);
+  --text3: rgba(232,228,217,.28);
+  --accent: #8ab4d4;
+  --accent2: rgba(138,180,212,.15);
+  --gold: #c9a84c;
+  --border: rgba(232,228,217,.08);
+  --border2: rgba(232,228,217,.15);
+  --radius: 8px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: 'Zen Kaku Gothic New', sans-serif; min-height: 100vh; padding-bottom: 5rem; }
+
+.nav {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .9rem 2rem; border-bottom: .5px solid var(--border);
+  background: rgba(8,10,14,.95); backdrop-filter: blur(12px);
+  position: sticky; top: 0; z-index: 100;
+}
+.nav-logo { font-family: 'Shippori Mincho', serif; font-size: 17px; font-weight: 700; letter-spacing: .1em; color: var(--gold); text-decoration: none; }
+.bc { display: flex; align-items: center; gap: 6px; font-size: 11px; color: var(--text3); }
+.bcl { color: rgba(138,180,212,.6); cursor: pointer; transition: color .15s; text-decoration: none; }
+.bcl:hover { color: var(--accent); }
+.bcs { color: var(--border2); }
+
+/* HERO */
+.hero {
+  position: relative; overflow: hidden;
+  border-bottom: .5px solid var(--border);
+}
+.hero-bg {
+  width: 100%; height: 200px; position: relative;
+}
+.hero-body { padding: 1.75rem 2rem 2rem; position: relative; z-index: 1; }
+.hero-grid { display: grid; grid-template-columns: 1fr auto; gap: 1.5rem; align-items: start; }
+.era-badge {
+  display: inline-block; font-size: 9px; letter-spacing: .2em; text-transform: uppercase;
+  color: rgba(138,180,212,.8); border: .5px solid rgba(138,180,212,.3);
+  padding: 3px 10px; border-radius: 2px; margin-bottom: .75rem;
+}
+.hero-name { font-family: 'Shippori Mincho', serif; font-size: 36px; font-weight: 700; color: var(--text); line-height: 1.1; margin-bottom: .2rem; }
+.hero-name-en { font-family: 'EB Garamond', serif; font-size: 15px; font-style: italic; color: var(--text3); margin-bottom: .5rem; letter-spacing: .06em; }
+.hero-dates { font-size: 13px; color: var(--text3); margin-bottom: .75rem; letter-spacing: .04em; }
+.hero-desc { font-size: 12px; color: var(--text2); line-height: 1.9; max-width: 480px; }
+.hero-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: .85rem; }
+.htag { font-size: 10px; padding: 3px 10px; border-radius: 12px; border: .5px solid; letter-spacing: .06em; }
+
+.stats-col { display: flex; flex-direction: column; gap: 8px; min-width: 110px; }
+.stat-card { background: rgba(232,228,217,.03); border: .5px solid var(--border); border-radius: 6px; padding: .65rem .85rem; text-align: right; }
+.stat-num { font-family: 'EB Garamond', serif; font-size: 20px; font-weight: 600; color: var(--text); line-height: 1; }
+.stat-lbl { font-size: 9px; letter-spacing: .14em; text-transform: uppercase; color: var(--text3); margin-top: 2px; }
+
+/* TABS */
+.sec-tabs { display: flex; gap: 0; overflow-x: auto; scrollbar-width: none; padding: 0 2rem; border-bottom: .5px solid var(--border); }
+.sec-tabs::-webkit-scrollbar { display: none; }
+.stab { flex-shrink: 0; font-size: 11px; letter-spacing: .1em; text-transform: uppercase; padding: 10px 14px; border: none; background: transparent; color: var(--text3); cursor: pointer; border-bottom: 1.5px solid transparent; transition: all .18s; font-family: 'Zen Kaku Gothic New', sans-serif; }
+.stab:hover { color: var(--text); }
+.stab.active { color: var(--text); border-bottom-color: rgba(138,180,212,.6); }
+
+/* CONTENT */
+.content { padding: 1.25rem 2rem; }
+.sec-lbl { font-size: 9px; letter-spacing: .22em; text-transform: uppercase; color: var(--text3); margin-bottom: .9rem; display: flex; align-items: center; gap: .5rem; }
+.sec-lbl::after { content: ''; flex: 1; height: .5px; background: var(--border); }
+
+/* ALBUMS */
+.albums-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 10px; margin-bottom: 1.75rem; }
+.album-card { background: var(--bg2); border: .5px solid var(--border); border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: all .2s; }
+.album-card:hover { border-color: rgba(138,180,212,.35); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,.45); }
+.album-jacket { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: var(--bg3); }
+.album-jacket-ph { width: 100%; aspect-ratio: 1; background: var(--bg3); display: flex; align-items: center; justify-content: center; font-size: 32px; opacity: .2; }
+.album-body { padding: .65rem .75rem; }
+.album-name { font-family: 'Shippori Mincho', serif; font-size: 12px; font-weight: 700; color: var(--text); line-height: 1.4; margin-bottom: 2px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.album-year { font-size: 10px; color: var(--text3); margin-bottom: .45rem; }
+.album-links { display: flex; gap: 4px; }
+.alnk { flex: 1; font-size: 9px; padding: 3px 0; border-radius: 3px; border: .5px solid; text-align: center; text-decoration: none; display: block; transition: all .15s; }
+
+/* STORY BLOCKS */
+.story-block { background: var(--bg2); border: .5px solid var(--border); border-radius: var(--radius); padding: 1.1rem 1.15rem; margin-bottom: .85rem; }
+.sb-head { display: flex; align-items: center; gap: .6rem; margin-bottom: .4rem; }
+.sb-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+.sb-title { font-size: 13px; font-weight: 700; color: var(--text); }
+.sb-body { font-size: 12px; color: var(--text2); line-height: 1.85; }
+
+/* LIFE */
+.life-list { display: flex; flex-direction: column; margin-bottom: 1.75rem; }
+.life-row { display: grid; grid-template-columns: 58px 1fr; gap: 12px; padding: .75rem 0; border-bottom: .5px solid rgba(232,228,217,.05); cursor: pointer; border-radius: 4px; transition: background .15s; }
+.life-row:hover { background: rgba(232,228,217,.02); }
+.life-row:last-child { border-bottom: none; }
+.life-yr { font-family: 'EB Garamond', serif; font-size: 13px; color: rgba(138,180,212,.65); padding-top: 2px; }
+.life-info { display: flex; flex-direction: column; gap: 2px; }
+.life-ttl { font-size: 12px; font-weight: 700; color: var(--text); }
+.life-sub { font-size: 11px; color: var(--text3); line-height: 1.65; }
+
+/* LINKS */
+.links-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 8px; margin-bottom: 1.5rem; }
+.link-btn { display: flex; align-items: center; gap: 9px; padding: .85rem 1rem; border-radius: 6px; border: .5px solid; cursor: pointer; transition: all .18s; text-decoration: none; }
+.link-btn:hover { transform: translateY(-1px); }
+.lbicon { width: 22px; height: 22px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+.lb-label { display: flex; flex-direction: column; gap: 1px; }
+.lb-name { font-size: 12px; font-weight: 700; }
+.lb-type { font-size: 10px; opacity: .5; }
+
+/* RELATED */
+.related-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 1.5rem; }
+.rel-chip { display: flex; align-items: center; gap: 7px; background: var(--bg2); border: .5px solid var(--border); border-radius: 20px; padding: 5px 12px 5px 5px; cursor: pointer; transition: border-color .15s; text-decoration: none; }
+.rel-chip:hover { border-color: rgba(138,180,212,.3); }
+.rel-dot { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; }
+.rel-name { font-size: 12px; font-weight: 700; color: var(--text); }
+.rel-role { font-size: 10px; color: var(--text3); }
+
+/* MEMO */
+.memo-box { background: #090b0f; border: .5px solid rgba(138,180,212,.15); border-radius: 8px; padding: .9rem 1rem; margin-bottom: 1rem; }
+.mb-lbl { font-size: 9px; letter-spacing: .18em; text-transform: uppercase; color: rgba(138,180,212,.45); margin-bottom: .6rem; }
+.mb-entries { display: flex; flex-direction: column; gap: 5px; margin-bottom: .65rem; }
+.mb-entry { background: rgba(232,228,217,.04); border-left: 2px solid rgba(138,180,212,.35); padding: .5rem .75rem; font-size: 12px; color: rgba(232,228,217,.65); line-height: 1.65; font-family: 'Shippori Mincho', serif; }
+.mb-row { display: flex; gap: 8px; }
+.mb-input { flex: 1; background: rgba(232,228,217,.05); border: .5px solid var(--border2); border-radius: 5px; color: var(--text); font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 12px; padding: 6px 10px; outline: none; transition: border-color .15s; }
+.mb-input:focus { border-color: rgba(138,180,212,.35); }
+.mb-input::placeholder { color: var(--text3); }
+.mb-save { background: rgba(138,180,212,.82); color: #080a0e; border: none; border-radius: 5px; padding: 0 14px; font-size: 11px; font-weight: 900; cursor: pointer; height: 34px; font-family: 'Zen Kaku Gothic New', sans-serif; transition: background .15s; }
+.mb-save:hover { background: #8ab4d4; }
+.mb-saved { font-size: 10px; color: rgba(138,180,212,.7); margin-top: 5px; display: none; }
+
+/* LOADING */
+.loading { padding: 3rem; text-align: center; }
+.ld-dots { display: flex; gap: 6px; justify-content: center; margin-bottom: .75rem; }
+.ld-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(138,180,212,.4); animation: ldp 1.2s ease-in-out infinite; }
+.ld-dot:nth-child(2){animation-delay:.2s} .ld-dot:nth-child(3){animation-delay:.4s}
+@keyframes ldp { 0%,100%{opacity:.3;transform:scale(.8)} 50%{opacity:1;transform:scale(1)} }
+.ld-text { font-size: 12px; color: var(--text3); }
+
+.btns { display: flex; gap: 8px; flex-wrap: wrap; padding-top: 1rem; border-top: .5px solid var(--border); }
+.abtn { font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 11px; letter-spacing: .08em; padding: 8px 16px; border-radius: 4px; border: .5px solid; cursor: pointer; transition: all .18s; text-decoration: none; display: inline-block; }
+.abtn-g { background: rgba(138,180,212,.82); color: #080a0e; border-color: rgba(138,180,212,.82); font-weight: 900; }
+.abtn-g:hover { background: #8ab4d4; }
+.abtn-o { background: rgba(232,228,217,.04); border-color: var(--border2); color: var(--text2); }
+.abtn-o:hover { border-color: rgba(138,180,212,.4); color: var(--accent); }
+
+.fade-in { animation: fadeIn .3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="citypop_archive_v2.html">時代 Archive</a>
+  <div class="bc">
+    <a class="bcl" href="citypop_archive_v2.html">シティポップ</a>
+    <span class="bcs">›</span>
+    <a class="bcl" href="citypop_archive_v2.html">アーティスト</a>
+    <span class="bcs">›</span>
+    <span style="color:var(--text2)">松原みき</span>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-bg">
+    <svg width="100%" height="200" viewBox="0 0 800 200" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="hbg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#04060c"/>
+          <stop offset="60%" stop-color="#080c18"/>
+          <stop offset="100%" stop-color="#0d1020"/>
+        </linearGradient>
+      </defs>
+      <rect width="800" height="200" fill="url(#hbg)"/>
+      <!-- 夜の街・ネオン風 -->
+      <rect x="0" y="140" width="800" height="60" fill="rgba(8,12,24,.9)"/>
+      <line x1="0" y1="140" x2="800" y2="140" stroke="rgba(138,180,212,.12)" stroke-width="1"/>
+      <!-- ビル群 -->
+      <rect x="30" y="80" width="25" height="65" fill="rgba(15,25,50,.8)"/>
+      <rect x="35" y="90" width="4" height="4" fill="rgba(255,220,100,.3)"/>
+      <rect x="42" y="95" width="4" height="4" fill="rgba(138,180,212,.2)"/>
+      <rect x="70" y="60" width="35" height="85" fill="rgba(12,20,45,.85)"/>
+      <rect x="75" y="70" width="5" height="5" fill="rgba(255,180,80,.25)"/>
+      <rect x="83" y="78" width="5" height="5" fill="rgba(138,180,212,.25)"/>
+      <rect x="75" y="88" width="5" height="5" fill="rgba(255,220,100,.2)"/>
+      <rect x="120" y="95" width="20" height="50" fill="rgba(18,28,55,.7)"/>
+      <rect x="155" y="70" width="40" height="75" fill="rgba(10,18,42,.85)"/>
+      <rect x="160" y="80" width="5" height="5" fill="rgba(138,180,212,.3)"/>
+      <rect x="168" y="85" width="5" height="5" fill="rgba(255,150,150,.2)"/>
+      <rect x="160" y="95" width="5" height="5" fill="rgba(255,220,100,.25)"/>
+      <rect x="210" y="50" width="30" height="95" fill="rgba(8,15,38,.9)"/>
+      <rect x="215" y="60" width="5" height="5" fill="rgba(138,180,212,.35)"/>
+      <rect x="223" y="68" width="5" height="5" fill="rgba(255,180,80,.2)"/>
+      <rect x="215" y="78" width="5" height="5" fill="rgba(138,180,212,.25)"/>
+      <!-- 右側ビル群 -->
+      <rect x="580" y="75" width="28" height="70" fill="rgba(12,20,45,.85)"/>
+      <rect x="585" y="85" width="5" height="5" fill="rgba(138,180,212,.3)"/>
+      <rect x="620" y="55" width="38" height="90" fill="rgba(10,18,42,.88)"/>
+      <rect x="625" y="65" width="5" height="5" fill="rgba(255,220,100,.25)"/>
+      <rect x="633" y="73" width="5" height="5" fill="rgba(138,180,212,.28)"/>
+      <rect x="670" y="85" width="22" height="60" fill="rgba(15,25,50,.8)"/>
+      <rect x="700" y="65" width="45" height="80" fill="rgba(8,16,40,.9)"/>
+      <rect x="705" y="75" width="5" height="5" fill="rgba(138,180,212,.35)"/>
+      <rect x="713" y="83" width="5" height="5" fill="rgba(255,150,150,.2)"/>
+      <rect x="750" y="90" width="25" height="55" fill="rgba(18,28,55,.75)"/>
+      <!-- 反射 -->
+      <line x1="200" y1="145" x2="400" y2="145" stroke="rgba(138,180,212,.15)" stroke-width="3"/>
+      <line x1="250" y1="152" x2="380" y2="152" stroke="rgba(138,180,212,.08)" stroke-width="2"/>
+      <!-- 星 -->
+      <circle cx="100" cy="25" r="1.2" fill="rgba(255,255,255,.5)"/>
+      <circle cx="280" cy="15" r="1" fill="rgba(255,255,255,.45)"/>
+      <circle cx="450" cy="30" r="1.5" fill="rgba(255,255,255,.4)"/>
+      <circle cx="600" cy="20" r="1" fill="rgba(255,255,255,.5)"/>
+      <circle cx="730" cy="35" r="1.2" fill="rgba(255,255,255,.45)"/>
+    </svg>
+  </div>
+  <div class="hero-body">
+    <div class="hero-grid">
+      <div>
+        <span class="era-badge">シティポップ / 1970s-80s</span>
+        <h1 class="hero-name">松原みき</h1>
+        <div class="hero-name-en">Miki Matsubara</div>
+        <div class="hero-dates">1959年11月28日 — 2004年10月7日 · 大阪府出身</div>
+        <p class="hero-desc">「真夜中のドア〜Stay With Me」1曲で時代を超えた存在となったシンガー・ソングライター。1979年のデビューから独特のハスキーボイスとシティポップ全盛期の空気感で多くのファンを掴んだ。2020年代に入りYouTubeで世界中に再発見され、Spotifyグローバルチャートで歴史的快挙を達成。わずか44歳で逝去したが、その音楽は今も世界中で鳴り続けている。</p>
+        <div class="hero-tags">
+          <span class="htag" style="background:rgba(138,180,212,.08);border-color:rgba(138,180,212,.25);color:#8ab4d4">シティポップ</span>
+          <span class="htag" style="background:rgba(201,168,76,.08);border-color:rgba(201,168,76,.2);color:#c9a84c">世界的再評価</span>
+          <span class="htag" style="background:rgba(80,180,140,.08);border-color:rgba(80,180,140,.2);color:#5dcaa5">1979年デビュー</span>
+          <span class="htag" style="background:rgba(232,228,217,.05);border-color:var(--border2);color:var(--text2)">大阪府出身</span>
+        </div>
+      </div>
+      <div class="stats-col">
+        <div class="stat-card">
+          <div class="stat-num">1979</div>
+          <div class="stat-lbl">デビュー年</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">#1</div>
+          <div class="stat-lbl">Spotifyグローバル</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-num">44</div>
+          <div class="stat-lbl">享年</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sec-tabs">
+  <button class="stab active" onclick="setTab(this,'discography')">ディスコグラフィ</button>
+  <button class="stab" onclick="setTab(this,'story')">ストーリー</button>
+  <button class="stab" onclick="setTab(this,'life')">生涯・年表</button>
+  <button class="stab" onclick="setTab(this,'links')">聴く・購入</button>
+  <button class="stab" onclick="setTab(this,'memo')">思い出メモ</button>
+</div>
+
+<div class="content">
+
+  <!-- DISCOGRAPHY -->
+  <div id="tab-discography">
+    <div class="sec-lbl">アルバム・シングル</div>
+    <div id="albums-loading" class="loading">
+      <div class="ld-dots"><div class="ld-dot"></div><div class="ld-dot"></div><div class="ld-dot"></div></div>
+      <div class="ld-text">iTunes APIからジャケットを取得中...</div>
+    </div>
+    <div class="albums-grid" id="albums-grid"></div>
+  </div>
+
+  <!-- STORY -->
+  <div id="tab-story" style="display:none">
+    <div class="sec-lbl">松原みきという存在</div>
+    <div class="story-block">
+      <div class="sb-head"><div class="sb-dot" style="background:rgba(138,180,212,.7)"></div><div class="sb-title">「真夜中のドア」——なぜ40年後に世界1位になったのか</div></div>
+      <div class="sb-body">2020年10月、YouTuberのRainychがカバー動画を投稿したことをきっかけに「真夜中のドア〜Stay With Me」が爆発的に拡散。Spotifyグローバルバイラルチャートで15日連続世界1位を記録し、Apple MusicのJ-POPランキングでは12カ国で1位を獲得した。YouTubeのアルゴリズムがシティポップを「発見」した象徴的な出来事として語り継がれている。</div>
+    </div>
+    <div class="story-block">
+      <div class="sb-head"><div class="sb-dot" style="background:rgba(201,168,76,.7)"></div><div class="sb-title">あのハスキーボイスの秘密</div></div>
+      <div class="sb-body">大阪府出身。幼少期から音楽に親しみ、ポリドールレコードのオーディションに合格して1979年にデビュー。デビュー曲「真夜中のドア〜Stay With Me」はリリース当時もヒットしたが、本人は決して「大スター」ではなかった。独特のハスキーな歌声と都会的な歌詞が、バブル前夜の空気と完璧に共鳴していた。</div>
+    </div>
+    <div class="story-block">
+      <div class="sb-head"><div class="sb-dot" style="background:rgba(80,180,140,.7)"></div><div class="sb-title">短すぎた生涯と、消えない音楽</div></div>
+      <div class="sb-body">2004年10月、子宮頸がんのため44歳で逝去。世界的再評価の波が来る16年前のことだった。本人がSpotify世界1位を知ることはなかった。それでも「真夜中のドア」は今日も世界中でプレイリストに追加され、街のカフェで流れ、若い世代の心を動かし続けている。音楽が時間を超えるとはこういうことだ、と教えてくれる存在。</div>
+    </div>
+    <div class="story-block">
+      <div class="sb-head"><div class="sb-dot" style="background:rgba(212,83,126,.7)"></div><div class="sb-title">Lo-fi aestheticsとして再定義された</div></div>
+      <div class="sb-body">2010年代後半からYouTubeで「Japanese City Pop」「Lo-fi Japan」というタグとともに拡散。永井博のビジュアルと組み合わさり、「見たことのない理想の80年代日本」として世界中の若者に消費された。松原みきの音楽はもはや「過去の音楽」ではなく、現在進行形の文化的シンボルとなっている。</div>
+    </div>
+  </div>
+
+  <!-- LIFE -->
+  <div id="tab-life" style="display:none">
+    <div class="sec-lbl">生涯・年表</div>
+    <div class="life-list">
+      <div class="life-row">
+        <div class="life-yr">1959</div>
+        <div class="life-info"><div class="life-ttl">大阪府に生まれる</div><div class="life-sub">幼少期から音楽に親しむ。関西の音楽シーンで育つ</div></div>
+      </div>
+      <div class="life-row">
+        <div class="life-yr">1979</div>
+        <div class="life-info"><div class="life-ttl">「真夜中のドア〜Stay With Me」でデビュー</div><div class="life-sub">ポリドールレコードより19歳でデビュー。デビュー曲がシティポップの名曲として後世に語り継がれることになる</div></div>
+      </div>
+      <div class="life-row">
+        <div class="life-yr">1979</div>
+        <div class="life-info"><div class="life-ttl">1stアルバム「Stay With Me」リリース</div><div class="life-sub">デビューアルバムに「真夜中のドア」を収録。都会的なサウンドと独特のハスキーボイスが注目を集める</div></div>
+      </div>
+      <div class="life-row">
+        <div class="life-yr">1980</div>
+        <div class="life-info"><div class="life-ttl">「POCKET PARK」リリース</div><div class="life-sub">2ndアルバム。シティポップ路線をさらに深化させ、ファン層を広げた</div></div>
+      </div>
+      <div class="life-row">
+        <div class="life-yr">1981–85</div>
+        <div class="life-info"><div class="life-ttl">精力的に作品をリリース</div><div class="life-sub">シティポップ全盛期に複数のアルバム・シングルをリリース。CMソングへの楽曲提供なども行う</div></div>
+      </div>
+      <div class="life-row">
+        <div class="life-yr">2004</div>
+        <div class="life-info"><div class="life-ttl">子宮頸がんのため逝去・享年44歳</div><div class="life-sub">世界的再評価の波が来る16年前に早すぎる死。音楽だけが残った</div></div>
+      </div>
+      <div class="life-row">
+        <div class="life-yr">2020</div>
+        <div class="life-info"><div class="life-ttl">「真夜中のドア」Spotifyグローバル15日連続世界1位</div><div class="life-sub">RainychのカバーをきっかけにYouTubeで世界中に拡散。Apple Musicで12カ国1位を達成。レコード盤がポニーキャニオンより復刻</div></div>
+      </div>
+      <div class="life-row">
+        <div class="life-yr">現在</div>
+        <div class="life-info"><div class="life-ttl">今も世界中で再生され続けている</div><div class="life-sub">「Japanese City Pop」の象徴として若い世代に愛され続ける。その音楽は時間を超えた</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- LINKS -->
+  <div id="tab-links" style="display:none">
+    <div class="sec-lbl">今すぐ聴く</div>
+    <div class="links-grid">
+      <a class="link-btn" href="https://www.youtube.com/results?search_query=松原みき+真夜中のドア" target="_blank" style="background:rgba(255,60,60,.07);border-color:rgba(255,60,60,.22)">
+        <div class="lbicon" style="background:rgba(255,60,60,.2);color:#ff8888">▶</div>
+        <div class="lb-label"><span class="lb-name" style="color:#ff8888">YouTube</span><span class="lb-type">無料で観る</span></div>
+      </a>
+      <a class="link-btn" href="https://open.spotify.com/search/Miki%20Matsubara" target="_blank" style="background:rgba(29,185,84,.06);border-color:rgba(29,185,84,.22)">
+        <div class="lbicon" style="background:rgba(29,185,84,.2);color:#1db954">♪</div>
+        <div class="lb-label"><span class="lb-name" style="color:#1db954">Spotify</span><span class="lb-type">ストリーミング</span></div>
+      </a>
+      <a class="link-btn" href="https://music.apple.com/jp/search?term=松原みき" target="_blank" style="background:rgba(252,60,68,.06);border-color:rgba(252,60,68,.2)">
+        <div class="lbicon" style="background:rgba(252,60,68,.18);color:#fc8888">♫</div>
+        <div class="lb-label"><span class="lb-name" style="color:#fc8888">Apple Music</span><span class="lb-type">ストリーミング</span></div>
+      </a>
+    </div>
+    <div class="sec-lbl">CD・レコードを手に入れる</div>
+    <div class="links-grid">
+      <a class="link-btn" href="https://www.amazon.co.jp/s?k=松原みき+CD" target="_blank" style="background:rgba(255,153,0,.06);border-color:rgba(255,153,0,.2)">
+        <div class="lbicon" style="background:rgba(255,153,0,.18);color:#ff9900">◉</div>
+        <div class="lb-label"><span class="lb-name" style="color:#ffaa33">Amazon</span><span class="lb-type">CD / レコード</span></div>
+      </a>
+      <a class="link-btn" href="https://tower.jp/search/PC/松原みき" target="_blank" style="background:rgba(232,228,217,.04);border-color:var(--border2)">
+        <div class="lbicon" style="background:rgba(232,228,217,.1);color:var(--text2)">T</div>
+        <div class="lb-label"><span class="lb-name" style="color:var(--text2)">Tower Records</span><span class="lb-type">CD / アナログ</span></div>
+      </a>
+    </div>
+  </div>
+
+  <!-- MEMO -->
+  <div id="tab-memo" style="display:none">
+    <div class="sec-lbl">松原みきについての思い出メモ</div>
+    <div class="memo-box">
+      <div class="mb-lbl">自分だけに見えるメモ</div>
+      <div class="mb-entries" id="memo-entries"></div>
+      <div class="mb-row">
+        <input class="mb-input" id="memo-input" placeholder="出会ったきっかけ、好きな曲、感じたこと..."/>
+        <button class="mb-save" onclick="saveMemo()">保存</button>
+      </div>
+      <div class="mb-saved" id="memo-saved">保存しました</div>
+    </div>
+  </div>
+
+  <!-- RELATED -->
+  <div class="sec-lbl" style="margin-top:.5rem">同じ時代のアーティスト</div>
+  <div class="related-row">
+    <a class="rel-chip" href="citypop_archive_v2.html">
+      <div class="rel-dot" style="background:rgba(201,168,76,.2);color:#c9a84c">山</div>
+      <div><div class="rel-name">山下達郎</div><div class="rel-role">シティポップ</div></div>
+    </a>
+    <a class="rel-chip" href="citypop_archive_v2.html">
+      <div class="rel-dot" style="background:rgba(212,83,126,.2);color:#ed93b1">竹</div>
+      <div><div class="rel-name">竹内まりや</div><div class="rel-role">Plastic Love</div></div>
+    </a>
+    <a class="rel-chip" href="citypop_archive_v2.html">
+      <div class="rel-dot" style="background:rgba(100,150,220,.2);color:#85b7eb">大</div>
+      <div><div class="rel-name">大滝詠一</div><div class="rel-role">A LONG VACATION</div></div>
+    </a>
+    <a class="rel-chip" href="citypop_archive_v2.html">
+      <div class="rel-dot" style="background:rgba(80,180,140,.2);color:#5dcaa5">角</div>
+      <div><div class="rel-name">角松敏生</div><div class="rel-role">シティポップ</div></div>
+    </a>
+  </div>
+
+  <div class="btns">
+    <a class="abtn abtn-g" href="https://www.youtube.com/results?search_query=松原みき+真夜中のドア" target="_blank">真夜中のドアを聴く ↗</a>
+    <a class="abtn abtn-o" href="citypop_archive_v2.html">← シティポップ一覧へ</a>
+  </div>
+
+</div>
+
+<script>
+// タブ切り替え
+function setTab(btn, id) {
+  document.querySelectorAll('.stab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  ['discography','story','life','links','memo'].forEach(t => {
+    document.getElementById('tab-' + t).style.display = t === id ? 'block' : 'none';
+  });
+}
+
+// iTunes APIでアルバム取得
+async function loadAlbums() {
+  try {
+    const res = await fetch('https://itunes.apple.com/search?term=松原みき&country=JP&media=music&entity=album&limit=20&lang=ja_jp');
+    const data = await res.json();
+    let albums = data.results || [];
+
+    if (albums.length === 0) {
+      const res2 = await fetch('https://itunes.apple.com/search?term=Miki+Matsubara&country=JP&media=music&entity=album&limit=20');
+      const data2 = await res2.json();
+      albums = data2.results || [];
+    }
+
+    const seen = new Set();
+    const unique = albums.filter(a => {
+      const k = (a.collectionName || '').toLowerCase();
+      if (seen.has(k)) return false;
+      seen.add(k); return true;
+    }).slice(0, 16);
+
+    document.getElementById('albums-loading').style.display = 'none';
+    const grid = document.getElementById('albums-grid');
+
+    if (unique.length === 0) {
+      grid.innerHTML = '<p style="color:var(--text3);font-size:12px">アルバムが見つかりませんでした。</p>';
+      return;
+    }
+
+    unique.forEach(album => {
+      const title = album.collectionName || '';
+      const img = (album.artworkUrl100 || '').replace('100x100bb', '400x400bb');
+      const year = album.releaseDate ? album.releaseDate.substring(0, 4) : '';
+      const itunesUrl = album.collectionViewUrl || '#';
+      const ytQ = encodeURIComponent('松原みき ' + title);
+      const spQ = encodeURIComponent(title + ' Miki Matsubara');
+
+      const card = document.createElement('div');
+      card.className = 'album-card fade-in';
+      card.innerHTML = `
+        ${img ? `<img class="album-jacket" src="${img}" alt="${title}" loading="lazy" onerror="this.outerHTML='<div class=album-jacket-ph>🎵</div>'">` : `<div class="album-jacket-ph">🎵</div>`}
+        <div class="album-body">
+          <div class="album-name">${title}</div>
+          <div class="album-year">${year}</div>
+          <div class="album-links">
+            <a class="alnk" href="${itunesUrl}" target="_blank" style="background:rgba(252,60,68,.07);border-color:rgba(252,60,68,.2);color:#fc8888">AM</a>
+            <a class="alnk" href="https://open.spotify.com/search/${spQ}" target="_blank" style="background:rgba(29,185,84,.08);border-color:rgba(29,185,84,.25);color:#1db954">SP</a>
+            <a class="alnk" href="https://www.youtube.com/results?search_query=${ytQ}" target="_blank" style="background:rgba(255,60,60,.08);border-color:rgba(255,60,60,.25);color:#ff8888">YT</a>
+          </div>
+        </div>`;
+      grid.appendChild(card);
+    });
+  } catch(e) {
+    document.getElementById('albums-loading').innerHTML = '<p style="color:rgba(255,120,120,.7);font-size:12px">取得に失敗しました: ' + e.message + '</p>';
+  }
+}
+
+// メモ
+function saveMemo() {
+  const input = document.getElementById('memo-input');
+  const text = input.value.trim();
+  if (!text) return;
+  const entries = document.getElementById('memo-entries');
+  const el = document.createElement('div');
+  el.className = 'mb-entry';
+  el.textContent = text;
+  entries.appendChild(el);
+  input.value = '';
+  const saved = document.getElementById('memo-saved');
+  saved.style.display = 'block';
+  setTimeout(() => { saved.style.display = 'none'; }, 2000);
+}
+
+// 初回ロード
+loadAlbums();
+</script>
+</body>
+</html>
