@@ -23,13 +23,10 @@
 html { scroll-behavior: smooth; }
 body { background: var(--bg); color: var(--text); font-family: 'Zen Kaku Gothic New', sans-serif; min-height: 100vh; padding-bottom: 5rem; }
 
-/* NAV */
 .nav {
   display: flex; align-items: center; justify-content: space-between;
-  padding: .9rem 2rem;
-  border-bottom: .5px solid var(--border);
-  background: rgba(7,8,15,.95);
-  backdrop-filter: blur(12px);
+  padding: .9rem 2rem; border-bottom: .5px solid var(--border);
+  background: rgba(7,8,15,.95); backdrop-filter: blur(12px);
   position: sticky; top: 0; z-index: 100;
 }
 .nav-logo { font-family: 'Shippori Mincho', serif; font-size: 17px; font-weight: 700; letter-spacing: .1em; color: var(--gold); }
@@ -38,18 +35,14 @@ body { background: var(--bg); color: var(--text); font-family: 'Zen Kaku Gothic 
 .nav-link:hover { color: var(--text); }
 .nav-link.active { color: var(--gold); }
 
-/* HERO */
 .hero {
-  padding: 3.5rem 2rem 2.5rem;
-  border-bottom: .5px solid var(--border);
+  padding: 3.5rem 2rem 2.5rem; border-bottom: .5px solid var(--border);
   position: relative; overflow: hidden;
 }
 .hero-watermark {
   position: absolute; right: -10px; top: 0;
-  font-family: 'Shippori Mincho', serif;
-  font-size: 120px; font-weight: 900;
-  color: rgba(201,168,76,.05);
-  line-height: 1; pointer-events: none; user-select: none;
+  font-family: 'Shippori Mincho', serif; font-size: 120px; font-weight: 900;
+  color: rgba(201,168,76,.05); line-height: 1; pointer-events: none; user-select: none;
 }
 .hero-eyebrow { font-size: 10px; letter-spacing: .22em; text-transform: uppercase; color: rgba(201,168,76,.55); margin-bottom: .75rem; }
 .hero-title { font-family: 'Shippori Mincho', serif; font-size: 38px; font-weight: 700; color: var(--text); line-height: 1.2; margin-bottom: .5rem; }
@@ -57,114 +50,88 @@ body { background: var(--bg); color: var(--text); font-family: 'Zen Kaku Gothic 
 .hero-tags { display: flex; gap: 6px; flex-wrap: wrap; }
 .htag { font-size: 10px; padding: 3px 10px; border-radius: 12px; border: .5px solid; letter-spacing: .06em; }
 
-/* EXPLORE TABS */
-.explore-tabs {
-  display: flex; gap: 0;
-  padding: 0 2rem;
-  border-bottom: .5px solid var(--border);
-}
+.explore-tabs { display: flex; gap: 0; padding: 0 2rem; border-bottom: .5px solid var(--border); }
 .etab {
-  font-size: 13px; font-weight: 700;
-  padding: 12px 20px;
-  border: none; background: transparent;
-  color: var(--text3); cursor: pointer;
-  border-bottom: 2px solid transparent;
-  transition: all .18s;
-  font-family: 'Zen Kaku Gothic New', sans-serif;
-  letter-spacing: .04em;
+  font-size: 13px; font-weight: 700; padding: 12px 20px;
+  border: none; background: transparent; color: var(--text3); cursor: pointer;
+  border-bottom: 2px solid transparent; transition: all .18s;
+  font-family: 'Zen Kaku Gothic New', sans-serif; letter-spacing: .04em;
 }
 .etab:hover { color: var(--text); }
 .etab.active { color: var(--gold); border-bottom-color: var(--gold); }
 
-/* ARTIST SUB TABS */
 .sub-tabs {
   display: flex; gap: 0; overflow-x: auto; scrollbar-width: none;
-  padding: 0 2rem;
-  border-bottom: .5px solid var(--border);
-  background: var(--bg2);
+  padding: 0 2rem; border-bottom: .5px solid var(--border); background: var(--bg2);
 }
 .sub-tabs::-webkit-scrollbar { display: none; }
 .stab {
-  flex-shrink: 0;
-  font-family: 'Shippori Mincho', serif;
-  font-size: 13px; font-weight: 700;
-  padding: 10px 16px;
-  border: none; background: transparent;
-  color: var(--text3); cursor: pointer;
-  border-bottom: 2px solid transparent;
-  transition: all .18s; white-space: nowrap;
+  flex-shrink: 0; font-family: 'Shippori Mincho', serif;
+  font-size: 13px; font-weight: 700; padding: 10px 16px;
+  border: none; background: transparent; color: var(--text3); cursor: pointer;
+  border-bottom: 2px solid transparent; transition: all .18s; white-space: nowrap;
 }
 .stab:hover { color: var(--text); }
 .stab.active { color: var(--gold); border-bottom-color: var(--gold); }
 
-/* ERA TABS */
 .era-tabs {
   display: flex; gap: 8px; flex-wrap: wrap;
-  padding: 1rem 2rem;
-  border-bottom: .5px solid var(--border);
-  background: var(--bg2);
+  padding: 1rem 2rem; border-bottom: .5px solid var(--border); background: var(--bg2);
 }
 .eratab {
-  font-size: 12px; font-weight: 700;
-  padding: 7px 18px; border-radius: 20px;
-  border: .5px solid var(--border2);
-  background: transparent; color: var(--text2);
-  cursor: pointer; transition: all .18s;
-  font-family: 'Shippori Mincho', serif;
+  font-size: 12px; font-weight: 700; padding: 7px 18px; border-radius: 20px;
+  border: .5px solid var(--border2); background: transparent; color: var(--text2);
+  cursor: pointer; transition: all .18s; font-family: 'Shippori Mincho', serif;
 }
 .eratab:hover { border-color: rgba(201,168,76,.4); color: var(--gold); }
 .eratab.active { background: rgba(201,168,76,.15); border-color: rgba(201,168,76,.5); color: var(--gold); font-weight: 900; }
 
-/* CONTENT */
 .content { padding: 1.5rem 2rem; }
 .sec-lbl {
   font-size: 9px; letter-spacing: .22em; text-transform: uppercase;
-  color: var(--text3); margin-bottom: 1rem;
-  display: flex; align-items: center; gap: .5rem;
+  color: var(--text3); margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem;
 }
 .sec-lbl::after { content: ''; flex: 1; height: .5px; background: var(--border); }
 
-/* ERA HEADER */
 .era-header {
   background: var(--bg2); border: .5px solid rgba(201,168,76,.15);
-  border-radius: var(--radius); padding: 1.25rem 1.5rem;
-  margin-bottom: 1.5rem;
+  border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem;
 }
 .era-header-title { font-family: 'Shippori Mincho', serif; font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: .4rem; }
 .era-header-sub { font-size: 12px; color: var(--text2); line-height: 1.8; }
 .era-header-keywords { display: flex; gap: 6px; flex-wrap: wrap; margin-top: .75rem; }
 .era-kw { font-size: 10px; padding: 2px 9px; border-radius: 10px; border: .5px solid rgba(201,168,76,.25); color: rgba(201,168,76,.7); }
 
-/* ARTIST PROFILE */
 .artist-profile {
   display: flex; gap: 1.5rem; align-items: center;
-  padding: 1.25rem; background: var(--bg2);
-  border: .5px solid var(--border); border-radius: var(--radius);
-  margin-bottom: 1.5rem; flex-wrap: wrap;
+  padding: 1.25rem; background: var(--bg2); border: .5px solid var(--border);
+  border-radius: var(--radius); margin-bottom: 1.5rem; flex-wrap: wrap;
 }
 .ap-img-wrap {
-  width: 80px; height: 80px; border-radius: 50%;
-  overflow: hidden; flex-shrink: 0;
+  width: 80px; height: 80px; border-radius: 50%; overflow: hidden; flex-shrink: 0;
   border: .5px solid var(--border2); background: var(--bg3);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 28px; color: var(--text3);
+  display: flex; align-items: center; justify-content: center; font-size: 28px; color: var(--text3);
 }
 .ap-info { flex: 1; }
 .ap-name { font-family: 'Shippori Mincho', serif; font-size: 20px; font-weight: 700; color: var(--text); margin-bottom: 3px; }
 .ap-desc { font-size: 12px; color: var(--text2); line-height: 1.7; }
-.ap-links { display: flex; gap: 6px; margin-top: .6rem; flex-wrap: wrap; }
+.ap-links { display: flex; gap: 6px; margin-top: .6rem; flex-wrap: wrap; align-items: center; }
 .ap-link { font-size: 10px; padding: 4px 12px; border-radius: 12px; border: .5px solid; cursor: pointer; transition: all .15s; text-decoration: none; }
+.ap-detail-btn {
+  font-size: 11px; padding: 6px 14px; border-radius: 12px;
+  background: rgba(201,168,76,.15); border: .5px solid rgba(201,168,76,.4);
+  color: var(--gold); cursor: pointer; transition: all .18s;
+  text-decoration: none; font-weight: 700; letter-spacing: .04em;
+}
+.ap-detail-btn:hover { background: rgba(201,168,76,.25); }
 
-/* ALBUMS GRID */
 .albums-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
   gap: 10px; margin-bottom: 2rem;
 }
 .album-card {
   background: var(--bg2); border: .5px solid var(--border);
-  border-radius: var(--radius); overflow: hidden;
-  cursor: pointer; transition: all .2s;
+  border-radius: var(--radius); overflow: hidden; cursor: pointer; transition: all .2s;
 }
 .album-card:hover { border-color: rgba(201,168,76,.4); transform: translateY(-2px); box-shadow: 0 8px 28px rgba(0,0,0,.45); }
 .album-jacket { width: 100%; aspect-ratio: 1; object-fit: cover; display: block; background: var(--bg3); }
@@ -176,7 +143,6 @@ body { background: var(--bg); color: var(--text); font-family: 'Zen Kaku Gothic 
 .album-links { display: flex; gap: 4px; }
 .alnk { flex: 1; font-size: 9px; padding: 3px 0; border-radius: 3px; border: .5px solid; text-align: center; text-decoration: none; display: block; transition: all .15s; }
 
-/* LOADING / ERROR */
 .loading { padding: 3rem; text-align: center; display: none; }
 .loading.show { display: block; }
 .ld-dots { display: flex; gap: 6px; justify-content: center; margin-bottom: .75rem; }
@@ -186,7 +152,6 @@ body { background: var(--bg); color: var(--text); font-family: 'Zen Kaku Gothic 
 .ld-text { font-size: 12px; color: var(--text3); }
 .error-msg { display: none; margin: 1rem 0; background: rgba(255,80,80,.07); border: .5px solid rgba(255,80,80,.2); border-radius: var(--radius); padding: .85rem 1rem; font-size: 12px; color: rgba(255,120,120,.8); line-height: 1.7; }
 .error-msg.show { display: block; }
-
 .fade-in { animation: fadeIn .3s ease; }
 @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
 </style>
@@ -215,25 +180,23 @@ body { background: var(--bg); color: var(--text); font-family: 'Zen Kaku Gothic 
   </div>
 </div>
 
-<!-- EXPLORE TABS -->
 <div class="explore-tabs">
   <button class="etab active" onclick="switchExplore(this,'artist')">アーティスト別</button>
   <button class="etab" onclick="switchExplore(this,'era')">年代別</button>
 </div>
 
-<!-- ARTIST VIEW -->
 <div id="view-artist">
-  <div class="sub-tabs" id="artist-tabs">
-    <button class="stab active" onclick="loadArtist(this,'山下達郎','Tatsuro Yamashita','シティポップの象徴的存在。緻密なスタジオワークと圧倒的なライブで半世紀にわたり第一線に立ち続ける。')">山下達郎</button>
-    <button class="stab" onclick="loadArtist(this,'竹内まりや','Mariya Takeuchi','「Plastic Love」の世界的再発見で2020年代に再ブレイク。山下達郎の妻でもあり、二人の音楽は切り離せない。')">竹内まりや</button>
-    <button class="stab" onclick="loadArtist(this,'大滝詠一','Eiichi Ohtaki','1981年「A LONG VACATION」は日本ポップス史上最高傑作の一つ。永井博のジャケットとともに時代を象徴した。')">大滝詠一</button>
-    <button class="stab" onclick="loadArtist(this,'松原みき','Miki Matsubara','「真夜中のドア〜Stay With Me」はYouTubeで世界中に拡散し、シティポップ再評価ブームの火付け役となった。')">松原みき</button>
-    <button class="stab" onclick="loadArtist(this,'角松敏生','Toshiki Kadomatsu','AORとファンクを融合させた独自のサウンドで1980年代を席巻。永井博とのコラボジャケットも有名。')">角松敏生</button>
-    <button class="stab" onclick="loadArtist(this,'杉山清貴','Kiyotaka Sugiyama','オメガトライブとのユニットで「ふたりの夏物語」など夏のアンセムを連発。80年代夏の記憶そのもの。')">杉山清貴</button>
-    <button class="stab" onclick="loadArtist(this,'大貫妙子','Taeko Ohnuki','シュガー・ベイブ出身。フレンチポップとシティポップを融合させた唯一無二のスタイル。')">大貫妙子</button>
-    <button class="stab" onclick="loadArtist(this,'稲垣潤一','Junichi Inagaki','ドラマー兼ボーカリストという異色のスタイル。「夏のクラクション」などAOR色豊かなヒット多数。')">稲垣潤一</button>
+  <div class="sub-tabs">
+    <button class="stab active" onclick="loadArtist(this,'山下達郎','Tatsuro Yamashita','シティポップの象徴的存在。緻密なスタジオワークと圧倒的なライブで半世紀にわたり第一線に立ち続ける。','')">山下達郎</button>
+    <button class="stab" onclick="loadArtist(this,'竹内まりや','Mariya Takeuchi','「Plastic Love」の世界的再発見で2020年代に再ブレイク。山下達郎の妻でもあり、二人の音楽は切り離せない。','')">竹内まりや</button>
+    <button class="stab" onclick="loadArtist(this,'大滝詠一','Eiichi Ohtaki','1981年「A LONG VACATION」は日本ポップス史上最高傑作の一つ。永井博のジャケットとともに時代を象徴した。','')">大滝詠一</button>
+    <button class="stab" onclick="loadArtist(this,'松原みき','Miki Matsubara','「真夜中のドア〜Stay With Me」はYouTubeで世界中に拡散し、シティポップ再評価ブームの火付け役となった。','artist_matsubara.html')">松原みき</button>
+    <button class="stab" onclick="loadArtist(this,'角松敏生','Toshiki Kadomatsu','AORとファンクを融合させた独自のサウンドで1980年代を席巻。永井博とのコラボジャケットも有名。','')">角松敏生</button>
+    <button class="stab" onclick="loadArtist(this,'杉山清貴','Kiyotaka Sugiyama','オメガトライブとのユニットで「ふたりの夏物語」など夏のアンセムを連発。80年代夏の記憶そのもの。','')">杉山清貴</button>
+    <button class="stab" onclick="loadArtist(this,'大貫妙子','Taeko Ohnuki','シュガー・ベイブ出身。フレンチポップとシティポップを融合させた唯一無二のスタイル。','')">大貫妙子</button>
+    <button class="stab" onclick="loadArtist(this,'稲垣潤一','Junichi Inagaki','ドラマー兼ボーカリストという異色のスタイル。「夏のクラクション」などAOR色豊かなヒット多数。','')">稲垣潤一</button>
   </div>
-  <div class="content" id="artist-content">
+  <div class="content">
     <div id="artist-profile-area"></div>
     <div class="loading" id="loading-artist">
       <div class="ld-dots"><div class="ld-dot"></div><div class="ld-dot"></div><div class="ld-dot"></div></div>
@@ -245,7 +208,6 @@ body { background: var(--bg); color: var(--text); font-family: 'Zen Kaku Gothic 
   </div>
 </div>
 
-<!-- ERA VIEW -->
 <div id="view-era" style="display:none">
   <div class="era-tabs">
     <button class="eratab active" onclick="loadEra(this,'70s-early')">1970年代前半</button>
@@ -254,7 +216,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Zen Kaku Gothic 
     <button class="eratab" onclick="loadEra(this,'80s-late')">1980年代後半</button>
     <button class="eratab" onclick="loadEra(this,'2020s')">2020年代・再評価</button>
   </div>
-  <div class="content" id="era-content">
+  <div class="content">
     <div id="era-header-area"></div>
     <div class="loading" id="loading-era">
       <div class="ld-dots"><div class="ld-dot"></div><div class="ld-dot"></div><div class="ld-dot"></div></div>
@@ -267,65 +229,39 @@ body { background: var(--bg); color: var(--text); font-family: 'Zen Kaku Gothic 
 </div>
 
 <script>
-// =====================
-// ERA DATA
-// =====================
 const eraData = {
   '70s-early': {
     title: '1970年代前半 — シティポップの夜明け',
     sub: 'フォークやロックからニューミュージックへの移行期。荒井由実（松任谷由実）やシュガー・ベイブがシティポップの原型を作り始めた。',
     keywords: ['ニューミュージック','シュガー・ベイブ','ティン・パン・アレー'],
-    artists: [
-      { jp: '荒井由実', en: 'Yumi Arai' },
-      { jp: 'シュガー・ベイブ', en: 'Sugar Babe' },
-    ]
+    artists: [{jp:'荒井由実',en:'Yumi Arai'},{jp:'シュガー・ベイブ',en:'Sugar Babe'}]
   },
   '70s-late': {
     title: '1970年代後半 — ニューミュージック全盛',
     sub: 'ウォークマン発売前夜。松原みきの「真夜中のドア」、山下達郎のソロデビューなど、シティポップの核心が形成された。',
     keywords: ['真夜中のドア','ウォークマン前夜','AOR'],
-    artists: [
-      { jp: '松原みき', en: 'Miki Matsubara' },
-      { jp: '山下達郎', en: 'Tatsuro Yamashita' },
-      { jp: '大貫妙子', en: 'Taeko Ohnuki' },
-    ]
+    artists: [{jp:'松原みき',en:'Miki Matsubara'},{jp:'山下達郎',en:'Tatsuro Yamashita'},{jp:'大貫妙子',en:'Taeko Ohnuki'}]
   },
   '80s-early': {
     title: '1980年代前半 — シティポップの黄金期',
     sub: 'ウォークマン普及・バブル景気の始まり。大滝詠一「A LONG VACATION」、山下達郎「FOR YOU」など歴史的名盤が続々と生まれた。',
     keywords: ['A LONG VACATION','FOR YOU','バブル前夜','永井博'],
-    artists: [
-      { jp: '大滝詠一', en: 'Eiichi Ohtaki' },
-      { jp: '山下達郎', en: 'Tatsuro Yamashita' },
-      { jp: '竹内まりや', en: 'Mariya Takeuchi' },
-      { jp: '角松敏生', en: 'Toshiki Kadomatsu' },
-    ]
+    artists: [{jp:'大滝詠一',en:'Eiichi Ohtaki'},{jp:'山下達郎',en:'Tatsuro Yamashita'},{jp:'竹内まりや',en:'Mariya Takeuchi'},{jp:'角松敏生',en:'Toshiki Kadomatsu'}]
   },
   '80s-late': {
     title: '1980年代後半 — バブルと共に輝いた時代',
-    sub: 'バブル最高潮。杉山清貴・稲垣潤一・光GENJIなど多彩なアーティストが登場。TM NETWORKの「Get Wild」もこの時代。',
+    sub: 'バブル最高潮。杉山清貴・稲垣潤一など多彩なアーティストが登場。',
     keywords: ['バブル景気','アイドル全盛','ボディコン'],
-    artists: [
-      { jp: '杉山清貴', en: 'Kiyotaka Sugiyama' },
-      { jp: '稲垣潤一', en: 'Junichi Inagaki' },
-      { jp: '竹内まりや', en: 'Mariya Takeuchi' },
-    ]
+    artists: [{jp:'杉山清貴',en:'Kiyotaka Sugiyama'},{jp:'稲垣潤一',en:'Junichi Inagaki'},{jp:'竹内まりや',en:'Mariya Takeuchi'}]
   },
   '2020s': {
     title: '2020年代 — 世界的再評価',
     sub: 'YouTubeアルゴリズムにより「Plastic Love」「真夜中のドア」が世界中で再発見。Lo-fi aestheticsとして若い世代に熱狂的に支持されている。',
     keywords: ['YouTube拡散','Plastic Love','世界1位','Lo-fi'],
-    artists: [
-      { jp: '竹内まりや', en: 'Mariya Takeuchi' },
-      { jp: '松原みき', en: 'Miki Matsubara' },
-      { jp: '山下達郎', en: 'Tatsuro Yamashita' },
-    ]
+    artists: [{jp:'竹内まりや',en:'Mariya Takeuchi'},{jp:'松原みき',en:'Miki Matsubara'},{jp:'山下達郎',en:'Tatsuro Yamashita'}]
   }
 };
 
-// =====================
-// SWITCH EXPLORE MODE
-// =====================
 function switchExplore(btn, mode) {
   document.querySelectorAll('.etab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
@@ -337,10 +273,7 @@ function switchExplore(btn, mode) {
   }
 }
 
-// =====================
-// ARTIST MODE
-// =====================
-async function loadArtist(btn, artistJP, artistEN, desc) {
+async function loadArtist(btn, artistJP, artistEN, desc, detailPage) {
   document.querySelectorAll('.stab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('artist-profile-area').innerHTML = '';
@@ -348,14 +281,17 @@ async function loadArtist(btn, artistJP, artistEN, desc) {
   document.getElementById('albums-label-artist').style.display = 'none';
   hideError('artist');
   showLoading('artist', 'iTunes APIからジャケットを取得中...');
-  renderArtistProfile(artistJP, artistEN, desc);
+  renderArtistProfile(artistJP, artistEN, desc, detailPage);
   await fetchAndRenderAlbums(artistJP, artistEN, 'artist');
 }
 
-function renderArtistProfile(nameJP, nameEN, desc) {
+function renderArtistProfile(nameJP, nameEN, desc, detailPage) {
   const ytQ = encodeURIComponent(nameJP);
   const spQ = encodeURIComponent(nameEN || nameJP);
   const amQ = encodeURIComponent(nameJP);
+  const detailBtn = detailPage
+    ? `<a class="ap-detail-btn" href="${detailPage}">詳細ページを見る →</a>`
+    : '';
   document.getElementById('artist-profile-area').innerHTML = `
     <div class="artist-profile fade-in">
       <div class="ap-img-wrap">🎵</div>
@@ -366,14 +302,12 @@ function renderArtistProfile(nameJP, nameEN, desc) {
           <a class="ap-link" href="https://www.youtube.com/results?search_query=${ytQ}" target="_blank" style="background:rgba(255,60,60,.08);border-color:rgba(255,60,60,.25);color:#ff8888">YouTube</a>
           <a class="ap-link" href="https://open.spotify.com/search/${spQ}" target="_blank" style="background:rgba(29,185,84,.08);border-color:rgba(29,185,84,.25);color:#1db954">Spotify</a>
           <a class="ap-link" href="https://music.apple.com/jp/search?term=${amQ}" target="_blank" style="background:rgba(252,60,68,.07);border-color:rgba(252,60,68,.2);color:#fc8888">Apple Music</a>
+          ${detailBtn}
         </div>
       </div>
     </div>`;
 }
 
-// =====================
-// ERA MODE
-// =====================
 async function loadEra(btn, eraKey) {
   document.querySelectorAll('.eratab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
@@ -383,33 +317,24 @@ async function loadEra(btn, eraKey) {
   document.getElementById('albums-label-era').style.display = 'none';
   hideError('era');
   showLoading('era', 'iTunes APIからジャケットを取得中...');
-
-  // ヘッダー
   document.getElementById('era-header-area').innerHTML = `
     <div class="era-header fade-in">
       <div class="era-header-title">${era.title}</div>
       <div class="era-header-sub">${era.sub}</div>
       <div class="era-header-keywords">${era.keywords.map(k=>`<span class="era-kw">${k}</span>`).join('')}</div>
     </div>`;
-
-  // 複数アーティストを順番に取得してまとめて表示
   const allAlbums = [];
   for (const artist of era.artists) {
     const albums = await fetchAlbums(artist.jp, artist.en);
-    albums.slice(0, 4).forEach(a => { a._artistJP = artist.jp; a._artistEN = artist.en; allAlbums.push(a); });
+    albums.slice(0,4).forEach(a => { a._artistJP = artist.jp; a._artistEN = artist.en; allAlbums.push(a); });
   }
-
   hideLoading('era');
   renderAlbums(allAlbums, 'era');
 }
 
-// =====================
-// FETCH & RENDER
-// =====================
 async function fetchAlbums(artistJP, artistEN) {
   try {
-    const q = encodeURIComponent(artistJP);
-    const res = await fetch(`https://itunes.apple.com/search?term=${q}&country=JP&media=music&entity=album&limit=10&lang=ja_jp`);
+    const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(artistJP)}&country=JP&media=music&entity=album&limit=10&lang=ja_jp`);
     const data = await res.json();
     let albums = data.results || [];
     if (albums.length === 0 && artistEN) {
@@ -427,7 +352,7 @@ async function fetchAndRenderAlbums(artistJP, artistEN, mode) {
   hideLoading(mode);
   if (albums.length === 0) { showError(mode, 'アルバムが見つかりませんでした。'); return; }
   albums.forEach(a => { a._artistJP = artistJP; a._artistEN = artistEN; });
-  renderAlbums(albums.slice(0, 16), mode);
+  renderAlbums(albums.slice(0,16), mode);
 }
 
 function renderAlbums(albums, mode) {
@@ -436,17 +361,15 @@ function renderAlbums(albums, mode) {
   grid.innerHTML = '';
   if (albums.length === 0) { showError(mode, 'アルバムが見つかりませんでした。'); return; }
   label.style.display = 'flex';
-
   albums.forEach(album => {
     const title = album.collectionName || '';
-    const img = (album.artworkUrl100 || '').replace('100x100bb', '400x400bb');
-    const year = album.releaseDate ? album.releaseDate.substring(0, 4) : '';
+    const img = (album.artworkUrl100 || '').replace('100x100bb','400x400bb');
+    const year = album.releaseDate ? album.releaseDate.substring(0,4) : '';
     const itunesUrl = album.collectionViewUrl || '#';
     const artistJP = album._artistJP || '';
     const artistEN = album._artistEN || '';
     const ytQ = encodeURIComponent(artistJP + ' ' + title);
     const spQ = encodeURIComponent(title + ' ' + (artistEN || artistJP));
-
     const card = document.createElement('div');
     card.className = 'album-card fade-in';
     card.innerHTML = `
@@ -465,15 +388,11 @@ function renderAlbums(albums, mode) {
   });
 }
 
-// =====================
-// UI HELPERS
-// =====================
-function showLoading(mode, msg) { document.getElementById(`ld-text-${mode}`) && (document.getElementById(`ld-text-${mode}`).textContent = msg); document.getElementById(`loading-${mode}`).classList.add('show'); }
+function showLoading(mode, msg) { if(document.getElementById(`ld-text-${mode}`)) document.getElementById(`ld-text-${mode}`).textContent = msg; document.getElementById(`loading-${mode}`).classList.add('show'); }
 function hideLoading(mode) { document.getElementById(`loading-${mode}`).classList.remove('show'); }
-function showError(mode, msg) { hideLoading(mode); const el = document.getElementById(`error-${mode}`); el.textContent = msg; el.classList.add('show'); }
+function showError(mode, msg) { hideLoading(mode); const el=document.getElementById(`error-${mode}`); el.textContent=msg; el.classList.add('show'); }
 function hideError(mode) { document.getElementById(`error-${mode}`).classList.remove('show'); }
 
-// 初回ロード
 document.querySelector('.stab').click();
 </script>
 </body>
