@@ -45,14 +45,12 @@ body { background: var(--bg); color: var(--text); font-family: 'Zen Kaku Gothic 
   color: rgba(201,168,76,.05); line-height: 1; pointer-events: none; user-select: none;
   white-space: nowrap; overflow: hidden; max-width: 60%;
 }
-.hero-grid { display: grid; grid-template-columns: auto 1fr; gap: 1.75rem; align-items: center; }
+.hero-grid { display: grid; grid-template-columns: auto 1fr; gap: 1.75rem; align-items: center; flex-wrap: wrap; }
 .artist-img-wrap {
   width: 100px; height: 100px; border-radius: 50%; flex-shrink: 0;
   border: .5px solid var(--border2); background: var(--bg2);
-  display: flex; align-items: center; justify-content: center;
-  font-size: 36px; overflow: hidden;
+  display: flex; align-items: center; justify-content: center; font-size: 36px;
 }
-.artist-img { width: 100%; height: 100%; object-fit: cover; }
 .hero-info { flex: 1; }
 .era-badge {
   display: inline-block; font-size: 9px; letter-spacing: .2em; text-transform: uppercase;
@@ -99,6 +97,36 @@ body { background: var(--bg); color: var(--text); font-family: 'Zen Kaku Gothic 
 }
 .sec-lbl::after { content: ''; flex: 1; height: .5px; background: var(--border); }
 
+/* STORY */
+.story-text {
+  font-size: 13px; color: var(--text2); line-height: 1.9;
+  background: var(--bg2); border: .5px solid var(--border);
+  border-radius: var(--radius); padding: 1.25rem 1.5rem; margin-bottom: 1.5rem;
+}
+.meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 1.5rem; }
+.meta-card { background: var(--bg2); border: .5px solid var(--border); border-radius: var(--radius); padding: .85rem 1rem; }
+.meta-label { font-size: 9px; letter-spacing: .18em; text-transform: uppercase; color: var(--text3); margin-bottom: .35rem; }
+.meta-value { font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.5; }
+.highlights-list { display: flex; flex-direction: column; gap: 8px; margin-bottom: 1.5rem; }
+.highlight-item {
+  display: flex; align-items: flex-start; gap: 10px;
+  background: var(--bg2); border: .5px solid var(--border);
+  border-radius: var(--radius); padding: .85rem 1rem;
+}
+.highlight-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); flex-shrink: 0; margin-top: 5px; }
+.highlight-text { font-size: 12px; color: var(--text2); line-height: 1.7; }
+
+/* TIMELINE */
+.timeline-list { display: flex; flex-direction: column; margin-bottom: 1.75rem; }
+.tl-row {
+  display: grid; grid-template-columns: 58px 1fr; gap: 12px;
+  padding: .75rem 0; border-bottom: .5px solid rgba(232,228,217,.05);
+}
+.tl-row:last-child { border-bottom: none; }
+.tl-year { font-family: 'EB Garamond', serif; font-size: 13px; color: rgba(201,168,76,.65); padding-top: 2px; }
+.tl-event { font-size: 12px; color: var(--text2); line-height: 1.65; }
+
+/* ALBUMS */
 .albums-grid {
   display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr));
   gap: 10px; margin-bottom: 2rem;
@@ -114,25 +142,9 @@ body { background: var(--bg); color: var(--text); font-family: 'Zen Kaku Gothic 
 .album-name { font-family: 'Shippori Mincho', serif; font-size: 12px; font-weight: 700; color: var(--text); line-height: 1.4; margin-bottom: 2px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .album-year { font-size: 10px; color: var(--text3); margin-bottom: .45rem; }
 .album-links { display: flex; gap: 4px; }
-.alnk { flex: 1; font-size: 9px; padding: 3px 0; border-radius: 3px; border: .5px solid; text-align: center; text-decoration: none; display: block; transition: all .15s; }
+.alnk { flex: 1; font-size: 9px; padding: 3px 0; border-radius: 3px; border: .5px solid; text-align: center; text-decoration: none; display: block; }
 
-.tracks-list {
-  display: flex; flex-direction: column; gap: 1px;
-  background: var(--border); border-radius: var(--radius);
-  overflow: hidden; margin-bottom: 2rem;
-}
-.track-row {
-  display: grid; grid-template-columns: 28px 1fr auto;
-  gap: 10px; align-items: center; padding: .7rem 1rem;
-  background: var(--bg2); transition: background .15s;
-}
-.track-row:hover { background: var(--bg3); }
-.track-num { font-size: 11px; color: var(--text3); text-align: center; }
-.track-info { display: flex; flex-direction: column; gap: 2px; }
-.track-name { font-size: 13px; font-weight: 700; color: var(--text); }
-.track-dur { font-size: 10px; color: var(--text3); }
-.track-sp { font-size: 9px; padding: 2px 8px; border-radius: 3px; background: rgba(29,185,84,.08); border: .5px solid rgba(29,185,84,.25); color: #1db954; text-decoration: none; white-space: nowrap; }
-
+/* MEMO */
 .memo-box { background: #090b0d; border: .5px solid rgba(201,168,76,.15); border-radius: 8px; padding: .9rem 1rem; margin-bottom: 1rem; }
 .mb-lbl { font-size: 9px; letter-spacing: .18em; text-transform: uppercase; color: rgba(201,168,76,.45); margin-bottom: .6rem; }
 .mb-entries { display: flex; flex-direction: column; gap: 5px; margin-bottom: .65rem; }
@@ -141,7 +153,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Zen Kaku Gothic 
 .mb-input { flex: 1; background: rgba(232,228,217,.05); border: .5px solid var(--border2); border-radius: 5px; color: var(--text); font-family: 'Zen Kaku Gothic New', sans-serif; font-size: 12px; padding: 6px 10px; outline: none; transition: border-color .15s; }
 .mb-input:focus { border-color: rgba(201,168,76,.35); }
 .mb-input::placeholder { color: var(--text3); }
-.mb-save { background: rgba(201,168,76,.85); color: #07080f; border: none; border-radius: 5px; padding: 0 14px; font-size: 11px; font-weight: 900; cursor: pointer; height: 34px; font-family: 'Zen Kaku Gothic New', sans-serif; transition: background .15s; }
+.mb-save { background: rgba(201,168,76,.85); color: #07080f; border: none; border-radius: 5px; padding: 0 14px; font-size: 11px; font-weight: 900; cursor: pointer; height: 34px; font-family: 'Zen Kaku Gothic New', sans-serif; }
 .mb-save:hover { background: var(--gold); }
 .mb-saved { font-size: 10px; color: rgba(201,168,76,.7); margin-top: 5px; display: none; }
 
@@ -152,9 +164,10 @@ body { background: var(--bg); color: var(--text); font-family: 'Zen Kaku Gothic 
 @keyframes ldp { 0%,100%{opacity:.3;transform:scale(.8)} 50%{opacity:1;transform:scale(1)} }
 .ld-text { font-size: 12px; color: var(--text3); }
 
-.error-box { padding: 3rem; text-align: center; }
-.error-box h2 { font-family: 'Shippori Mincho', serif; font-size: 20px; color: var(--text); margin-bottom: .5rem; }
-.error-box p { font-size: 12px; color: var(--text3); line-height: 1.8; }
+.not-found { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4rem 2rem; text-align: center; }
+.not-found-icon { font-size: 48px; margin-bottom: 1rem; opacity: .4; }
+.not-found-title { font-family: 'Shippori Mincho', serif; font-size: 22px; color: var(--text); margin-bottom: .5rem; }
+.not-found-sub { font-size: 13px; color: var(--text3); line-height: 1.8; }
 
 .back-btn {
   display: inline-flex; align-items: center; gap: 6px;
@@ -164,18 +177,14 @@ body { background: var(--bg); color: var(--text); font-family: 'Zen Kaku Gothic 
   transition: all .18s; text-decoration: none; margin-top: 1rem;
 }
 .back-btn:hover { border-color: var(--gold); color: var(--gold); }
-
 .fade-in { animation: fadeIn .3s ease; }
 @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
 
-/* NOT FOUND */
-.not-found {
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  padding: 4rem 2rem; text-align: center;
+.ai-note {
+  font-size: 10px; color: var(--text3); padding: .5rem .75rem;
+  background: rgba(232,228,217,.03); border: .5px solid var(--border);
+  border-radius: 4px; margin-bottom: 1rem; line-height: 1.6;
 }
-.not-found-icon { font-size: 48px; margin-bottom: 1rem; opacity: .4; }
-.not-found-title { font-family: 'Shippori Mincho', serif; font-size: 22px; color: var(--text); margin-bottom: .5rem; }
-.not-found-sub { font-size: 13px; color: var(--text3); line-height: 1.8; }
 </style>
 </head>
 <body>
@@ -189,30 +198,27 @@ body { background: var(--bg); color: var(--text); font-family: 'Zen Kaku Gothic 
   </div>
 </nav>
 
-<!-- ローディング中 -->
 <div id="state-loading" class="loading">
   <div class="ld-dots"><div class="ld-dot"></div><div class="ld-dot"></div><div class="ld-dot"></div></div>
   <div class="ld-text">アーティスト情報を取得中...</div>
 </div>
 
-<!-- アーティスト見つからない -->
 <div id="state-notfound" style="display:none">
   <div class="not-found">
     <div class="not-found-icon">🎵</div>
     <div class="not-found-title">アーティストが見つかりませんでした</div>
-    <div class="not-found-sub">URLのアーティスト名を確認してください。<br>例: artist.html?name=山下達郎</div>
+    <div class="not-found-sub">URLのアーティスト名を確認してください。</div>
     <a class="back-btn" href="index.html">← ホームに戻る</a>
   </div>
 </div>
 
-<!-- メインコンテンツ -->
 <div id="state-main" style="display:none">
   <div class="hero">
     <div class="hero-wm" id="hero-wm"></div>
     <div class="hero-grid">
-      <div class="artist-img-wrap" id="artist-img-wrap">🎵</div>
+      <div class="artist-img-wrap">🎵</div>
       <div class="hero-info">
-        <span class="era-badge" id="hero-badge">Music</span>
+        <span class="era-badge">Music Artist</span>
         <h1 class="hero-name" id="hero-name"></h1>
         <div class="hero-name-en" id="hero-name-en"></div>
         <div class="hero-meta" id="hero-meta"></div>
@@ -223,40 +229,43 @@ body { background: var(--bg); color: var(--text); font-family: 'Zen Kaku Gothic 
 
   <div class="listen-bar">
     <span class="listen-label">今すぐ聴く</span>
-    <a class="listen-btn" id="btn-yt" href="#" target="_blank" style="background:rgba(255,60,60,.08);border-color:rgba(255,60,60,.25);color:#ff8888">
-      <span>▶</span> YouTube
-    </a>
-    <a class="listen-btn" id="btn-sp" href="#" target="_blank" style="background:rgba(29,185,84,.08);border-color:rgba(29,185,84,.25);color:#1db954">
-      <span>♪</span> Spotify
-    </a>
-    <a class="listen-btn" id="btn-am" href="#" target="_blank" style="background:rgba(252,60,68,.07);border-color:rgba(252,60,68,.2);color:#fc8888">
-      <span>♫</span> Apple Music
-    </a>
+    <a class="listen-btn" id="btn-yt" href="#" target="_blank" style="background:rgba(255,60,60,.08);border-color:rgba(255,60,60,.25);color:#ff8888">▶ YouTube</a>
+    <a class="listen-btn" id="btn-sp" href="#" target="_blank" style="background:rgba(29,185,84,.08);border-color:rgba(29,185,84,.25);color:#1db954">♪ Spotify</a>
+    <a class="listen-btn" id="btn-am" href="#" target="_blank" style="background:rgba(252,60,68,.07);border-color:rgba(252,60,68,.2);color:#fc8888">♫ Apple Music</a>
   </div>
 
   <div class="sec-tabs">
-    <button class="stab active" onclick="setTab(this,'albums')">アルバム</button>
-    <button class="stab" onclick="setTab(this,'tracks')">人気曲</button>
+    <button class="stab active" onclick="setTab(this,'story')">ストーリー</button>
+    <button class="stab" onclick="setTab(this,'timeline')">生涯・年表</button>
+    <button class="stab" onclick="setTab(this,'albums')">アルバム</button>
     <button class="stab" onclick="setTab(this,'memo')">思い出メモ</button>
   </div>
 
   <div class="content">
-    <div id="tab-albums">
+
+    <div id="tab-story">
+      <div class="ai-note">⚠️ この情報はAIが生成しています。正確性を保証するものではありません。</div>
+      <div class="sec-lbl">アーティストについて</div>
+      <div class="story-text" id="story-text"></div>
+      <div class="sec-lbl">基本情報</div>
+      <div class="meta-grid" id="meta-grid"></div>
+      <div class="sec-lbl">主なハイライト</div>
+      <div class="highlights-list" id="highlights-list"></div>
+    </div>
+
+    <div id="tab-timeline" style="display:none">
+      <div class="ai-note">⚠️ この情報はAIが生成しています。正確性を保証するものではありません。</div>
+      <div class="sec-lbl">生涯・年表</div>
+      <div class="timeline-list" id="timeline-list"></div>
+    </div>
+
+    <div id="tab-albums" style="display:none">
       <div class="sec-lbl">アルバム・シングル</div>
       <div id="albums-loading" class="loading" style="padding:2rem 0">
         <div class="ld-dots"><div class="ld-dot"></div><div class="ld-dot"></div><div class="ld-dot"></div></div>
         <div class="ld-text">iTunes APIからジャケットを取得中...</div>
       </div>
       <div class="albums-grid" id="albums-grid"></div>
-    </div>
-
-    <div id="tab-tracks" style="display:none">
-      <div class="sec-lbl">人気曲</div>
-      <div id="tracks-loading" class="loading" style="padding:2rem 0">
-        <div class="ld-dots"><div class="ld-dot"></div><div class="ld-dot"></div><div class="ld-dot"></div></div>
-        <div class="ld-text">楽曲データを取得中...</div>
-      </div>
-      <div class="tracks-list" id="tracks-list"></div>
     </div>
 
     <div id="tab-memo" style="display:none">
@@ -277,7 +286,8 @@ body { background: var(--bg); color: var(--text); font-family: 'Zen Kaku Gothic 
 </div>
 
 <script>
-// URLからアーティスト名を取得
+const API_BASE = 'https://jidai-archive-next.vercel.app';
+
 const params = new URLSearchParams(window.location.search);
 const artistName = params.get('name') || '';
 const artistNameEn = params.get('en') || '';
@@ -289,155 +299,126 @@ if (!artistName) {
 }
 
 async function init() {
-  // タイトルとパンくず更新
-  document.title = `時代 Archive — ${artistName}`;
+  document.title = 'A' + 'rchive — ' + artistName;
   document.getElementById('bc-name').textContent = artistName;
   document.getElementById('hero-wm').textContent = artistNameEn || artistName;
-
-  // ヒーロー情報セット
   document.getElementById('hero-name').textContent = artistName;
   document.getElementById('hero-name-en').textContent = artistNameEn;
 
-  // リンクセット
   const ytQ = encodeURIComponent(artistName);
   const spQ = encodeURIComponent(artistNameEn || artistName);
   const amQ = encodeURIComponent(artistName);
-  document.getElementById('btn-yt').href = `https://www.youtube.com/results?search_query=${ytQ}`;
-  document.getElementById('btn-sp').href = `https://open.spotify.com/search/${spQ}`;
-  document.getElementById('btn-am').href = `https://music.apple.com/jp/search?term=${amQ}`;
+  document.getElementById('btn-yt').href = 'https://www.youtube.com/results?search_query=' + ytQ;
+  document.getElementById('btn-sp').href = 'https://open.spotify.com/search/' + spQ;
+  document.getElementById('btn-am').href = 'https://music.apple.com/jp/search?term=' + amQ;
 
   showState('main');
 
-  // アルバム取得
-  await loadAlbums();
-  // 楽曲取得（バックグラウンド）
-  loadTracks();
+  // AI情報とアルバムを並列取得
+  Promise.all([loadArtistInfo(), loadAlbums()]);
+}
+
+async function loadArtistInfo() {
+  try {
+    const url = API_BASE + '/api/artist-info?name=' + encodeURIComponent(artistName) + '&en=' + encodeURIComponent(artistNameEn);
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (data.error) return;
+
+    // ストーリー
+    if (data.story) {
+      document.getElementById('story-text').textContent = data.story;
+    }
+
+    // 基本情報
+    const metaGrid = document.getElementById('meta-grid');
+    metaGrid.innerHTML = '';
+    if (data.born) metaGrid.innerHTML += '<div class="meta-card"><div class="meta-label">生年月日・出身</div><div class="meta-value">' + data.born + '</div></div>';
+    if (data.debut) metaGrid.innerHTML += '<div class="meta-card"><div class="meta-label">デビュー</div><div class="meta-value">' + data.debut + '</div></div>';
+
+    // ジャンルタグ
+    if (data.genre && data.genre.length > 0) {
+      document.getElementById('hero-tags').innerHTML = data.genre.map(g =>
+        '<span class="htag" style="background:rgba(201,168,76,.08);border-color:rgba(201,168,76,.2);color:#c9a84c">' + g + '</span>'
+      ).join('');
+    }
+
+    // ハイライト
+    const highlightsList = document.getElementById('highlights-list');
+    highlightsList.innerHTML = '';
+    if (data.highlights) {
+      data.highlights.forEach(h => {
+        highlightsList.innerHTML += '<div class="highlight-item"><div class="highlight-dot"></div><div class="highlight-text">' + h + '</div></div>';
+      });
+    }
+
+    // 年表
+    const timelineList = document.getElementById('timeline-list');
+    timelineList.innerHTML = '';
+    if (data.timeline) {
+      data.timeline.forEach(t => {
+        timelineList.innerHTML += '<div class="tl-row"><div class="tl-year">' + t.year + '</div><div class="tl-event">' + t.event + '</div></div>';
+      });
+    }
+
+  } catch(e) {
+    console.error(e);
+  }
 }
 
 async function loadAlbums() {
   try {
-    // まず日本語名で検索
-    let albums = await fetchAlbums(artistName);
-    // なければ英語名で
+    const res = await fetch('https://itunes.apple.com/search?term=' + encodeURIComponent(artistName) + '&country=JP&media=music&entity=album&limit=20&lang=ja_jp');
+    const data = await res.json();
+    let albums = data.results || [];
+
     if (albums.length === 0 && artistNameEn) {
-      albums = await fetchAlbums(artistNameEn);
+      const res2 = await fetch('https://itunes.apple.com/search?term=' + encodeURIComponent(artistNameEn) + '&country=JP&media=music&entity=album&limit=20');
+      const data2 = await res2.json();
+      albums = data2.results || [];
     }
+
+    const seen = new Set();
+    const unique = albums.filter(a => {
+      const k = (a.collectionName || '').toLowerCase();
+      if (seen.has(k)) return false;
+      seen.add(k); return true;
+    }).slice(0, 16);
 
     document.getElementById('albums-loading').style.display = 'none';
+    const grid = document.getElementById('albums-grid');
 
-    if (albums.length === 0) {
-      document.getElementById('albums-grid').innerHTML = '<p style="color:var(--text3);font-size:12px;padding:1rem 0">アルバムが見つかりませんでした。</p>';
-      return;
-    }
+    unique.forEach(album => {
+      const title = album.collectionName || '';
+      const img = (album.artworkUrl100 || '').replace('100x100bb', '400x400bb');
+      const year = album.releaseDate ? album.releaseDate.substring(0, 4) : '';
+      const itunesUrl = album.collectionViewUrl || '#';
+      const ytQ = encodeURIComponent(artistName + ' ' + title);
+      const spQ = encodeURIComponent(title + ' ' + (artistNameEn || artistName));
 
-    // アーティスト画像をアルバムから取得
-    if (albums[0]?.artworkUrl100) {
-      const imgUrl = albums[0].artworkUrl100.replace('100x100bb', '400x400bb');
-      // フォールバックとして絵文字のまま
-    }
-
-    // ジャンルタグ
-    const genre = albums[0]?.primaryGenreName || '';
-    const year = albums[0]?.releaseDate?.substring(0,4) || '';
-    if (genre) {
-      document.getElementById('hero-tags').innerHTML = `
-        <span class="htag" style="background:rgba(201,168,76,.08);border-color:rgba(201,168,76,.2);color:#c9a84c">${genre}</span>
-        ${year ? `<span class="htag" style="background:rgba(232,228,217,.05);border-color:var(--border2);color:var(--text2)">${year}年代</span>` : ''}`;
-    }
-
-    renderAlbums(albums);
-  } catch(e) {
-    document.getElementById('albums-loading').innerHTML = `<p style="color:rgba(255,120,120,.7);font-size:12px">取得に失敗しました: ${e.message}</p>`;
-  }
-}
-
-async function fetchAlbums(name) {
-  const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(name)}&country=JP&media=music&entity=album&limit=20&lang=ja_jp`);
-  const data = await res.json();
-  const albums = data.results || [];
-  const seen = new Set();
-  return albums.filter(a => {
-    const k = (a.collectionName || '').toLowerCase();
-    if (seen.has(k)) return false;
-    seen.add(k); return true;
-  }).slice(0, 16);
-}
-
-async function loadTracks() {
-  try {
-    // 楽曲検索
-    let name = artistNameEn || artistName;
-    const res = await fetch(`https://itunes.apple.com/search?term=${encodeURIComponent(name)}&country=JP&media=music&entity=song&limit=10&lang=ja_jp`);
-    const data = await res.json();
-    const tracks = data.results || [];
-
-    document.getElementById('tracks-loading').style.display = 'none';
-
-    if (tracks.length === 0) {
-      document.getElementById('tracks-list').innerHTML = '<p style="color:var(--text3);font-size:12px;padding:1rem">楽曲が見つかりませんでした。</p>';
-      return;
-    }
-
-    const list = document.getElementById('tracks-list');
-    list.innerHTML = '';
-    tracks.forEach((t, i) => {
-      const ms = t.trackTimeMillis || 0;
-      const min = Math.floor(ms / 60000);
-      const sec = String(Math.floor((ms % 60000) / 1000)).padStart(2,'0');
-      const spQ = encodeURIComponent((t.trackName || '') + ' ' + name);
-      const ytQ = encodeURIComponent(artistName + ' ' + (t.trackName || ''));
-
-      const row = document.createElement('div');
-      row.className = 'track-row';
-      row.innerHTML = `
-        <div class="track-num">${i+1}</div>
-        <div class="track-info">
-          <div class="track-name">${t.trackName || ''}</div>
-          <div class="track-dur">${min}:${sec}</div>
-        </div>
-        <div style="display:flex;gap:4px">
-          <a class="track-sp" href="https://www.youtube.com/results?search_query=${ytQ}" target="_blank" style="color:#ff8888;border-color:rgba(255,60,60,.25);background:rgba(255,60,60,.08)">YT</a>
-          <a class="track-sp" href="https://open.spotify.com/search/${spQ}" target="_blank">SP</a>
-        </div>`;
-      list.appendChild(row);
+      const card = document.createElement('div');
+      card.className = 'album-card fade-in';
+      card.innerHTML = (img ? '<img class="album-jacket" src="' + img + '" alt="' + title + '" loading="lazy" onerror="this.outerHTML=\'<div class=album-jacket-ph>🎵</div>\'">' : '<div class="album-jacket-ph">🎵</div>') +
+        '<div class="album-body">' +
+        '<div class="album-name">' + title + '</div>' +
+        '<div class="album-year">' + year + '</div>' +
+        '<div class="album-links">' +
+        '<a class="alnk" href="' + itunesUrl + '" target="_blank" style="background:rgba(252,60,68,.07);border-color:rgba(252,60,68,.2);color:#fc8888">AM</a>' +
+        '<a class="alnk" href="https://open.spotify.com/search/' + spQ + '" target="_blank" style="background:rgba(29,185,84,.08);border-color:rgba(29,185,84,.25);color:#1db954">SP</a>' +
+        '<a class="alnk" href="https://www.youtube.com/results?search_query=' + ytQ + '" target="_blank" style="background:rgba(255,60,60,.08);border-color:rgba(255,60,60,.25);color:#ff8888">YT</a>' +
+        '</div></div>';
+      grid.appendChild(card);
     });
   } catch(e) {
-    document.getElementById('tracks-loading').innerHTML = '<p style="color:rgba(255,120,120,.7);font-size:12px">取得に失敗しました。</p>';
+    document.getElementById('albums-loading').innerHTML = '<p style="color:var(--text3);font-size:12px">アルバムが見つかりませんでした。</p>';
   }
-}
-
-function renderAlbums(albums) {
-  const grid = document.getElementById('albums-grid');
-  grid.innerHTML = '';
-  albums.forEach(album => {
-    const title = album.collectionName || '';
-    const img = (album.artworkUrl100 || '').replace('100x100bb','400x400bb');
-    const year = album.releaseDate ? album.releaseDate.substring(0,4) : '';
-    const itunesUrl = album.collectionViewUrl || '#';
-    const ytQ = encodeURIComponent(artistName + ' ' + title);
-    const spQ = encodeURIComponent(title + ' ' + (artistNameEn || artistName));
-
-    const card = document.createElement('div');
-    card.className = 'album-card fade-in';
-    card.innerHTML = `
-      ${img ? `<img class="album-jacket" src="${img}" alt="${title}" loading="lazy" onerror="this.outerHTML='<div class=album-jacket-ph>🎵</div>'">` : `<div class="album-jacket-ph">🎵</div>`}
-      <div class="album-body">
-        <div class="album-name">${title}</div>
-        <div class="album-year">${year}</div>
-        <div class="album-links">
-          <a class="alnk" href="${itunesUrl}" target="_blank" style="background:rgba(252,60,68,.07);border-color:rgba(252,60,68,.2);color:#fc8888">AM</a>
-          <a class="alnk" href="https://open.spotify.com/search/${spQ}" target="_blank" style="background:rgba(29,185,84,.08);border-color:rgba(29,185,84,.25);color:#1db954">SP</a>
-          <a class="alnk" href="https://www.youtube.com/results?search_query=${ytQ}" target="_blank" style="background:rgba(255,60,60,.08);border-color:rgba(255,60,60,.25);color:#ff8888">YT</a>
-        </div>
-      </div>`;
-    grid.appendChild(card);
-  });
 }
 
 function setTab(btn, id) {
   document.querySelectorAll('.stab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
-  ['albums','tracks','memo'].forEach(t => {
+  ['story','timeline','albums','memo'].forEach(t => {
     document.getElementById('tab-' + t).style.display = t === id ? 'block' : 'none';
   });
 }
