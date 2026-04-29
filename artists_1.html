@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>時代 Archive — シティポップ アーティスト一覧</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;700;900&family=Zen+Kaku+Gothic+New:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07080f;--bg2:#0c0e1a;--bg3:#111320;--text:#e8e4d9;--text2:rgba(232,228,217,.5);--text3:rgba(232,228,217,.28);--gold:#c9a84c;--border:rgba(232,228,217,.08);--border2:rgba(232,228,217,.15);--radius:8px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Zen Kaku Gothic New',sans-serif;min-height:100vh;padding-bottom:5rem}
+
+.nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 2rem;border-bottom:.5px solid var(--border);background:rgba(7,8,15,.95);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100}
+.nav-logo{font-family:'Shippori Mincho',serif;font-size:17px;font-weight:700;letter-spacing:.1em;color:var(--gold);text-decoration:none}
+.bc{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text3)}
+.bcl{color:rgba(201,168,76,.6);cursor:pointer;transition:color .15s;text-decoration:none}
+.bcl:hover{color:var(--gold)}
+.bcs{color:var(--border2)}
+
+.hero{padding:2.5rem 2rem 2rem;border-bottom:.5px solid var(--border);position:relative;overflow:hidden}
+.hero-wm{position:absolute;right:-10px;top:0;font-family:'Shippori Mincho',serif;font-size:100px;font-weight:900;color:rgba(201,168,76,.04);line-height:1;pointer-events:none;user-select:none}
+.hero-eyebrow{font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:rgba(201,168,76,.55);margin-bottom:.75rem}
+.hero-title{font-family:'Shippori Mincho',serif;font-size:30px;font-weight:700;color:var(--text);margin-bottom:.5rem}
+.hero-sub{font-size:12px;color:var(--text2);line-height:1.8}
+
+/* SEARCH */
+.search-zone{padding:1.25rem 2rem;border-bottom:.5px solid var(--border);background:var(--bg2);position:sticky;top:53px;z-index:99}
+.search-wrap{display:flex;gap:10px;max-width:600px;margin-bottom:.85rem}
+.search-input{flex:1;background:var(--bg);border:.5px solid var(--border2);border-radius:var(--radius);color:var(--text);font-family:'Zen Kaku Gothic New',sans-serif;font-size:14px;padding:10px 16px;outline:none;transition:border-color .2s}
+.search-input:focus{border-color:rgba(201,168,76,.5)}
+.search-input::placeholder{color:var(--text3)}
+.search-btn{background:var(--gold);color:#07080f;border:none;border-radius:var(--radius);padding:10px 20px;font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+.search-btn:hover{background:#e0be6a}
+
+.filter-row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.filter-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--text3);flex-shrink:0}
+.fpill{font-size:11px;padding:4px 12px;border-radius:12px;border:.5px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;transition:all .18s;font-family:'Zen Kaku Gothic New',sans-serif;white-space:nowrap}
+.fpill:hover{border-color:rgba(201,168,76,.4);color:var(--gold)}
+.fpill.active{background:rgba(201,168,76,.15);border-color:rgba(201,168,76,.5);color:var(--gold);font-weight:700}
+
+/* CONTENT */
+.content{padding:1.5rem 2rem}
+.result-info{font-size:11px;color:var(--text3);margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between}
+.result-info a{color:rgba(201,168,76,.6);text-decoration:none;font-size:11px}
+.result-info a:hover{color:var(--gold)}
+
+/* KANA SECTION */
+.kana-section{margin-bottom:2rem}
+.kana-header{display:flex;align-items:center;gap:12px;margin-bottom:.85rem;padding-bottom:.5rem;border-bottom:.5px solid var(--border)}
+.kana-title{font-family:'Shippori Mincho',serif;font-size:22px;font-weight:700;color:var(--gold)}
+.kana-count{font-size:11px;color:var(--text3)}
+
+/* ARTIST LIST — DAMスタイル */
+.artist-list{display:flex;flex-direction:column;gap:1px;background:var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:.5rem}
+.artist-row{display:grid;grid-template-columns:1fr auto;align-items:center;padding:.75rem 1rem;background:var(--bg2);cursor:pointer;transition:background .15s;text-decoration:none}
+.artist-row:hover{background:var(--bg3)}
+.ar-left{display:flex;align-items:center;gap:.85rem}
+.ar-initial{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Shippori Mincho',serif;font-size:14px;font-weight:700;flex-shrink:0}
+.ar-info{display:flex;flex-direction:column;gap:2px}
+.ar-name{font-family:'Shippori Mincho',serif;font-size:15px;font-weight:700;color:var(--text)}
+.ar-name-en{font-size:11px;color:var(--text3)}
+.ar-right{display:flex;align-items:center;gap:8px}
+.ar-genre{font-size:10px;padding:2px 8px;border-radius:10px;border:.5px solid rgba(201,168,76,.25);color:rgba(201,168,76,.7)}
+.ar-era{font-size:10px;color:var(--text3)}
+.ar-arrow{font-size:12px;color:var(--text3);margin-left:4px}
+
+/* SEARCH RESULTS */
+.search-result-section{display:none}
+.search-result-section.show{display:block}
+.no-result-box{background:var(--bg2);border:.5px solid var(--border);border-radius:var(--radius);padding:1.5rem;text-align:center;margin-top:.5rem}
+.no-result-box p{font-size:13px;color:var(--text2);margin-bottom:1rem}
+.ai-gen-btn{display:inline-block;background:rgba(201,168,76,.85);color:#07080f;border:none;border-radius:6px;padding:10px 20px;font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;font-weight:700;cursor:pointer;text-decoration:none;transition:background .18s}
+.ai-gen-btn:hover{background:var(--gold)}
+
+.sec-lbl{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--text3);margin-bottom:.9rem;display:flex;align-items:center;gap:.5rem}
+.sec-lbl::after{content:'';flex:1;height:.5px;background:var(--border)}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="index.html">時代 Archive</a>
+  <div class="bc">
+    <a class="bcl" href="index.html">シティポップ</a>
+    <span class="bcs">›</span>
+    <span style="color:var(--text2)">アーティスト一覧</span>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-wm">Artists</div>
+  <div class="hero-eyebrow">City Pop · New Music · J-POP</div>
+  <h1 class="hero-title">アーティスト一覧</h1>
+  <p class="hero-sub">1970〜80年代の日本音楽シーンを彩ったアーティストを収録。<br>一覧にないアーティストも検索でAIページを生成できます。</p>
+</div>
+
+<div class="search-zone">
+  <div class="search-wrap">
+    <input class="search-input" id="search-input" type="text"
+      placeholder="アーティスト名で検索..."
+      oninput="onInput()" onkeydown="if(event.key==='Enter')doSearch()"/>
+    <button class="search-btn" onclick="doSearch()">検索</button>
+  </div>
+  <div class="filter-row">
+    <span class="filter-label">ジャンル</span>
+    <button class="fpill active" onclick="setFilter(this,'all')">すべて</button>
+    <button class="fpill" onclick="setFilter(this,'シティポップ')">シティポップ</button>
+    <button class="fpill" onclick="setFilter(this,'ニューミュージック')">ニューミュージック</button>
+    <button class="fpill" onclick="setFilter(this,'アイドル')">アイドル</button>
+    <button class="fpill" onclick="setFilter(this,'ロック')">ロック</button>
+    <button class="fpill" onclick="setFilter(this,'R&B')">R&B</button>
+    <button class="fpill" onclick="setFilter(this,'テクノ')">テクノ</button>
+    <button class="fpill" onclick="setFilter(this,'フュージョン')">フュージョン</button>
+  </div>
+</div>
+
+<div class="content">
+  <!-- 検索結果 -->
+  <div class="search-result-section" id="search-result-section">
+    <div class="sec-lbl" id="search-result-label">検索結果</div>
+    <div class="artist-list" id="search-result-list"></div>
+    <div class="no-result-box" id="no-result-box" style="display:none">
+      <p id="no-result-text">一覧に見つかりませんでした。AIでページを生成しますか？</p>
+      <a class="ai-gen-btn" id="ai-gen-link" href="#">AIでページを生成する →</a>
+    </div>
+  </div>
+
+  <!-- 通常一覧 -->
+  <div id="main-list">
+    <div class="result-info">
+      <span id="result-count"></span>
+    </div>
+    <div id="kana-sections"></div>
+  </div>
+</div>
+
+<script>
+const artists = [
+  // あ行
+  {name:"荒井由実",nameEn:"Yumi Arai",genre:"ニューミュージック",era:"1970s",kana:"あ"},
+  {name:"杏里",nameEn:"Anri",genre:"シティポップ",era:"1980s",kana:"あ"},
+  {name:"安全地帯",nameEn:"Anzenchitai",genre:"ロック",era:"1980s",kana:"あ"},
+  {name:"EPO",nameEn:"EPO",genre:"シティポップ",era:"1980s",kana:"え"},
+  {name:"大滝詠一",nameEn:"Eiichi Ohtaki",genre:"シティポップ",era:"1970s-80s",kana:"お"},
+  {name:"大貫妙子",nameEn:"Taeko Ohnuki",genre:"シティポップ",era:"1970s-80s",kana:"お"},
+  {name:"大橋純子",nameEn:"Junko Ohashi",genre:"シティポップ・ソウル",era:"1970s-80s",kana:"お"},
+  {name:"岡村靖幸",nameEn:"Yasuyuki Okamura",genre:"R&B・ファンク",era:"1980s-90s",kana:"お"},
+  {name:"オフコース",nameEn:"Off Course",genre:"フォーク・ポップ",era:"1970s-80s",kana:"お"},
+  {name:"尾崎豊",nameEn:"Yutaka Ozaki",genre:"ロック",era:"1980s",kana:"お"},
+  {name:"尾崎亜美",nameEn:"Ami Ozaki",genre:"シティポップ",era:"1970s-80s",kana:"お"},
+  // か行
+  {name:"角松敏生",nameEn:"Toshiki Kadomatsu",genre:"シティポップ",era:"1980s",kana:"か"},
+  {name:"加藤和彦",nameEn:"Kazuhiko Kato",genre:"フォーク・ポップ",era:"1970s-80s",kana:"か"},
+  {name:"カシオペア",nameEn:"Casiopea",genre:"フュージョン",era:"1980s",kana:"か"},
+  {name:"KAN",nameEn:"KAN",genre:"ポップス",era:"1980s-90s",kana:"か"},
+  {name:"菊池桃子",nameEn:"Momoko Kikuchi",genre:"アイドル・シティポップ",era:"1980s",kana:"き"},
+  {name:"久保田利伸",nameEn:"Toshinobu Kubota",genre:"R&B・ソウル",era:"1980s-90s",kana:"く"},
+  {name:"桑田佳祐",nameEn:"Keisuke Kuwata",genre:"ロック・ポップ",era:"1970s-90s",kana:"く"},
+  {name:"小泉今日子",nameEn:"Kyoko Koizumi",genre:"アイドル・ポップ",era:"1980s",kana:"こ"},
+  {name:"近藤真彦",nameEn:"Masahiko Kondo",genre:"アイドル・ポップ",era:"1980s",kana:"こ"},
+  {name:"郷ひろみ",nameEn:"Hiromi Go",genre:"ポップス",era:"1970s-90s",kana:"こ"},
+  {name:"小室哲哉",nameEn:"Tetsuya Komuro",genre:"テクノポップ",era:"1980s-90s",kana:"こ"},
+  // さ行
+  {name:"坂本龍一",nameEn:"Ryuichi Sakamoto",genre:"テクノ・クラシック",era:"1970s-2020s",kana:"さ"},
+  {name:"サザンオールスターズ",nameEn:"Southern All Stars",genre:"ロック・ポップ",era:"1970s-90s",kana:"さ"},
+  {name:"佐野元春",nameEn:"Motoharu Sano",genre:"ロック・ポップ",era:"1980s",kana:"さ"},
+  {name:"佐藤博",nameEn:"Hiroshi Sato",genre:"シティポップ・フュージョン",era:"1970s-80s",kana:"さ"},
+  {name:"財津和夫",nameEn:"Kazuo Zaitsu",genre:"フォーク・ポップ",era:"1970s-80s",kana:"さ"},
+  {name:"ZARD",nameEn:"ZARD",genre:"ポップス",era:"1990s",kana:"さ"},
+  {name:"シュガー・ベイブ",nameEn:"Sugar Babe",genre:"シティポップ",era:"1970s",kana:"し"},
+  {name:"杉山清貴",nameEn:"Kiyotaka Sugiyama",genre:"シティポップ",era:"1980s",kana:"す"},
+  {name:"鈴木雅之",nameEn:"Masayuki Suzuki",genre:"R&B・ソウル",era:"1980s",kana:"す"},
+  {name:"鈴木茂",nameEn:"Shigeru Suzuki",genre:"シティポップ・ロック",era:"1970s-80s",kana:"す"},
+  {name:"世良公則",nameEn:"Kiminori Sera",genre:"ロック",era:"1970s-80s",kana:"せ"},
+  // た行
+  {name:"竹内まりや",nameEn:"Mariya Takeuchi",genre:"シティポップ",era:"1980s",kana:"た"},
+  {name:"高橋幸宏",nameEn:"Yukihiro Takahashi",genre:"テクノポップ",era:"1970s-80s",kana:"た"},
+  {name:"高中正義",nameEn:"Masayoshi Takanaka",genre:"フュージョン",era:"1970s-80s",kana:"た"},
+  {name:"玉置浩二",nameEn:"Koji Tamaki",genre:"ロック・ポップ",era:"1980s-90s",kana:"た"},
+  {name:"山下達郎",nameEn:"Tatsuro Yamashita",genre:"シティポップ",era:"1970s-80s",kana:"た"},
+  {name:"チューリップ",nameEn:"Tulip",genre:"フォーク・ロック",era:"1970s-80s",kana:"ち"},
+  {name:"チャゲ&飛鳥",nameEn:"Chage and Aska",genre:"ポップス・ロック",era:"1980s-90s",kana:"ち"},
+  {name:"T-SQUARE",nameEn:"T-Square",genre:"フュージョン",era:"1970s-90s",kana:"て"},
+  {name:"TM NETWORK",nameEn:"TM Network",genre:"テクノポップ",era:"1980s",kana:"て"},
+  {name:"Dreams Come True",nameEn:"Dreams Come True",genre:"ポップス",era:"1980s-90s",kana:"と"},
+  // な行
+  {name:"中島みゆき",nameEn:"Miyuki Nakajima",genre:"フォーク・ポップ",era:"1970s-90s",kana:"な"},
+  {name:"中原めいこ",nameEn:"Meiko Nakahara",genre:"シティポップ",era:"1980s",kana:"な"},
+  {name:"中森明菜",nameEn:"Akina Nakamori",genre:"アイドル・ポップ",era:"1980s",kana:"な"},
+  {name:"永井博",nameEn:"Hiroshi Nagai",genre:"イラストレーター",era:"1970s-80s",kana:"な"},
+  {name:"長渕剛",nameEn:"Tsuyoshi Nagabuchi",genre:"フォーク・ロック",era:"1970s-90s",kana:"な"},
+  {name:"南佳孝",nameEn:"Yoshitaka Minami",genre:"シティポップ",era:"1970s-80s",kana:"な"},
+  {name:"西城秀樹",nameEn:"Hideki Saijo",genre:"ポップス・ロック",era:"1970s-80s",kana:"に"},
+  {name:"野口五郎",nameEn:"Goro Noguchi",genre:"ポップス",era:"1970s-80s",kana:"の"},
+  // は行
+  {name:"浜田省吾",nameEn:"Shogo Hamada",genre:"ロック",era:"1970s-90s",kana:"は"},
+  {name:"BARBEE BOYS",nameEn:"Barbee Boys",genre:"ロック",era:"1980s",kana:"は"},
+  {name:"B'z",nameEn:"B'z",genre:"ハードロック",era:"1980s-90s",kana:"ひ"},
+  {name:"氷室京介",nameEn:"Kyosuke Himuro",genre:"ロック",era:"1980s-90s",kana:"ひ"},
+  {name:"布袋寅泰",nameEn:"Tomoyasu Hotei",genre:"ロック",era:"1980s-90s",kana:"ほ"},
+  {name:"細野晴臣",nameEn:"Haruomi Hosono",genre:"テクノ・シティポップ",era:"1970s-80s",kana:"ほ"},
+  {name:"本田美奈子",nameEn:"Minako Honda",genre:"アイドル・ポップ",era:"1980s",kana:"ほ"},
+  {name:"BOØWY",nameEn:"BOOWY",genre:"ロック",era:"1980s",kana:"ほ"},
+  // ま行
+  {name:"松原みき",nameEn:"Miki Matsubara",genre:"シティポップ",era:"1970s-80s",kana:"ま"},
+  {name:"松田聖子",nameEn:"Seiko Matsuda",genre:"アイドル・ポップ",era:"1980s",kana:"ま"},
+  {name:"松任谷由実",nameEn:"Yumi Matsutoya",genre:"ニューミュージック",era:"1970s-90s",kana:"ま"},
+  {name:"槇原敬之",nameEn:"Noriyuki Makihara",genre:"ポップス",era:"1990s",kana:"ま"},
+  {name:"南野陽子",nameEn:"Yoko Minamino",genre:"アイドル・ポップ",era:"1980s",kana:"み"},
+  // や行
+  {name:"山本達彦",nameEn:"Tatsuhiko Yamamoto",genre:"シティポップ",era:"1980s",kana:"や"},
+  {name:"矢沢永吉",nameEn:"Eikichi Yazawa",genre:"ロック",era:"1970s-90s",kana:"や"},
+  {name:"八神純子",nameEn:"Junko Yagami",genre:"シティポップ",era:"1970s-80s",kana:"や"},
+  {name:"YMO",nameEn:"Yellow Magic Orchestra",genre:"テクノポップ",era:"1970s-80s",kana:"や"},
+  {name:"吉田美奈子",nameEn:"Minako Yoshida",genre:"シティポップ",era:"1970s-80s",kana:"よ"},
+  {name:"吉田拓郎",nameEn:"Takuro Yoshida",genre:"フォーク",era:"1970s-80s",kana:"よ"},
+  // わ行
+  {name:"渡辺真知子",nameEn:"Machiko Watanabe",genre:"ポップス",era:"1970s-80s",kana:"わ"},
+  {name:"渡辺美里",nameEn:"Misato Watanabe",genre:"ポップス・ロック",era:"1980s",kana:"わ"},
+  // い行
+  {name:"稲垣潤一",nameEn:"Junichi Inagaki",genre:"シティポップ",era:"1980s",kana:"い"},
+  {name:"今井美樹",nameEn:"Miki Imai",genre:"ポップス",era:"1980s-90s",kana:"い"},
+  {name:"井上陽水",nameEn:"Yosui Inoue",genre:"フォーク・ポップ",era:"1970s-90s",kana:"い"},
+  {name:"忌野清志郎",nameEn:"Kiyoshiro Imawano",genre:"ロック",era:"1970s-90s",kana:"い"},
+  {name:"RCサクセション",nameEn:"RC Succession",genre:"ロック",era:"1970s-80s",kana:"あ"},
+];
+
+// 五十音順でソート
+const kanaOrder = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん";
+artists.sort((a, b) => {
+  const ai = kanaOrder.indexOf(a.kana);
+  const bi = kanaOrder.indexOf(b.kana);
+  if (ai !== bi) return ai - bi;
+  return a.name.localeCompare(b.name, 'ja');
+});
+
+const bgColors = ['rgba(201,168,76,.18)','rgba(138,180,212,.18)','rgba(80,200,140,.18)','rgba(212,83,126,.18)','rgba(127,119,221,.18)','rgba(255,140,80,.18)'];
+const textColors = ['#c9a84c','#8ab4d4','#5dcaa5','#ed93b1','#9d98dd','#ff9050'];
+
+let currentFilter = 'all';
+
+function getFilteredArtists() {
+  if (currentFilter === 'all') return artists;
+  return artists.filter(a => a.genre.includes(currentFilter));
+}
+
+function setFilter(btn, filter) {
+  document.querySelectorAll('.fpill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter = filter;
+  clearSearch();
+  renderList();
+}
+
+function renderList() {
+  const filtered = getFilteredArtists();
+  document.getElementById('result-count').textContent = filtered.length + '人のアーティストを収録';
+
+  // かな行ごとにグループ化
+  const groups = {};
+  filtered.forEach((a, i) => {
+    if (!groups[a.kana]) groups[a.kana] = [];
+    groups[a.kana].push({...a, _idx: i});
+  });
+
+  const container = document.getElementById('kana-sections');
+  container.innerHTML = '';
+
+  const kanaOrder = "あいうえおかきくけこさしすせそたちつてとなにぬねのはひふへほまみむめもやゆよらりるれろわをん";
+  [...kanaOrder].forEach(k => {
+    if (!groups[k]) return;
+    const section = document.createElement('div');
+    section.className = 'kana-section';
+
+    const header = document.createElement('div');
+    header.className = 'kana-header';
+    header.innerHTML = '<span class="kana-title">' + k + '</span><span class="kana-count">' + groups[k].length + '人</span>';
+    section.appendChild(header);
+
+    const list = document.createElement('div');
+    list.className = 'artist-list';
+    groups[k].forEach((a, i) => {
+      const colorIdx = (kanaOrder.indexOf(k) + i) % bgColors.length;
+      const url = 'artist.html?name=' + encodeURIComponent(a.name) + '&en=' + encodeURIComponent(a.nameEn);
+      const row = document.createElement('a');
+      row.className = 'artist-row';
+      row.href = url;
+      row.innerHTML =
+        '<div class="ar-left">' +
+        '<div class="ar-initial" style="background:' + bgColors[colorIdx] + ';color:' + textColors[colorIdx] + '">' + a.name.charAt(0) + '</div>' +
+        '<div class="ar-info"><div class="ar-name">' + a.name + '</div><div class="ar-name-en">' + a.nameEn + '</div></div>' +
+        '</div>' +
+        '<div class="ar-right">' +
+        '<span class="ar-genre">' + a.genre.split('・')[0] + '</span>' +
+        '<span class="ar-era">' + a.era + '</span>' +
+        '<span class="ar-arrow">›</span>' +
+        '</div>';
+      list.appendChild(row);
+    });
+    section.appendChild(list);
+    container.appendChild(section);
+  });
+}
+
+function onInput() {
+  const q = document.getElementById('search-input').value.trim();
+  if (q.length === 0) { clearSearch(); return; }
+
+  const filtered = getFilteredArtists();
+  const results = filtered.filter(a =>
+    a.name.includes(q) || a.nameEn.toLowerCase().includes(q.toLowerCase())
+  );
+
+  document.getElementById('main-list').style.display = 'none';
+  const sr = document.getElementById('search-result-section');
+  sr.classList.add('show');
+
+  if (results.length > 0) {
+    document.getElementById('search-result-label').textContent = '"' + q + '" の検索結果 — ' + results.length + '件';
+    document.getElementById('no-result-box').style.display = 'none';
+    const list = document.getElementById('search-result-list');
+    list.style.display = 'block';
+    list.innerHTML = '';
+    results.forEach((a, i) => {
+      const colorIdx = i % bgColors.length;
+      const url = 'artist.html?name=' + encodeURIComponent(a.name) + '&en=' + encodeURIComponent(a.nameEn);
+      const row = document.createElement('a');
+      row.className = 'artist-row';
+      row.href = url;
+      row.innerHTML =
+        '<div class="ar-left">' +
+        '<div class="ar-initial" style="background:' + bgColors[colorIdx] + ';color:' + textColors[colorIdx] + '">' + a.name.charAt(0) + '</div>' +
+        '<div class="ar-info"><div class="ar-name">' + a.name + '</div><div class="ar-name-en">' + a.nameEn + ' · ' + a.genre + ' · ' + a.era + '</div></div>' +
+        '</div>' +
+        '<div class="ar-right"><span class="ar-arrow">›</span></div>';
+      list.appendChild(row);
+    });
+  } else {
+    document.getElementById('search-result-label').textContent = '"' + q + '" の検索結果';
+    document.getElementById('search-result-list').style.display = 'none';
+    document.getElementById('no-result-box').style.display = 'block';
+    document.getElementById('no-result-text').textContent = '"' + q + '" は一覧に見つかりませんでした。AIでページを生成しますか？';
+    document.getElementById('ai-gen-link').href = 'artist.html?name=' + encodeURIComponent(q);
+  }
+}
+
+function doSearch() {
+  const q = document.getElementById('search-input').value.trim();
+  if (!q) return;
+  const results = artists.filter(a => a.name.includes(q) || a.nameEn.toLowerCase().includes(q.toLowerCase()));
+  if (results.length === 0) {
+    window.location.href = 'artist.html?name=' + encodeURIComponent(q);
+  } else if (results.length === 1) {
+    window.location.href = 'artist.html?name=' + encodeURIComponent(results[0].name) + '&en=' + encodeURIComponent(results[0].nameEn);
+  }
+}
+
+function clearSearch() {
+  document.getElementById('search-input').value = '';
+  document.getElementById('search-result-section').classList.remove('show');
+  document.getElementById('main-list').style.display = 'block';
+}
+
+renderList();
+</script>
+</body>
+</html>
