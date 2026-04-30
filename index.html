@@ -306,16 +306,7 @@ function switchExplore(btn, mode) {
     if (activeEra) loadEra(activeEra, activeEra.getAttribute('onclick').match(/'([^']+)'/)[1]);
   }
 }
-  document.querySelectorAll('.etab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  document.getElementById('view-artist').style.display = mode === 'artist' ? 'block' : 'none';
-  document.getElementById('view-era').style.display = mode === 'era' ? 'block' : 'none';
-  if (mode === 'era') {
-    const activeEra = document.querySelector('.eratab.active');
-    if (activeEra) loadEra(activeEra, activeEra.getAttribute('onclick').match(/'([^']+)'/)[1]);
-  }
-}
-
+  
 async function loadArtist(btn, artistJP, artistEN, desc) {
   document.querySelectorAll('.stab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
