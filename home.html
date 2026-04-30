@@ -278,12 +278,13 @@ function findEra() {
   const result = document.getElementById('ef-result');
   result.style.display = 'block';
   result.innerHTML = `
-    <div class="ef-era-title">あなたが10代だった頃 — ${teenStart}年〜${teenEnd}年</div>
+    <div class="ef-era-title">${teenStart}年〜${teenEnd}年のカルチャー</div>
     <div class="ef-era-chips">
       <a class="ef-chip" href="index.html" style="border-color:rgba(201,168,76,.35);color:#c9a84c">🎵 この時代の音楽</a>
       <a class="ef-chip" href="#" style="border-color:rgba(80,200,140,.3);color:#5dcaa5;opacity:.5">✨ アニメ（Coming Soon）</a>
       <a class="ef-chip" href="#" style="border-color:rgba(138,180,212,.3);color:#8ab4d4;opacity:.5">🎬 映画（Coming Soon）</a>
     </div>`;
+  
 }
 
 // HERO CANVAS
