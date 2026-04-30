@@ -430,7 +430,28 @@ function hideLoading(mode) { document.getElementById(`loading-${mode}`).classLis
 function showError(mode, msg) { hideLoading(mode); const el=document.getElementById(`error-${mode}`); el.textContent=msg; el.classList.add('show'); }
 function hideError(mode) { document.getElementById(`error-${mode}`).classList.remove('show'); }
 
-document.querySelector('.stab').click();
+const localArtists = [
+  {name:"山下達郎",nameEn:"Tatsuro Yamashita"},{name:"竹内まりや",nameEn:"Mariya Takeuchi"},
+  {name:"大滝詠一",nameEn:"Eiichi Ohtaki"},{name:"松原みき",nameEn:"Miki Matsubara"},
+  {name:"角松敏生",nameEn:"Toshiki Kadomatsu"},{name:"杉山清貴",nameEn:"Kiyotaka Sugiyama"},
+  {name:"大貫妙子",nameEn:"Taeko Ohnuki"},{name:"稲垣潤一",nameEn:"Junichi Inagaki"},
+  {name:"荒井由実",nameEn:"Yumi Arai"},{name:"松任谷由実",nameEn:"Yumi Matsutoya"},
+  {name:"EPO",nameEn:"EPO"},{name:"杏里",nameEn:"Anri"},{name:"八神純子",nameEn:"Junko Yagami"},
+  {name:"吉田美奈子",nameEn:"Minako Yoshida"},{name:"南佳孝",nameEn:"Yoshitaka Minami"}
+];
+
+function onArtistSearch() {
+  const q = document.getElementById('artist-search-input').value.trim();
+  const results = document.getElementById('artist-search-results');
+  if (q.length === 0) { results.innerHTML = ''; return; }
+  const matched = localArtists.filter(a => a.name.includes(q) || a.nameEn.toLowerCase().includes(q.toLowerCase()));
+  if (matched.length > 0) {
+    results.innerHTML = matched.map(a =>
+      '<a href="artist.html?name=' + encodeURIComponent(a.name) + '&en=' + encodeURIComponent(a.nameEn) + '" style="display:block;padding:.5rem .75rem;background:var(--bg3);border-radius:5px;margin-bottom:4px;text-decoration:none;color:var(--text);font-size:13px;font-family:\'Shippori Mincho\',serif;font-weight:700">' + a.name + ' <span style="font-size:11px;color:var(--text3);font-family:\'Zen Kaku Gothic New\',sans-serif;font-weight:400">' + a.nameEn + '</span></a>'
+    ).join('');
+  } else {
+    results.innerHTML = '<div style="font-size:12px;color:var(--text3);padding:.5rem 0">一覧にないアーティストは → <a href="artist.html?name=' + encodeURIComponent(q) + '" style="color:var(--gold);text-decoration:none">
+  document.querySelector('.stab').click();
 </script>
 </body>
 </html>
