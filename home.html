@@ -93,8 +93,7 @@ body{background:var(--bg);color:var(--text);font-family:'Zen Kaku Gothic New',sa
 /* FOOTER */
 .footer{padding:2rem;border-top:.5px solid var(--border);text-align:center}
 .footer-logo{font-family:'Shippori Mincho',serif;font-size:16px;font-weight:700;color:var(--gold);margin-bottom:.4rem}
-.footer-sub{font-size:11px;color:var(--text3)}
-
+<div class="footer-sub">Japan Culture Archive · All Eras</div>
 .fade-in{animation:fadeIn .3s ease}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 </style>
@@ -128,8 +127,8 @@ body{background:var(--bg);color:var(--text);font-family:'Zen Kaku Gothic New',sa
     <div style="height:2rem"></div>
     <div class="era-finder">
       <div class="ef-label">My Era Finder</div>
-      <div class="ef-title">あなたが育った時代を探す</div>
-      <div class="ef-sub">生まれ年を入力すると、あなたが10代だった頃の音楽・アニメ・映画が一覧で見られます。</div>
+     <div class="ef-title">気になる時代を探す</div>
+<div class="ef-sub">年代を入力すると、その時代の音楽・アニメ・映画が一覧で見られます。自分が生まれる前の時代も、家族の青春時代も、バブル期も70年代アイドルも。</div>
       <div class="ef-row">
         <input class="ef-input" id="birth-year" type="number" placeholder="1975" min="1950" max="2010" onkeydown="if(event.key==='Enter')findEra()"/>
         <button class="ef-btn" onclick="findEra()">この時代を探す →</button>
