@@ -168,7 +168,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Zen Kaku Gothic 
     <div class="search-wrap">
       <input class="search-input" id="artist-search-input" type="text"
         placeholder="アーティスト名を入力..."
-        oninput="onArtistSearch()" onkeydown="if(event.key==='Enter')goToArtist()"/>
+        oninput="onArtistSearch()" onkeydown="if(event.key==='Enter'&&!event.isComposing)goToArtist()"
       <button class="search-btn" onclick="goToArtist()">検索</button>
     </div>
     <div id="artist-search-results"></div>
