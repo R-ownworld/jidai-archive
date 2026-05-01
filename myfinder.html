@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>時代 Archive — My Era Finder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;700;900&family=Zen+Kaku+Gothic+New:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07080f;--bg2:#0c0e1a;--bg3:#111320;--text:#e8e4d9;--text2:rgba(232,228,217,.5);--text3:rgba(232,228,217,.28);--gold:#c9a84c;--border:rgba(232,228,217,.08);--border2:rgba(232,228,217,.15);--radius:8px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Zen Kaku Gothic New',sans-serif;min-height:100vh;overflow-x:hidden}
+
+.nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 2rem;border-bottom:.5px solid var(--border);background:rgba(7,8,15,.95);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100}
+.nav-logo{font-family:'Shippori Mincho',serif;font-size:17px;font-weight:700;letter-spacing:.1em;color:var(--gold);text-decoration:none}
+.bc{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text3)}
+.bcl{color:rgba(201,168,76,.6);text-decoration:none;transition:color .15s}
+.bcl:hover{color:var(--gold)}
+.bcs{color:var(--border2)}
+
+/* HERO INPUT */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem 2rem;position:relative;overflow:hidden}
+.hero-canvas{position:absolute;inset:0;width:100%;height:100%}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:560px;width:100%}
+.eyebrow{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:1.25rem}
+.hero-title{font-family:'Shippori Mincho',serif;font-size:clamp(26px,5vw,48px);font-weight:900;color:var(--text);line-height:1.2;margin-bottom:.75rem}
+.hero-title span{color:var(--gold)}
+.hero-sub{font-size:13px;color:var(--text2);line-height:1.9;margin-bottom:2.5rem}
+
+.birth-input-area{background:rgba(201,168,76,.06);border:.5px solid rgba(201,168,76,.2);border-radius:14px;padding:2rem 2rem 1.75rem;max-width:400px;margin:0 auto 1.5rem}
+.bi-label{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(201,168,76,.65);margin-bottom:1rem}
+.bi-input{width:100%;background:rgba(232,228,217,.08);border:.5px solid var(--border2);border-radius:10px;color:var(--text);font-family:'EB Garamond',serif;font-size:32px;padding:12px 16px;outline:none;text-align:center;transition:border-color .2s;letter-spacing:.1em}
+.bi-input:focus{border-color:rgba(201,168,76,.5)}
+.bi-input::placeholder{color:var(--text3);font-size:18px;font-family:'Zen Kaku Gothic New',sans-serif}
+.bi-hint{font-size:11px;color:var(--text3);margin-top:.6rem;text-align:center}
+
+.go-btn{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:#07080f;border:none;border-radius:10px;padding:14px 28px;font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;font-weight:900;cursor:pointer;transition:all .2s}
+.go-btn:hover{background:#e0be6a;transform:translateY(-2px)}
+
+/* RESULTS */
+.results{display:none;padding:2rem;max-width:1000px;margin:0 auto}
+.results.show{display:block}
+
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:11px;padding:7px 14px;border-radius:6px;border:.5px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;transition:all .18s;text-decoration:none;margin-bottom:1.5rem}
+.back-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+.person-header{text-align:center;margin-bottom:2rem;padding:1.5rem;background:rgba(201,168,76,.05);border:.5px solid rgba(201,168,76,.15);border-radius:12px}
+.ph-born{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:.4rem}
+.ph-title{font-family:'Shippori Mincho',serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:.4rem}
+.ph-sub{font-size:12px;color:var(--text2);line-height:1.8}
+
+/* AGE TIMELINE */
+.age-scroll{overflow-x:auto;scrollbar-width:none;padding-bottom:.5rem;margin-bottom:.5rem}
+.age-scroll::-webkit-scrollbar{display:none}
+.age-tabs{display:flex;gap:6px;min-width:max-content;padding:0 .25rem}
+.age-tab{padding:7px 14px;border-radius:20px;border:.5px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;font-size:12px;font-family:'Zen Kaku Gothic New',sans-serif;transition:all .18s;white-space:nowrap;flex-shrink:0}
+.age-tab:hover{border-color:rgba(201,168,76,.4);color:var(--gold)}
+.age-tab.on{background:rgba(201,168,76,.15);border-color:rgba(201,168,76,.5);color:var(--gold);font-weight:700}
+
+.era-panel{display:none;margin-top:1.5rem}
+.era-panel.show{display:block}
+
+.ep-header{margin-bottom:1.5rem}
+.ep-year{font-family:'EB Garamond',serif;font-size:48px;color:var(--gold);line-height:1}
+.ep-title{font-family:'Shippori Mincho',serif;font-size:18px;font-weight:700;color:var(--text);margin:.25rem 0}
+.ep-sub{font-size:12px;color:var(--text2);line-height:1.7}
+
+.ep-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:12px}
+.ep-card{background:var(--bg2);border:.5px solid var(--border);border-radius:10px;overflow:hidden}
+.ep-card-head{padding:.85rem 1rem;border-bottom:.5px solid var(--border);display:flex;align-items:center;gap:.6rem}
+.ep-card-icon{font-size:16px}
+.ep-card-title{font-family:'Shippori Mincho',serif;font-size:14px;font-weight:700;color:var(--text)}
+.ep-card-body{padding:.85rem 1rem}
+.ep-list{display:flex;flex-direction:column;gap:4px}
+.ep-item{display:flex;align-items:center;gap:8px;text-decoration:none;padding:.35rem .5rem;border-radius:5px;transition:background .15s}
+.ep-item:hover{background:var(--bg3)}
+.ep-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.ep-name{font-size:13px;font-weight:700;color:var(--text);font-family:'Shippori Mincho',serif}
+.ep-sub{font-size:10px;color:var(--text3);margin-left:auto}
+.ep-coming{font-size:11px;color:var(--text3);padding:.5rem;text-align:center}
+
+.sec-lbl{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--text3);margin-bottom:.85rem;display:flex;align-items:center;gap:.5rem}
+.sec-lbl::after{content:'';flex:1;height:.5px;background:var(--border)}
+.fade-in{animation:fadeIn .35s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="home.html">時代 Archive</a>
+  <div class="bc">
+    <a class="bcl" href="home.html">ホーム</a>
+    <span class="bcs">›</span>
+    <span style="color:var(--text2)">My Era Finder</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="hero">
+  <canvas class="hero-canvas" id="hero-canvas"></canvas>
+  <div class="hero-content">
+    <div class="eyebrow">My Era Finder</div>
+    <h1 class="hero-title">自分の年齢で<br><span>時代を遡る</span></h1>
+    <p class="hero-sub">生まれ年を入力すると、小学生・中学生・高校生・大学生のそれぞれの頃に流行っていた音楽・アニメ・映画が見られます。家族の生まれ年を入れてもOK。</p>
+
+    <div class="birth-input-area">
+      <div class="bi-label">生まれ年を入力</div>
+      <input class="bi-input" id="birth-input" type="number" placeholder="例：1985" min="1940" max="2015" onkeydown="if(event.key==='Enter'&&!event.isComposing)startFinder()"/>
+      <div class="bi-hint">1940年〜2015年に対応</div>
+    </div>
+
+    <button class="go-btn" onclick="startFinder()">自分の時代を見る →</button>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div class="results" id="results">
+  <button class="back-btn" onclick="goBack()">← 生まれ年を入力し直す</button>
+
+  <div class="person-header fade-in">
+    <div class="ph-born" id="ph-born"></div>
+    <div class="ph-title" id="ph-title"></div>
+    <div class="ph-sub" id="ph-sub"></div>
+  </div>
+
+  <div class="sec-lbl">ライフステージを選ぶ</div>
+  <div class="age-scroll">
+    <div class="age-tabs" id="age-tabs"></div>
+  </div>
+
+  <div id="era-panels"></div>
+</div>
+
+<script>
+const eraDB = {
+  1950:{music:[{name:'美空ひばり',en:'Hibari Misora',tag:'歌謡曲'},{name:'笠置シヅ子',en:'Shizuko Kasagi',tag:'歌謡曲'}],art:[],bg:'戦後復興期'},
+  1960:{music:[{name:'坂本九',en:'Kyu Sakamoto',tag:'ポップス'},{name:'タイガース',en:'The Tigers',tag:'GS'}],art:[],bg:'グループサウンズ時代'},
+  1970:{music:[{name:'荒井由実',en:'Yumi Arai',tag:'ニューミュージック'},{name:'吉田拓郎',en:'Takuro Yoshida',tag:'フォーク'},{name:'中島みゆき',en:'Miyuki Nakajima',tag:'フォーク'}],art:[],bg:'ニューミュージック誕生'},
+  1977:{music:[{name:'山下達郎',en:'Tatsuro Yamashita',tag:'シティポップ'},{name:'松原みき',en:'Miki Matsubara',tag:'シティポップ'},{name:'竹内まりや',en:'Mariya Takeuchi',tag:'シティポップ'}],art:[{name:'永井博',en:'Hiroshi Nagai',tag:'イラスト',cat:'illustrator'}],bg:'シティポップ誕生'},
+  1981:{music:[{name:'大滝詠一',en:'Eiichi Ohtaki',tag:'シティポップ'},{name:'角松敏生',en:'Toshiki Kadomatsu',tag:'シティポップ'},{name:'EPO',en:'EPO',tag:'シティポップ'},{name:'杏里',en:'Anri',tag:'シティポップ'}],art:[{name:'永井博',en:'Hiroshi Nagai',tag:'イラスト',cat:'illustrator'}],bg:'シティポップ黄金期'},
+  1986:{music:[{name:'杉山清貴',en:'Kiyotaka Sugiyama',tag:'シティポップ'},{name:'TM NETWORK',en:'TM Network',tag:'シンセポップ'},{name:'中森明菜',en:'Akina Nakamori',tag:'アイドル'},{name:'松田聖子',en:'Seiko Matsuda',tag:'アイドル'}],art:[],bg:'バブル最高潮'},
+  1991:{music:[{name:'Dreams Come True',en:'Dreams Come True',tag:'J-POP'},{name:'ZARD',en:'ZARD',tag:'J-POP'},{name:'槇原敬之',en:'Noriyuki Makihara',tag:'J-POP'}],art:[],bg:'J-POP全盛期'},
+  1996:{music:[{name:"B'z",en:"B'z",tag:'ロック'},{name:'安室奈美恵',en:'Namie Amuro',tag:'J-POP'},{name:'SPEED',en:'SPEED',tag:'J-POP'}],art:[],bg:'CD全盛期'},
+  2002:{music:[{name:'宇多田ヒカル',en:'Hikaru Utada',tag:'J-POP'},{name:'椎名林檎',en:'Ringo Sheena',tag:'ロック'}],art:[],bg:'ネット時代'},
+  2008:{music:[{name:'AKB48',en:'AKB48',tag:'アイドル'},{name:'嵐',en:'Arashi',tag:'J-POP'}],art:[],bg:'SNS時代の夜明け'},
+};
+
+function getEraForYear(year) {
+  const keys = Object.keys(eraDB).map(Number).sort((a,b)=>a-b);
+  let best = keys[0];
+  for(const k of keys){ if(year >= k) best = k; }
+  return eraDB[best];
+}
+
+const lifeStages = [
+  {label:'幼少期',age:[3,6],desc:'記憶に残り始める頃'},
+  {label:'小学生低学年',age:[6,9],desc:'放課後の記憶'},
+  {label:'小学生高学年',age:[9,12],desc:'音楽を意識し始める頃'},
+  {label:'中学生',age:[12,15],desc:'青春の始まり'},
+  {label:'高校生',age:[15,18],desc:'カルチャーへの目覚め'},
+  {label:'大学生',age:[18,22],desc:'自分の時代'},
+  {label:'社会人',age:[22,28],desc:'働き始めた頃'},
+];
+
+let birthYear = 0;
+
+function startFinder() {
+  const val = parseInt(document.getElementById('birth-input').value);
+  if (!val || val < 1940 || val > 2015) return;
+  birthYear = val;
+  document.getElementById('hero').style.display = 'none';
+  document.getElementById('results').classList.add('show');
+  window.scrollTo(0,0);
+  renderResults(val);
+}
+
+function renderResults(born) {
+  const currentYear = new Date().getFullYear();
+  const age = currentYear - born;
+
+  document.getElementById('ph-born').textContent = born + '年生まれ · 現在' + age + '歳';
+  document.getElementById('ph-title').textContent = born + '年生まれのカルチャー年表';
+  document.getElementById('ph-sub').textContent = 'ライフステージごとに、その頃流行っていた音楽・アニメ・映画が見られます。';
+
+  // タブ生成
+  const tabsEl = document.getElementById('age-tabs');
+  tabsEl.innerHTML = '';
+  const panelsEl = document.getElementById('era-panels');
+  panelsEl.innerHTML = '';
+
+  lifeStages.forEach((stage, i) => {
+    const startYear = born + stage.age[0];
+    const endYear = born + stage.age[1];
+    if (endYear > currentYear + 2) return;
+
+    const btn = document.createElement('button');
+    btn.className = 'age-tab' + (i === 0 ? ' on' : '');
+    btn.textContent = stage.label + '（' + startYear + '〜' + endYear + '年）';
+    btn.onclick = () => setStage(i);
+    tabsEl.appendChild(btn);
+
+    const panel = document.createElement('div');
+    panel.className = 'era-panel fade-in' + (i === 0 ? ' show' : '');
+    panel.id = 'stage-panel-' + i;
+    const midYear = Math.floor((startYear + endYear) / 2);
+    const era = getEraForYear(midYear);
+    const colors = ['rgba(201,168,76,.7)','rgba(100,180,255,.7)','rgba(80,200,140,.7)','rgba(212,83,126,.7)','rgba(127,119,221,.7)'];
+
+    const musicItems = era.music.slice(0,4).map((a,j) =>
+      `<a class="ep-item" href="artist.html?name=${encodeURIComponent(a.name)}&en=${encodeURIComponent(a.en)}">
+        <div class="ep-dot" style="background:${colors[j%colors.length]}"></div>
+        <span class="ep-name">${a.name}</span>
+        <span class="ep-sub">${a.tag}</span>
+      </a>`
+    ).join('');
+
+    const artItems = era.art.length > 0 ? era.art.map((a,j) =>
+      `<a class="ep-item" href="artist.html?name=${encodeURIComponent(a.name)}&en=${encodeURIComponent(a.en)}&category=${a.cat||'illustrator'}">
+        <div class="ep-dot" style="background:rgba(212,83,126,.7)"></div>
+        <span class="ep-name">${a.name}</span>
+        <span class="ep-sub">${a.tag}</span>
+      </a>`
+    ).join('') : '<div class="ep-coming">データ追加中</div>';
+
+    panel.innerHTML = `
+      <div class="ep-header">
+        <div class="ep-year">${startYear}〜${endYear}</div>
+        <div class="ep-title">${stage.label}の頃 — ${era.bg}</div>
+        <div class="ep-sub">${born}年生まれの${stage.desc}。${startYear}年〜${endYear}年頃の流行。</div>
+      </div>
+      <div class="ep-grid">
+        <div class="ep-card">
+          <div class="ep-card-head"><span class="ep-card-icon">🎵</span><span class="ep-card-title">この頃の音楽</span></div>
+          <div class="ep-card-body"><div class="ep-list">${musicItems}</div></div>
+        </div>
+        <div class="ep-card">
+          <div class="ep-card-head"><span class="ep-card-icon">🎨</span><span class="ep-card-title">アート・ビジュアル</span></div>
+          <div class="ep-card-body"><div class="ep-list">${artItems}</div></div>
+        </div>
+        <div class="ep-card" style="opacity:.5">
+          <div class="ep-card-head"><span class="ep-card-icon">✨</span><span class="ep-card-title">アニメ</span></div>
+          <div class="ep-card-body"><div class="ep-coming">Coming Soon</div></div>
+        </div>
+        <div class="ep-card" style="opacity:.5">
+          <div class="ep-card-head"><span class="ep-card-icon">🎬</span><span class="ep-card-title">映画</span></div>
+          <div class="ep-card-body"><div class="ep-coming">Coming Soon</div></div>
+        </div>
+      </div>`;
+    panelsEl.appendChild(panel);
+  });
+}
+
+function setStage(idx) {
+  document.querySelectorAll('.age-tab').forEach((b,i) => b.classList.toggle('on', i===idx));
+  document.querySelectorAll('.era-panel').forEach((p,i) => p.classList.toggle('show', i===idx));
+}
+
+function goBack() {
+  document.getElementById('results').classList.remove('show');
+  document.getElementById('hero').style.display = 'flex';
+  window.scrollTo(0,0);
+}
+
+// CANVAS
+function drawCanvas() {
+  const canvas = document.getElementById('hero-canvas');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  const bg = ctx.createLinearGradient(0,0,0,h);
+  bg.addColorStop(0,'#03040a'); bg.addColorStop(.6,'#060810'); bg.addColorStop(1,'#0a0d18');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,w,h);
+  for(let i=0;i<100;i++){ctx.beginPath();ctx.arc(Math.random()*w,Math.random()*h*.65,Math.random()*1.8,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,'+(Math.random()*.5+.15)+')';ctx.fill();}
+  const blds=[{x:0,y:h*.5,w:55,h:h*.5},{x:60,y:h*.38,w:40,h:h*.62},{x:105,y:h*.55,w:30,h:h*.45},{x:140,y:h*.42,w:50,h:h*.58}];
+  const blds2=[{x:w-240,y:h*.37,w:52,h:h*.63},{x:w-184,y:h*.27,w:42,h:h*.73},{x:w-138,y:h*.47,w:33,h:h*.53},{x:w-100,y:h*.35,w:55,h:h*.65},{x:w-40,y:h*.44,w:40,h:h*.56}];
+  [...blds,...blds2].forEach(b=>{ctx.fillStyle='rgba(8,15,40,.9)';ctx.fillRect(b.x,b.y,b.w,b.h);for(let i=0;i<6;i++){if(Math.random()>.42){ctx.fillStyle='rgba(138,180,212,'+(Math.random()*.3+.08)+')';ctx.fillRect(b.x+5+Math.random()*(b.w-12),b.y+10+i*Math.floor(b.h/7),5,5);}}});
+  const hz=h*.73;ctx.fillStyle='rgba(4,7,18,.95)';ctx.fillRect(0,hz,w,h-hz);
+  ctx.strokeStyle='rgba(138,180,212,.1)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,hz);ctx.lineTo(w,hz);ctx.stroke();
+  ctx.strokeStyle='rgba(201,168,76,.15)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(w*.25,hz+22);ctx.lineTo(w*.58,hz+22);ctx.stroke();
+}
+drawCanvas();
+window.addEventListener('resize',drawCanvas);
+</script>
+</body>
+</html>
