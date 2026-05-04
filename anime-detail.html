@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>作品詳細 — 時代 Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;700;900&family=Zen+Kaku+Gothic+New:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07080f;--bg2:#0c0e1a;--bg3:#111320;
+  --text:#e8e4d9;--text2:rgba(232,228,217,.5);--text3:rgba(232,228,217,.28);--text4:rgba(232,228,217,.18);
+  --gold:#c9a84c;--green:#5dcaa5;--blue:#8ab4d4;--pink:#ed93b1;
+  --border:rgba(232,228,217,.08);--border2:rgba(232,228,217,.15);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Zen Kaku Gothic New',sans-serif;min-height:100vh}
+a{color:inherit;text-decoration:none}
+
+/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 2.5rem;border-bottom:.5px solid var(--border);background:rgba(7,8,15,.95);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100}
+.nav-logo{font-family:'Shippori Mincho',serif;font-size:20px;font-weight:700;color:var(--text)}
+.nav-logo .arch{color:var(--gold);font-family:'EB Garamond',serif;font-style:italic;font-weight:600;margin-left:.4em}
+.nav-menu{display:flex;gap:3rem;align-items:center}
+.nav-menu a{font-size:13px;color:var(--text2);letter-spacing:.1em;transition:color .2s}
+.nav-menu a:hover{color:var(--text)}
+.nav-menu a.active{color:var(--text)}
+
+/* BREADCRUMB */
+.crumb{padding:1.5rem 2.5rem 0;max-width:1100px;margin:0 auto;font-size:12px;color:var(--text3);letter-spacing:.04em}
+.crumb a{color:var(--text2);transition:color .2s}
+.crumb a:hover{color:var(--gold)}
+.crumb .sep{margin:0 .6em;color:var(--text4)}
+
+/* HERO */
+.hero{padding:2rem 2.5rem 3rem;max-width:1100px;margin:0 auto;border-bottom:.5px solid var(--border)}
+.hero-eyebrow{font-family:'EB Garamond',serif;font-size:14px;color:var(--gold);letter-spacing:.06em;font-weight:600;margin-bottom:.85rem}
+.hero-title{font-family:'Shippori Mincho',serif;font-size:clamp(36px,5.5vw,58px);font-weight:900;color:var(--text);line-height:1.18;margin-bottom:.5rem;letter-spacing:.005em}
+.hero-alt{font-family:'EB Garamond',serif;font-size:15px;color:var(--text3);letter-spacing:.04em;margin-bottom:1.25rem;font-style:italic}
+.hero-meta{display:flex;flex-wrap:wrap;gap:1.5rem 2rem;margin-bottom:1.25rem}
+.hero-meta-item{font-size:12.5px;color:var(--text2);letter-spacing:.02em}
+.hero-meta-item b{display:block;font-size:10px;letter-spacing:.18em;color:var(--text3);text-transform:uppercase;font-weight:400;margin-bottom:.25rem}
+.hero-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.5rem}
+.hero-tag{font-size:11px;letter-spacing:.04em;border:.5px solid var(--border2);color:var(--text2);padding:3px 11px;border-radius:14px}
+.hero-desc{font-size:14px;color:var(--text2);line-height:1.95;max-width:780px}
+
+/* SECTIONS */
+.section{padding:3.5rem 2.5rem;max-width:1100px;margin:0 auto;border-bottom:.5px solid var(--border)}
+.section:last-of-type{border-bottom:none}
+.section-eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:.6rem;font-weight:700}
+.section-title{font-family:'Shippori Mincho',serif;font-size:24px;font-weight:700;color:var(--text);margin-bottom:.5rem}
+.section-sub{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:2rem}
+
+/* TV SERIES BLOCK */
+.tv-series{margin-bottom:2.25rem;background:var(--bg2);border:.5px solid var(--border);border-radius:10px;overflow:hidden}
+.tv-series:last-child{margin-bottom:0}
+.tv-head{padding:1.25rem 1.5rem;border-bottom:.5px solid var(--border);background:rgba(232,228,217,.02)}
+.tv-name{font-family:'Shippori Mincho',serif;font-size:17px;font-weight:700;color:var(--text);margin-bottom:.2rem}
+.tv-meta{font-size:12px;color:var(--text3);letter-spacing:.04em;font-family:'EB Garamond',serif}
+.theme-table{width:100%;border-collapse:collapse}
+.theme-table th{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);font-weight:400;text-align:left;padding:.85rem 1.5rem;border-bottom:.5px solid var(--border)}
+.theme-table th:last-child{text-align:right}
+.theme-table td{padding:1.1rem 1.5rem;font-size:13px;color:var(--text2);border-bottom:.5px solid var(--border);vertical-align:middle}
+.theme-table tr:last-child td{border-bottom:none}
+.theme-table tr:hover td{background:rgba(232,228,217,.025)}
+.badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;padding:3px 8px;border-radius:3px;text-transform:uppercase}
+.badge.op{background:rgba(201,168,76,.12);color:var(--gold);border:.5px solid rgba(201,168,76,.3)}
+.badge.ed{background:rgba(138,180,212,.1);color:var(--blue);border:.5px solid rgba(138,180,212,.3)}
+.badge.insert{background:rgba(232,228,217,.04);color:var(--text2);border:.5px solid var(--border2)}
+.song-cell{font-family:'Shippori Mincho',serif;font-size:14.5px;font-weight:700;color:var(--text)}
+.artist-link{color:var(--gold);transition:opacity .2s;display:inline-flex;align-items:center;gap:.3rem}
+.artist-link:hover{opacity:.75}
+.artist-link::after{content:'→';font-size:11px;opacity:.6;transition:transform .2s}
+.artist-link:hover::after{transform:translateX(2px)}
+.episodes{font-family:'EB Garamond',serif;font-size:12px;color:var(--text3);text-align:right;letter-spacing:.04em;white-space:nowrap}
+
+/* MOVIE LIST */
+.movies-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(440px,1fr));gap:14px}
+.movie-card{background:var(--bg2);border:.5px solid var(--border);border-radius:10px;padding:1.5rem 1.65rem;transition:border-color .22s}
+.movie-card:hover{border-color:rgba(201,168,76,.35)}
+.movie-year{font-family:'EB Garamond',serif;font-size:14px;color:var(--gold);font-weight:600;letter-spacing:.04em;margin-bottom:.4rem}
+.movie-title{font-family:'Shippori Mincho',serif;font-size:18px;font-weight:700;color:var(--text);line-height:1.38;margin-bottom:1rem;letter-spacing:.005em}
+.movie-divider{height:1px;background:var(--border);margin-bottom:.85rem}
+.movie-songs{display:flex;flex-direction:column;gap:.65rem}
+.movie-song{display:flex;align-items:center;gap:.85rem;flex-wrap:wrap}
+.movie-song-info{flex:1;min-width:0}
+.movie-song-name{font-family:'Shippori Mincho',serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:.15rem;line-height:1.4}
+.movie-song-artist{font-size:12px}
+
+/* RELATED MEDIA */
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+.media-card{background:var(--bg2);border:.5px solid var(--border);border-radius:10px;padding:1.5rem;transition:all .22s;display:block}
+.media-card:hover{border-color:rgba(201,168,76,.4);transform:translateY(-2px)}
+.media-type{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:3px 9px;border-radius:3px;margin-bottom:.85rem}
+.media-type.manga{color:var(--green);border:.5px solid rgba(80,200,140,.3);background:rgba(80,200,140,.05)}
+.media-type.novel{color:var(--pink);border:.5px solid rgba(212,83,126,.3);background:rgba(212,83,126,.05)}
+.media-type.game{color:var(--blue);border:.5px solid rgba(138,180,212,.3);background:rgba(138,180,212,.05)}
+.media-title{font-family:'Shippori Mincho',serif;font-size:17px;font-weight:700;color:var(--text);margin-bottom:.4rem;line-height:1.4}
+.media-author{font-size:12.5px;color:var(--text2);line-height:1.7;margin-bottom:.4rem}
+.media-period{font-family:'EB Garamond',serif;font-size:12px;color:var(--text3);letter-spacing:.04em}
+.media-link{font-size:12px;color:var(--gold);margin-top:.85rem;display:inline-block}
+
+/* EMPTY/NOT FOUND */
+.notfound{padding:6rem 2rem;text-align:center;max-width:600px;margin:0 auto}
+.notfound h2{font-family:'Shippori Mincho',serif;font-size:28px;color:var(--text);margin-bottom:1rem}
+.notfound p{font-size:14px;color:var(--text2);line-height:1.8;margin-bottom:2rem}
+.notfound a{display:inline-block;background:var(--gold);color:#07080f;padding:12px 24px;border-radius:8px;font-weight:700;font-size:13px}
+
+/* CTA */
+.cta-bar{padding:2.5rem 2.5rem;max-width:1100px;margin:0 auto;display:flex;gap:14px;flex-wrap:wrap;border-top:.5px solid var(--border)}
+.cta-btn{flex:1;min-width:220px;background:transparent;border:.5px solid var(--border2);border-radius:6px;color:var(--text3);font-size:13px;letter-spacing:.04em;padding:1rem 1.5rem;text-align:center;transition:all .22s}
+.cta-btn:hover{border-color:rgba(201,168,76,.5);color:var(--text2)}
+
+/* FOOTER */
+.footer{padding:2rem;border-top:.5px solid var(--border);text-align:center}
+.footer-logo{font-family:'Shippori Mincho',serif;font-size:16px;font-weight:700;color:var(--gold);margin-bottom:.4rem}
+.footer-sub{font-size:11px;color:var(--text3)}
+
+@media(max-width:760px){
+  .nav{padding:.9rem 1.5rem}.nav-menu{gap:1.5rem}.nav-menu a{font-size:12px}
+  .crumb,.hero,.section,.cta-bar{padding-left:1.5rem;padding-right:1.5rem}
+  .theme-table th,.theme-table td{padding:.75rem .9rem;font-size:12px}
+  .song-cell{font-size:13px}
+  .movies-grid{grid-template-columns:1fr}
+  .episodes{text-align:left;font-size:11px}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="home.html">時代<span class="arch">Archive</span></a>
+  <div class="nav-menu">
+    <a href="anime.html" class="active">アニメ</a>
+    <a href="index.html">シティポップ</a>
+    <a href="#" onclick="return false">映画</a>
+    <a href="home.html">検索</a>
+  </div>
+</nav>
+
+<div class="crumb">
+  <a href="home.html">時代 Archive</a>
+  <span class="sep">/</span>
+  <a href="anime.html">アニメ</a>
+  <span class="sep">/</span>
+  <span id="crumb-current">読み込み中...</span>
+</div>
+
+<div id="page"></div>
+
+<footer class="footer">
+  <div class="footer-logo">時代 Archive</div>
+  <div class="footer-sub">Japan Culture Archive · 1960s — 2020s</div>
+</footer>
+
+<script>
+// ==================== ANIME DETAIL DATA ====================
+const ANIME_DATA = {
+
+  evangelion: {
+    title:'新世紀エヴァンゲリオン',
+    altTitle:'Neon Genesis Evangelion',
+    eyebrow:'1995 — 2021 · TV / 劇場版 全7作',
+    studio:'GAINAX / カラー',
+    director:'庵野秀明',
+    period:'1995 — 2021',
+    tags:['SF','メカ','ロボット','深夜','心理'],
+    desc:'14歳の少年少女がエヴァに乗り、謎の敵「使徒」と戦う。深夜アニメというジャンルそのものを定義づけた、90年代の到達点。新劇場版は宇多田ヒカルとのタッグでも話題に。',
+    tv: [
+      {
+        name:'TV版（無印）',
+        meta:'1995年10月 — 1996年3月 / 全26話 / テレビ東京',
+        themes:[
+          {type:'op', song:'残酷な天使のテーゼ', artist:'高橋洋子', artistName:'高橋洋子', episodes:'第1話 — 第26話'},
+          {type:'ed', song:'FLY ME TO THE MOON', artist:'CLAIRE / 林原めぐみ / 高橋洋子 ほか', artistName:'CLAIRE', episodes:'第1話 — 第26話'},
+        ]
+      }
+    ],
+    movies: [
+      {year:1997, title:'新世紀エヴァンゲリオン劇場版 シト新生', songs:[
+        {type:'op', label:'主題歌', song:'THANATOS -IF I CAN\'T BE YOURS-', artist:'LOREN & MASH', artistName:'LOREN & MASH'}
+      ]},
+      {year:1997, title:'THE END OF EVANGELION', songs:[
+        {type:'insert', label:'主題歌', song:'Komm, süsser Tod', artist:'ARIANNE', artistName:'ARIANNE'}
+      ]},
+      {year:2007, title:'ヱヴァンゲリヲン新劇場版：序', songs:[
+        {type:'op', label:'主題歌', song:'Beautiful World', artist:'宇多田ヒカル', artistName:'宇多田ヒカル'}
+      ]},
+      {year:2009, title:'ヱヴァンゲリヲン新劇場版：破', songs:[
+        {type:'op', label:'主題歌', song:'Beautiful World (PLANiTb Acoustica Mix)', artist:'宇多田ヒカル', artistName:'宇多田ヒカル'},
+        {type:'insert', label:'挿入歌', song:'翼をください', artist:'林原めぐみ & 三石琴乃', artistName:'林原めぐみ'}
+      ]},
+      {year:2012, title:'ヱヴァンゲリヲン新劇場版：Q', songs:[
+        {type:'op', label:'主題歌', song:'桜流し', artist:'宇多田ヒカル', artistName:'宇多田ヒカル'}
+      ]},
+      {year:2021, title:'シン・エヴァンゲリオン劇場版𝄇', songs:[
+        {type:'op', label:'主題歌', song:'One Last Kiss', artist:'宇多田ヒカル', artistName:'宇多田ヒカル'},
+        {type:'insert', label:'挿入歌', song:'Beautiful World (Da Capo Version)', artist:'宇多田ヒカル', artistName:'宇多田ヒカル'}
+      ]},
+    ],
+    related: [
+      {type:'manga', name:'manga', title:'新世紀エヴァンゲリオン', author:'貞本義行', publisher:'角川書店「月刊少年エース」', period:'1994 — 2013（全14巻）', link:'#'},
+    ]
+  },
+
+  onepiece: {
+    title:'ONE PIECE',
+    altTitle:'One Piece',
+    eyebrow:'1999 — 現在 · TV放送中 / 劇場版 全15作',
+    studio:'東映アニメーション',
+    director:'境宗久 ほか',
+    period:'1999 — 現在',
+    tags:['冒険','少年','ジャンプ','長寿'],
+    desc:'尾田栄一郎の漫画「ONE PIECE」を原作とする、世界中で愛されるアニメシリーズ。1999年の放送開始以来、25年以上にわたって主題歌が更新されつづけている、日本アニメ史最長級のOPアーカイブ。',
+    tv: [
+      {
+        name:'テレビアニメ「ONE PIECE」',
+        meta:'1999年10月 — 現在 / 1100話以上 / フジテレビ',
+        themes:[
+          {type:'op', song:'ウィーアー！', artist:'きただにひろし', artistName:'きただにひろし', episodes:'第1話 — 第47話（1999-2000）'},
+          {type:'op', song:'Believe', artist:'Folder5', artistName:'Folder5', episodes:'第48話 — 第115話（2000-2001）'},
+          {type:'op', song:'ヒカリへ', artist:'ザ・ベイビースターズ', artistName:'The Babystars', episodes:'第116話 — 第168話（2001-2003）'},
+          {type:'op', song:'BON VOYAGE!', artist:'BON-BON BLANCO', artistName:'BON-BON BLANCO', episodes:'第169話 — 第206話（2003-2004）'},
+          {type:'op', song:'ココロのちず', artist:'BOYSTYLE', artistName:'BOYSTYLE', episodes:'第207話 — 第263話（2004-2006）'},
+          {type:'op', song:'BRAND NEW WORLD', artist:'D-51', artistName:'D-51', episodes:'第264話 — 第278話（2006）'},
+          {type:'op', song:'Crazy Rainbow', artist:'タッキー&翼', artistName:'タッキー&翼', episodes:'第284話 — 第325話（2007-2008）'},
+          {type:'op', song:'Jungle P', artist:'5050', artistName:'5050', episodes:'第326話 — 第372話（2008-2009）'},
+          {type:'op', song:'Share The World', artist:'東方神起', artistName:'東方神起', episodes:'第395話 — 第425話（2009-2010）'},
+          {type:'op', song:'One Day', artist:'The ROOTLESS', artistName:'The ROOTLESS', episodes:'第459話 — 第492話（2010-2011）'},
+          {type:'op', song:'Fight Together', artist:'安室奈美恵', artistName:'安室奈美恵', episodes:'第493話 — 第516話（2011）'},
+          {type:'op', song:'We Go!', artist:'きただにひろし', artistName:'きただにひろし', episodes:'第517話 — 第590話（2011-2013）'},
+          {type:'op', song:'Hands Up!', artist:'きただにひろし', artistName:'きただにひろし', episodes:'第591話 — 第628話（2013-2014）'},
+          {type:'op', song:'Wake up!', artist:'AAA', artistName:'AAA', episodes:'第629話 — 第686話（2014-2015）'},
+          {type:'op', song:'Hard Knock Days', artist:'GENERATIONS from EXILE TRIBE', artistName:'GENERATIONS', episodes:'第687話 — 第746話（2015-2016）'},
+          {type:'op', song:'Hope', artist:'菅田将暉', artistName:'菅田将暉', episodes:'第807話 — 第855話（2018-2019）'},
+          {type:'op', song:'Super Powers', artist:'V6', artistName:'V6', episodes:'第856話 — 第891話（2019）'},
+          {type:'op', song:'OVER THE TOP', artist:'きただにひろし', artistName:'きただにひろし', episodes:'第892話 — 第934話（2019-2020）'},
+          {type:'op', song:'DREAMIN\' ON', artist:'Da-iCE', artistName:'Da-iCE', episodes:'第935話 — 第999話（2020-2021）'},
+          {type:'op', song:'PAINT', artist:"I Don't Like Mondays.", artistName:"I Don't Like Mondays.", episodes:'第1000話 — 第1004話（2021）'},
+          {type:'op', song:'UUUUUS!', artist:'きただにひろし', artistName:'きただにひろし', episodes:'第1071話 — （2023-）'},
+        ]
+      }
+    ],
+    movies: [
+      {year:2000, title:'ONE PIECE THE MOVIE', songs:[{type:'op', label:'主題歌', song:'ウィーアー！', artist:'きただにひろし', artistName:'きただにひろし'}]},
+      {year:2009, title:'ONE PIECE FILM STRONG WORLD', songs:[{type:'op', label:'主題歌', song:'fanfare', artist:'Mr.Children', artistName:'Mr.Children'}]},
+      {year:2012, title:'ONE PIECE FILM Z', songs:[{type:'op', label:'主題歌', song:'How You Remind Me', artist:'Avril Lavigne', artistName:'Avril Lavigne'}]},
+      {year:2016, title:'ONE PIECE FILM GOLD', songs:[{type:'op', label:'主題歌', song:'GOLDEN LIFE', artist:'GLAY', artistName:'GLAY'}]},
+      {year:2019, title:'ONE PIECE STAMPEDE', songs:[{type:'op', label:'主題歌', song:'GONG', artist:'WANIMA', artistName:'WANIMA'}]},
+      {year:2022, title:'ONE PIECE FILM RED', songs:[{type:'op', label:'主題歌', song:'新時代', artist:'Ado', artistName:'Ado'}]},
+    ],
+    related: [
+      {type:'manga', name:'manga', title:'ONE PIECE', author:'尾田栄一郎', publisher:'集英社「週刊少年ジャンプ」', period:'1997 — 連載中（110巻以上）', link:'#'},
+    ]
+  },
+
+  kimetsu: {
+    title:'鬼滅の刃',
+    altTitle:'Demon Slayer: Kimetsu no Yaiba',
+    eyebrow:'2019 — 現在 · TV全4期 / 劇場版',
+    studio:'ufotable',
+    director:'外崎春雄',
+    period:'2019 — 現在',
+    tags:['少年','時代劇','バトル','令和'],
+    desc:'吾峠呼世晴の漫画を原作に、ufotableが手掛ける作画と劇伴で社会現象を起こした令和を代表する作品。LiSA・Aimerなど豪華アーティストによる主題歌アーカイブ。',
+    tv: [
+      {
+        name:'第1期「立志編」',
+        meta:'2019年4月 — 9月 / 全26話',
+        themes:[
+          {type:'op', song:'紅蓮華', artist:'LiSA', artistName:'LiSA', episodes:'第1話 — 第26話'},
+          {type:'ed', song:'from the edge', artist:'FictionJunction feat. LiSA', artistName:'LiSA', episodes:'第1話 — 第26話'},
+        ]
+      },
+      {
+        name:'第2期「遊郭編」',
+        meta:'2021年12月 — 2022年2月 / 全11話',
+        themes:[
+          {type:'op', song:'残響散歌', artist:'Aimer', artistName:'Aimer', episodes:'第1話 — 第11話'},
+          {type:'ed', song:'朝が来る', artist:'Aimer', artistName:'Aimer', episodes:'第1話 — 第11話'},
+        ]
+      },
+      {
+        name:'第3期「刀鍛冶の里編」',
+        meta:'2023年4月 — 6月 / 全11話',
+        themes:[
+          {type:'op', song:'絆ノ奇跡', artist:'MAN WITH A MISSION × milet', artistName:'MAN WITH A MISSION', episodes:'第1話 — 第11話'},
+          {type:'ed', song:'コイコガレ', artist:'milet × MAN WITH A MISSION', artistName:'milet', episodes:'第1話 — 第11話'},
+        ]
+      },
+      {
+        name:'第4期「柱稽古編」',
+        meta:'2024年5月 — 6月 / 全8話',
+        themes:[
+          {type:'op', song:'夢幻', artist:'MY FIRST STORY × HYDE', artistName:'MY FIRST STORY', episodes:'第1話 — 第8話'},
+          {type:'ed', song:'夜が明ける', artist:'milet', artistName:'milet', episodes:'第1話 — 第8話'},
+        ]
+      },
+    ],
+    movies: [
+      {year:2020, title:'劇場版「無限列車編」', songs:[
+        {type:'op', label:'主題歌', song:'炎', artist:'LiSA', artistName:'LiSA'}
+      ]},
+      {year:2024, title:'絆の奇跡、そして柱稽古へ', songs:[
+        {type:'op', label:'主題歌', song:'絆ノ奇跡', artist:'MAN WITH A MISSION × milet', artistName:'MAN WITH A MISSION'}
+      ]},
+    ],
+    related: [
+      {type:'manga', name:'manga', title:'鬼滅の刃', author:'吾峠呼世晴', publisher:'集英社「週刊少年ジャンプ」', period:'2016 — 2020（全23巻）', link:'#'},
+    ]
+  },
+
+  kiminonawa: {
+    title:'君の名は。',
+    altTitle:'Your Name.',
+    eyebrow:'2016 · 劇場版（オリジナル）',
+    studio:'コミックス・ウェーブ・フィルム',
+    director:'新海誠',
+    period:'2016',
+    tags:['新海誠','劇場版','青春','SF'],
+    desc:'東京と飛騨。会ったことのない男子高校生と女子高校生が、入れ替わる。新海誠監督による、日本アニメ映画史上歴代興行収入トップクラスの作品。RADWIMPSの楽曲が物語と一体化。',
+    tv: [],
+    movies: [
+      {year:2016, title:'君の名は。', songs:[
+        {type:'op', label:'主題歌', song:'前前前世', artist:'RADWIMPS', artistName:'RADWIMPS'},
+        {type:'insert', label:'挿入歌', song:'夢灯籠', artist:'RADWIMPS', artistName:'RADWIMPS'},
+        {type:'insert', label:'挿入歌', song:'スパークル', artist:'RADWIMPS', artistName:'RADWIMPS'},
+        {type:'insert', label:'主題歌（劇中曲）', song:'なんでもないや', artist:'RADWIMPS', artistName:'RADWIMPS'},
+      ]},
+    ],
+    related: [
+      {type:'novel', name:'novel', title:'小説 君の名は。', author:'新海誠', publisher:'角川文庫', period:'2016', link:'#'},
+      {type:'manga', name:'manga', title:'君の名は。', author:'琴音らんまる（作画）/ 新海誠（原作）', publisher:'KADOKAWA「月刊コミックNewtype」', period:'2016 — 2018（全3巻）', link:'#'},
+    ]
+  },
+
+  bebop: {
+    title:'カウボーイビバップ',
+    altTitle:'Cowboy Bebop',
+    eyebrow:'1998 — 1999 · TV / 劇場版1作',
+    studio:'サンライズ',
+    director:'渡辺信一郎',
+    period:'1998 — 2001',
+    tags:['ジャズ','SF','ノワール','深夜'],
+    desc:'2071年の太陽系。賞金稼ぎ「カウボーイ」たちの群像劇。菅野よう子率いるSeatbeltsのジャズと共に、世界中のクリエイターに影響を与えた90年代を代表するアニメ。',
+    tv: [
+      {
+        name:'TV版',
+        meta:'1998年4月 — 6月（テレビ東京）/ 1998年10月 — 1999年4月（WOWOW）/ 全26話',
+        themes:[
+          {type:'op', song:'Tank!', artist:'Seatbelts', artistName:'Seatbelts'},
+          {type:'ed', song:'The Real Folk Blues', artist:'Seatbelts feat. 山根麻衣', artistName:'山根麻衣'},
+        ]
+      }
+    ],
+    movies: [
+      {year:2001, title:'カウボーイビバップ 天国の扉', songs:[
+        {type:'op', label:'主題歌', song:'Ask DNA', artist:'Seatbelts', artistName:'Seatbelts'},
+        {type:'insert', label:'挿入歌', song:'Gotta knock a little harder', artist:'Mai Yamane（山根麻衣）', artistName:'山根麻衣'}
+      ]},
+    ],
+    related: []
+  },
+
+  mononoke: {
+    title:'もののけ姫',
+    altTitle:'Princess Mononoke',
+    eyebrow:'1997 · 劇場版',
+    studio:'スタジオジブリ',
+    director:'宮崎駿',
+    period:'1997',
+    tags:['ジブリ','劇場版','歴史','自然'],
+    desc:'室町時代の日本を舞台に、自然と人間の戦いを描いた宮崎駿の代表作の一つ。米良美一のカウンターテナーが時代を象徴する一曲となった。',
+    tv: [],
+    movies: [
+      {year:1997, title:'もののけ姫', songs:[
+        {type:'op', label:'主題歌', song:'もののけ姫', artist:'米良美一', artistName:'米良美一'}
+      ]}
+    ],
+    related: []
+  },
+
+  totoro: {
+    title:'となりのトトロ',
+    altTitle:'My Neighbor Totoro',
+    eyebrow:'1988 · 劇場版',
+    studio:'スタジオジブリ',
+    director:'宮崎駿',
+    period:'1988',
+    tags:['ジブリ','劇場版','子ども','ファンタジー'],
+    desc:'昭和30年代の日本の田舎を舞台に、姉妹と森の精霊トトロの出会いを描く。久石譲の音楽と井上あずみの歌声が、世代を超えて親しまれている。',
+    tv: [],
+    movies: [
+      {year:1988, title:'となりのトトロ', songs:[
+        {type:'op', label:'OP主題歌', song:'さんぽ', artist:'井上あずみ', artistName:'井上あずみ'},
+        {type:'ed', label:'ED主題歌', song:'となりのトトロ', artist:'井上あずみ', artistName:'井上あずみ'}
+      ]}
+    ],
+    related: []
+  },
+
+  spiritedaway: {
+    title:'千と千尋の神隠し',
+    altTitle:'Spirited Away',
+    eyebrow:'2001 · 劇場版',
+    studio:'スタジオジブリ',
+    director:'宮崎駿',
+    period:'2001',
+    tags:['ジブリ','劇場版','ファンタジー'],
+    desc:'10歳の少女・千尋が八百万の神々が集う湯屋に迷い込む。アカデミー賞長編アニメ映画賞を受賞した、日本アニメ映画の到達点。',
+    tv: [],
+    movies: [
+      {year:2001, title:'千と千尋の神隠し', songs:[
+        {type:'op', label:'主題歌', song:'いつも何度でも', artist:'木村弓', artistName:'木村弓'}
+      ]}
+    ],
+    related: []
+  },
+
+  sailormoon: {
+    title:'美少女戦士セーラームーン',
+    altTitle:'Sailor Moon',
+    eyebrow:'1992 — 1997 · TV全5期 / 劇場版3作',
+    studio:'東映アニメーション',
+    director:'佐藤順一・幾原邦彦 ほか',
+    period:'1992 — 1997',
+    tags:['少女','変身','魔法','ジェンダー'],
+    desc:'武内直子の漫画を原作に、平成の少女アニメを定義づけた作品。OP「ムーンライト伝説」は世代を超えて歌い継がれている。',
+    tv: [
+      {
+        name:'美少女戦士セーラームーン（無印）',
+        meta:'1992年3月 — 1993年2月 / 全46話 / テレビ朝日',
+        themes:[
+          {type:'op', song:'ムーンライト伝説', artist:'DALI', artistName:'DALI'},
+          {type:'ed', song:'HEART MOVING', artist:'小田茜', artistName:'小田茜'},
+        ]
+      },
+      {
+        name:'美少女戦士セーラームーンR',
+        meta:'1993年3月 — 1994年3月 / 全43話',
+        themes:[
+          {type:'op', song:'ムーンライト伝説', artist:'紫東 仁', artistName:'紫東仁'},
+          {type:'ed', song:'乙女のポリシー', artist:'石田よう子', artistName:'石田よう子'},
+        ]
+      },
+      {
+        name:'美少女戦士セーラームーンS',
+        meta:'1994年3月 — 1995年2月 / 全38話',
+        themes:[
+          {type:'op', song:'ムーンライト伝説', artist:'森野文子', artistName:'森野文子'},
+          {type:'ed', song:'タキシード・ミラージュ', artist:'三石琴乃 / 富沢美智恵 / 篠原恵美', artistName:'三石琴乃'},
+        ]
+      },
+      {
+        name:'美少女戦士セーラームーンSuperS',
+        meta:'1995年3月 — 1996年3月 / 全39話',
+        themes:[
+          {type:'op', song:'ムーンライト伝説', artist:'ムーンリップス', artistName:'ムーンリップス'},
+          {type:'ed', song:'\"ラシックス！\"in the Moon', artist:'三石琴乃', artistName:'三石琴乃'},
+        ]
+      },
+      {
+        name:'美少女戦士セーラームーン セーラースターズ',
+        meta:'1996年3月 — 1997年2月 / 全34話',
+        themes:[
+          {type:'op', song:'セーラースターソング', artist:'乃恵 / Sayaka Tateno', artistName:'乃恵'},
+          {type:'ed', song:'\"乙女のポリシー\"', artist:'石田よう子', artistName:'石田よう子'},
+        ]
+      },
+    ],
+    movies: [
+      {year:1993, title:'美少女戦士セーラームーンR 劇場版', songs:[{type:'op', label:'主題歌', song:'Moon Revenge', artist:'内陣（キャスト合唱）', artistName:'内陣'}]},
+      {year:1994, title:'美少女戦士セーラームーンS 劇場版', songs:[{type:'op', label:'主題歌', song:'Moonlight Densetsu / Moon Revenge', artist:'三石琴乃 ほか', artistName:'三石琴乃'}]},
+      {year:1995, title:'美少女戦士セーラームーンSuperS 劇場版', songs:[{type:'op', label:'主題歌', song:'Moonlight Densetsu', artist:'ムーンリップス', artistName:'ムーンリップス'}]},
+    ],
+    related: [
+      {type:'manga', name:'manga', title:'美少女戦士セーラームーン', author:'武内直子', publisher:'講談社「なかよし」', period:'1991 — 1997（全18巻）', link:'#'},
+    ]
+  },
+
+  conan: {
+    title:'名探偵コナン',
+    altTitle:'Detective Conan',
+    eyebrow:'1996 — 現在 · TV / 劇場版27作',
+    studio:'TMS / 東京ムービー',
+    director:'こだま兼嗣 ほか',
+    period:'1996 — 現在',
+    tags:['推理','長寿','ジャンプ',],
+    desc:'青山剛昌の原作漫画を、1996年から現在まで放送中の超長寿アニメ。劇場版は毎年公開され、主題歌アーカイブは日本ポップス史を映す鏡。',
+    tv: [
+      {
+        name:'テレビアニメ「名探偵コナン」',
+        meta:'1996年1月 — 現在 / 1100話以上 / 日本テレビ系',
+        themes:[
+          {type:'op', song:'胸がドキドキ', artist:'THE HIGH-LOWS', artistName:'THE HIGH-LOWS'},
+          {type:'op', song:'謎', artist:'小松未歩', artistName:'小松未歩'},
+          {type:'op', song:'運命のルーレット廻して', artist:'ZARD', artistName:'ZARD'},
+          {type:'op', song:'TRUTH ～A Great Detective of Love～', artist:'TWO-MIX', artistName:'TWO-MIX'},
+          {type:'op', song:'destiny', artist:'松谷祐子', artistName:'松谷祐子'},
+          {type:'op', song:'I can\'t stop my love for you', artist:'B\'z', artistName:"B'z"},
+          {type:'op', song:'Growing of my heart', artist:'rumania montevideo', artistName:'rumania montevideo'},
+          {type:'op', song:'スタートライン', artist:'愛内里菜', artistName:'愛内里菜'},
+          {type:'op', song:'夏を待つセイル(帆)のように', artist:'ZARD', artistName:'ZARD'},
+          {type:'op', song:'Try Again', artist:'倉木麻衣', artistName:'倉木麻衣'},
+        ]
+      }
+    ],
+    movies: [
+      {year:1997, title:'名探偵コナン 時計じかけの摩天楼', songs:[{type:'op', label:'主題歌', song:'happy birthday', artist:'杏子', artistName:'杏子'}]},
+      {year:1999, title:'名探偵コナン 世紀末の魔術師', songs:[{type:'op', label:'主題歌', song:'ONE', artist:'B\'z', artistName:"B'z"}]},
+      {year:2003, title:'名探偵コナン 迷宮の十字路', songs:[{type:'op', label:'主題歌', song:'Time after time ～花舞う街で～', artist:'倉木麻衣', artistName:'倉木麻衣'}]},
+      {year:2008, title:'名探偵コナン 戦慄の楽譜', songs:[{type:'op', label:'主題歌', song:'PUZZLE', artist:'倉木麻衣', artistName:'倉木麻衣'}]},
+      {year:2014, title:'名探偵コナン 異次元の狙撃手', songs:[{type:'op', label:'主題歌', song:'TRY AGAIN', artist:'倉木麻衣', artistName:'倉木麻衣'}]},
+      {year:2024, title:'名探偵コナン 100万ドルの五稜星', songs:[{type:'op', label:'主題歌', song:'相思相愛', artist:'aiko', artistName:'aiko'}]},
+    ],
+    related: [
+      {type:'manga', name:'manga', title:'名探偵コナン', author:'青山剛昌', publisher:'小学館「週刊少年サンデー」', period:'1994 — 連載中（105巻以上）', link:'#'},
+    ]
+  },
+
+  gundam: {
+    title:'機動戦士ガンダム',
+    altTitle:'Mobile Suit Gundam',
+    eyebrow:'1979 — 1980 · TV / 劇場版三部作',
+    studio:'日本サンライズ',
+    director:'富野由悠季',
+    period:'1979 — 1981',
+    tags:['SF','メカ','戦争','宇宙世紀'],
+    desc:'富野由悠季が手掛けた、リアルロボットアニメの原点。以降40年以上にわたって続くガンダムシリーズの原典であり、戦争を描くアニメの方法論を確立した一作。',
+    tv: [
+      {
+        name:'機動戦士ガンダム（ファーストガンダム）',
+        meta:'1979年4月 — 1980年1月 / 全43話 / 名古屋テレビ',
+        themes:[
+          {type:'op', song:'翔べ！ガンダム', artist:'池田鴻', artistName:'池田鴻'},
+          {type:'ed', song:'永遠にアムロ', artist:'池田鴻', artistName:'池田鴻'},
+        ]
+      }
+    ],
+    movies: [
+      {year:1981, title:'機動戦士ガンダム I', songs:[{type:'op', label:'主題歌', song:'砂の十字架', artist:'やしきたかじん', artistName:'やしきたかじん'}]},
+      {year:1981, title:'機動戦士ガンダム II 哀・戦士編', songs:[{type:'op', label:'主題歌', song:'哀 戦士', artist:'井上大輔', artistName:'井上大輔'}]},
+      {year:1982, title:'機動戦士ガンダム III めぐりあい宇宙編', songs:[{type:'op', label:'主題歌', song:'めぐりあい', artist:'井上大輔', artistName:'井上大輔'}]},
+    ],
+    related: []
+  },
+
+  attackontitan: {
+    title:'進撃の巨人',
+    altTitle:'Attack on Titan',
+    eyebrow:'2013 — 2023 · TV全4期 / 劇場版',
+    studio:'WIT STUDIO / MAPPA',
+    director:'荒木哲郎・林祐一郎 ほか',
+    period:'2013 — 2023',
+    tags:['ダーク','戦闘','ファンタジー'],
+    desc:'諫山創の漫画を原作に、世界中で大ヒットしたダークファンタジー。Linked Horizonの主題歌は社会現象に。',
+    tv: [
+      {
+        name:'第1期',
+        meta:'2013年4月 — 9月 / 全25話 / WIT STUDIO',
+        themes:[
+          {type:'op', song:'紅蓮の弓矢', artist:'Linked Horizon', artistName:'Linked Horizon', episodes:'第1話 — 第13話'},
+          {type:'op', song:'自由の翼', artist:'Linked Horizon', artistName:'Linked Horizon', episodes:'第14話 — 第25話'},
+        ]
+      },
+      {
+        name:'第2期',
+        meta:'2017年4月 — 6月 / 全12話 / WIT STUDIO',
+        themes:[
+          {type:'op', song:'心臓を捧げよ！', artist:'Linked Horizon', artistName:'Linked Horizon'},
+        ]
+      },
+      {
+        name:'第3期',
+        meta:'2018年7月 — 2019年7月 / 全22話 / WIT STUDIO',
+        themes:[
+          {type:'op', song:'Red Swan', artist:'YOSHIKI feat. HYDE', artistName:'HYDE'},
+          {type:'op', song:'憧憬と屍の道', artist:'Linked Horizon', artistName:'Linked Horizon'},
+        ]
+      },
+      {
+        name:'The Final Season',
+        meta:'2020年12月 — 2023年11月 / MAPPA',
+        themes:[
+          {type:'op', song:'僕の戦争', artist:'神聖かまってちゃん', artistName:'神聖かまってちゃん'},
+          {type:'op', song:'The Rumbling', artist:'SiM', artistName:'SiM'},
+        ]
+      },
+    ],
+    movies: [],
+    related: [
+      {type:'manga', name:'manga', title:'進撃の巨人', author:'諫山創', publisher:'講談社「別冊少年マガジン」', period:'2009 — 2021（全34巻）', link:'#'},
+    ]
+  },
+
+  jujutsu: {
+    title:'呪術廻戦',
+    altTitle:'Jujutsu Kaisen',
+    eyebrow:'2020 — 現在 · TV全2期 / 劇場版1作',
+    studio:'MAPPA',
+    director:'朴性厚 ほか',
+    period:'2020 — 現在',
+    tags:['少年','バトル','令和','ジャンプ'],
+    desc:'芥見下々の漫画を原作に、令和の少年アニメを代表する一作。Eve・キタニタツヤなど主題歌のセンスも話題に。',
+    tv: [
+      {
+        name:'第1期',
+        meta:'2020年10月 — 2021年3月 / 全24話',
+        themes:[
+          {type:'op', song:'廻廻奇譚', artist:'Eve', artistName:'Eve'},
+          {type:'op', song:'VIVID VICE', artist:'Who-ya Extended', artistName:'Who-ya Extended'},
+          {type:'ed', song:'LOST IN PARADISE', artist:'ALI feat. AKLO', artistName:'ALI'},
+          {type:'ed', song:'give it back', artist:'Cö shu Nie', artistName:'Cö shu Nie'},
+        ]
+      },
+      {
+        name:'第2期「懐玉・玉折／渋谷事変」',
+        meta:'2023年7月 — 12月 / 全23話',
+        themes:[
+          {type:'op', song:'青のすみか', artist:'キタニタツヤ', artistName:'キタニタツヤ'},
+          {type:'op', song:'SPECIALZ', artist:'King Gnu', artistName:'King Gnu'},
+          {type:'ed', song:'更紗', artist:'幾田りら', artistName:'幾田りら'},
+          {type:'ed', song:'愛にする', artist:'Aimer', artistName:'Aimer'},
+        ]
+      },
+    ],
+    movies: [
+      {year:2021, title:'劇場版 呪術廻戦 0', songs:[
+        {type:'op', label:'主題歌', song:'一途', artist:'King Gnu', artistName:'King Gnu'},
+        {type:'insert', label:'挿入歌', song:'逆夢', artist:'King Gnu', artistName:'King Gnu'},
+      ]},
+    ],
+    related: [
+      {type:'manga', name:'manga', title:'呪術廻戦', author:'芥見下々', publisher:'集英社「週刊少年ジャンプ」', period:'2018 — 2024（全30巻）', link:'#'},
+    ]
+  },
+
+  haruhi: {
+    title:'涼宮ハルヒの憂鬱',
+    altTitle:'The Melancholy of Haruhi Suzumiya',
+    eyebrow:'2006 — 2009 · TV全2期 / 劇場版1作',
+    studio:'京都アニメーション',
+    director:'石原立也',
+    period:'2006 — 2010',
+    tags:['深夜','学園','SF','ライトノベル'],
+    desc:'谷川流のライトノベルを原作に、2006年に深夜アニメの可能性を切り拓いた京アニ初期の代表作。「ハレ晴レユカイ」のダンスは社会現象に。',
+    tv: [
+      {
+        name:'第1期',
+        meta:'2006年4月 — 7月 / 全14話',
+        themes:[
+          {type:'op', song:'冒険でしょでしょ？', artist:'平野綾', artistName:'平野綾'},
+          {type:'ed', song:'ハレ晴レユカイ', artist:'平野綾 / 茅原実里 / 後藤邑子', artistName:'平野綾'},
+        ]
+      },
+      {
+        name:'第2期',
+        meta:'2009年4月 — 10月 / 全14話',
+        themes:[
+          {type:'op', song:'Super Driver', artist:'平野綾', artistName:'平野綾'},
+          {type:'ed', song:'止マレ！', artist:'平野綾 / 茅原実里 / 後藤邑子', artistName:'平野綾'},
+        ]
+      },
+    ],
+    movies: [
+      {year:2010, title:'涼宮ハルヒの消失', songs:[
+        {type:'op', label:'主題歌', song:'優しい忘却', artist:'茅原実里', artistName:'茅原実里'}
+      ]},
+    ],
+    related: [
+      {type:'novel', name:'novel', title:'涼宮ハルヒシリーズ', author:'谷川流（イラスト：いとうのいぢ）', publisher:'角川スニーカー文庫', period:'2003 — 連載中', link:'#'},
+    ]
+  },
+
+  keion: {
+    title:'けいおん！',
+    altTitle:'K-On!',
+    eyebrow:'2009 — 2010 · TV全2期 / 劇場版',
+    studio:'京都アニメーション',
+    director:'山田尚子',
+    period:'2009 — 2011',
+    tags:['日常','音楽','学園','京アニ'],
+    desc:'かきふらいの漫画を原作に、女子高生のバンド活動を描いた京アニの転換点。山田尚子監督の演出と作中楽曲の質の高さで音楽アニメの基準を変えた。',
+    tv: [
+      {
+        name:'けいおん！（第1期）',
+        meta:'2009年4月 — 6月 / 全12話',
+        themes:[
+          {type:'op', song:'Cagayake!GIRLS', artist:'桜高軽音部（豊崎愛生 / 日笠陽子 / 佐藤聡美 / 寿美菜子）', artistName:'桜高軽音部'},
+          {type:'ed', song:'Don\'t say \"lazy\"', artist:'桜高軽音部', artistName:'桜高軽音部'},
+        ]
+      },
+      {
+        name:'けいおん！！（第2期）',
+        meta:'2010年4月 — 9月 / 全26話',
+        themes:[
+          {type:'op', song:'GO! GO! MANIAC', artist:'桜高軽音部', artistName:'桜高軽音部'},
+          {type:'op', song:'Utauyo!!MIRACLE', artist:'放課後ティータイム', artistName:'放課後ティータイム'},
+          {type:'ed', song:'Listen!!', artist:'桜高軽音部', artistName:'桜高軽音部'},
+          {type:'ed', song:'NO,Thank You!', artist:'放課後ティータイム', artistName:'放課後ティータイム'},
+        ]
+      },
+    ],
+    movies: [
+      {year:2011, title:'映画けいおん！', songs:[
+        {type:'op', label:'主題歌', song:'Singing!', artist:'放課後ティータイム', artistName:'放課後ティータイム'},
+        {type:'ed', label:'ED主題歌', song:'いちばんいっぱい', artist:'放課後ティータイム', artistName:'放課後ティータイム'},
+      ]},
+    ],
+    related: [
+      {type:'manga', name:'manga', title:'けいおん！', author:'かきふらい', publisher:'芳文社「まんがタイムきらら」', period:'2007 — 2012（全7巻）', link:'#'},
+    ]
+  },
+
+  spy: {
+    title:'SPY×FAMILY',
+    altTitle:'Spy x Family',
+    eyebrow:'2022 — 現在 · TV / 劇場版1作',
+    studio:'WIT STUDIO / CloverWorks',
+    director:'古橋一浩',
+    period:'2022 — 現在',
+    tags:['コメディ','アクション','令和','家族'],
+    desc:'遠藤達哉の漫画を原作に、スパイ・殺し屋・超能力者が偽装家族を演じる令和のヒット作。OPはOfficial髭男dism、Adoなど豪華アーティストが担当。',
+    tv: [
+      {
+        name:'第1期 / 第2期',
+        meta:'2022年4月 — 2023年12月 / 全37話',
+        themes:[
+          {type:'op', song:'ミックスナッツ', artist:'Official髭男dism', artistName:'Official髭男dism'},
+          {type:'op', song:'SOUVENIR', artist:'BUMP OF CHICKEN', artistName:'BUMP OF CHICKEN'},
+          {type:'op', song:'クラクラ', artist:'Ado', artistName:'Ado'},
+          {type:'op', song:'刹那の歌', artist:'Vaundy', artistName:'Vaundy'},
+          {type:'ed', song:'喜劇', artist:'星野源', artistName:'星野源'},
+          {type:'ed', song:'色彩', artist:'yama', artistName:'yama'},
+          {type:'ed', song:'今しかない', artist:'Ado', artistName:'Ado'},
+        ]
+      }
+    ],
+    movies: [
+      {year:2023, title:'劇場版 SPY×FAMILY CODE: White', songs:[
+        {type:'op', label:'主題歌', song:'(VAUNDY系)テーマ曲', artist:'Ado', artistName:'Ado'}
+      ]},
+    ],
+    related: [
+      {type:'manga', name:'manga', title:'SPY×FAMILY', author:'遠藤達哉', publisher:'集英社「少年ジャンプ＋」', period:'2019 — 連載中', link:'#'},
+    ]
+  },
+
+};
+
+// ==================== RENDER ====================
+const id = new URLSearchParams(location.search).get('id');
+const data = ANIME_DATA[id];
+
+if (!data) {
+  document.getElementById('crumb-current').textContent = '見つかりませんでした';
+  document.getElementById('page').innerHTML = `
+    <div class="notfound">
+      <h2>作品が見つかりません</h2>
+      <p>ID「${id || '(指定なし)'}」のデータがまだ用意されていません。<br>アニメ一覧から作品を選択してください。</p>
+      <a href="anime.html">← アニメ一覧へ戻る</a>
+    </div>
+  `;
+} else {
+  document.getElementById('crumb-current').textContent = data.title;
+  document.title = `${data.title} — 時代 Archive`;
+
+  // helper: artist link
+  const artistLink = (name, displayName) => {
+    const safe = encodeURIComponent(name);
+    return `<a class="artist-link" href="artist.html?name=${safe}&category=anime-musician">${displayName || name}</a>`;
+  };
+
+  // ==== HERO ====
+  const heroHTML = `
+    <section class="hero">
+      <div class="hero-eyebrow">${data.eyebrow}</div>
+      <h1 class="hero-title">${data.title}</h1>
+      <div class="hero-alt">${data.altTitle}</div>
+      <div class="hero-meta">
+        <div class="hero-meta-item"><b>Studio</b>${data.studio}</div>
+        <div class="hero-meta-item"><b>Director</b>${data.director}</div>
+        <div class="hero-meta-item"><b>Period</b>${data.period}</div>
+      </div>
+      <div class="hero-tags">${data.tags.map(t => `<span class="hero-tag">${t}</span>`).join('')}</div>
+      <p class="hero-desc">${data.desc}</p>
+    </section>
+  `;
+
+  // ==== TV SECTION ====
+  let tvHTML = '';
+  if(data.tv && data.tv.length > 0){
+    tvHTML = `
+      <section class="section">
+        <div class="section-eyebrow">TV Broadcast</div>
+        <h2 class="section-title">テレビ放送 主題歌</h2>
+        <p class="section-sub">放送順に、すべてのオープニング・エンディング。アーティスト名をクリックすると詳細ページへ。</p>
+        ${data.tv.map(tv => `
+          <div class="tv-series">
+            <div class="tv-head">
+              <div class="tv-name">${tv.name}</div>
+              <div class="tv-meta">${tv.meta}</div>
+            </div>
+            <table class="theme-table">
+              <thead>
+                <tr>
+                  <th style="width:60px">区分</th>
+                  <th>曲名</th>
+                  <th>アーティスト</th>
+                  <th>使用話数</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${tv.themes.map(th => `
+                  <tr>
+                    <td><span class="badge ${th.type}">${th.type === 'op' ? 'OP' : (th.type === 'ed' ? 'ED' : '挿入')}</span></td>
+                    <td class="song-cell">${th.song}</td>
+                    <td>${artistLink(th.artistName || th.artist, th.artist)}</td>
+                    <td class="episodes">${th.episodes || '—'}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `).join('')}
+      </section>
+    `;
+  }
+
+  // ==== MOVIES ====
+  let movieHTML = '';
+  if(data.movies && data.movies.length > 0){
+    movieHTML = `
+      <section class="section">
+        <div class="section-eyebrow">Films</div>
+        <h2 class="section-title">劇場版</h2>
+        <p class="section-sub">公開順。各作品の主題歌・挿入歌のアーティストもすべて辿れる。</p>
+        <div class="movies-grid">
+          ${data.movies.map(m => `
+            <div class="movie-card">
+              <div class="movie-year">${m.year}</div>
+              <div class="movie-title">${m.title}</div>
+              <div class="movie-divider"></div>
+              <div class="movie-songs">
+                ${m.songs.map(s => `
+                  <div class="movie-song">
+                    <span class="badge ${s.type}">${s.label || (s.type === 'op' ? 'OP' : 'ED')}</span>
+                    <div class="movie-song-info">
+                      <div class="movie-song-name">${s.song}</div>
+                      <div class="movie-song-artist">${artistLink(s.artistName || s.artist, s.artist)}</div>
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </section>
+    `;
+  }
+
+  // ==== RELATED MEDIA ====
+  let relatedHTML = '';
+  if(data.related && data.related.length > 0){
+    const typeLabel = {manga:'漫画 / Manga', novel:'小説 / Novel', game:'ゲーム / Game'};
+    relatedHTML = `
+      <section class="section">
+        <div class="section-eyebrow">Related Media</div>
+        <h2 class="section-title">原作・関連メディア</h2>
+        <p class="section-sub">この作品に関連する漫画・小説など。原作からアニメへ、メディアを横断して辿れる。</p>
+        <div class="related-grid">
+          ${data.related.map(r => `
+            <a class="media-card" href="${r.link || '#'}">
+              <span class="media-type ${r.name}">${typeLabel[r.name] || r.type}</span>
+              <div class="media-title">${r.title}</div>
+              <div class="media-author">${r.author}</div>
+              <div class="media-period">${r.publisher} · ${r.period}</div>
+              <div class="media-link">詳細を見る →</div>
+            </a>
+          `).join('')}
+        </div>
+      </section>
+    `;
+  }
+
+  // ==== CTA ====
+  const ctaHTML = `
+    <div class="cta-bar">
+      <a class="cta-btn" href="anime.html">← アニメ一覧へ戻る</a>
+      <a class="cta-btn" href="home.html">時代 Archive トップへ</a>
+      <a class="cta-btn" href="index.html">音楽アーカイブを見る →</a>
+    </div>
+  `;
+
+  document.getElementById('page').innerHTML = heroHTML + tvHTML + movieHTML + relatedHTML + ctaHTML;
+}
+</script>
+</body>
+</html>
