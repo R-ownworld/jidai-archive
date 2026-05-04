@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>アニメ — 時代 Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;700;900&family=Zen+Kaku+Gothic+New:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07080f;--bg2:#0c0e1a;--bg3:#111320;
+  --text:#e8e4d9;--text2:rgba(232,228,217,.5);--text3:rgba(232,228,217,.28);--text4:rgba(232,228,217,.18);
+  --gold:#c9a84c;--green:#5dcaa5;--border:rgba(232,228,217,.08);--border2:rgba(232,228,217,.15);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Zen Kaku Gothic New',sans-serif;min-height:100vh}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;background:none;border:none;cursor:pointer;color:inherit}
+
+/* NAV */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 2.5rem;border-bottom:.5px solid var(--border);background:rgba(7,8,15,.95);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100}
+.nav-logo{font-family:'Shippori Mincho',serif;font-size:20px;font-weight:700;letter-spacing:.08em;color:var(--text)}
+.nav-logo .arch{color:var(--gold);font-family:'EB Garamond',serif;font-style:italic;font-weight:600;margin-left:.4em}
+.nav-menu{display:flex;gap:3rem;align-items:center}
+.nav-menu a{font-size:13px;color:var(--text2);letter-spacing:.1em;transition:color .2s}
+.nav-menu a:hover{color:var(--text)}
+.nav-menu a.active{color:var(--text)}
+
+/* HERO */
+.hero{padding:4rem 2.5rem 2rem;max-width:1200px;margin:0 auto}
+.eyebrow{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(201,168,76,.65);margin-bottom:1rem;font-weight:700}
+.h1{font-family:'Shippori Mincho',serif;font-size:clamp(34px,4.6vw,52px);font-weight:900;color:var(--text);line-height:1.22;margin-bottom:1.25rem;letter-spacing:.005em}
+.h1 .accent{color:var(--gold)}
+.sub{font-size:14.5px;color:var(--text2);line-height:2;max-width:560px;margin-bottom:2.5rem}
+
+/* SEARCH */
+.search-row{max-width:560px;margin-bottom:1rem}
+.search{width:100%;background:rgba(232,228,217,.06);border:.5px solid var(--border2);border-radius:10px;color:var(--text);font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;padding:14px 18px;outline:none;transition:all .2s}
+.search:focus{border-color:rgba(201,168,76,.5);background:rgba(232,228,217,.09)}
+.search::placeholder{color:var(--text3)}
+.search-hint{font-size:11px;color:var(--text3);letter-spacing:.04em}
+
+/* FILTER BAR */
+.filter-bar{padding:1.5rem 2.5rem 2rem;max-width:1200px;margin:0 auto;display:flex;gap:8px;flex-wrap:wrap;border-top:.5px solid var(--border);margin-top:2.5rem}
+.filter-pill{font-size:12px;letter-spacing:.04em;border:.5px solid var(--border2);color:var(--text2);padding:.5rem 1.1rem;border-radius:20px;transition:all .2s}
+.filter-pill:hover{border-color:rgba(201,168,76,.4);color:var(--text)}
+.filter-pill.active{background:rgba(201,168,76,.1);border-color:rgba(201,168,76,.5);color:var(--gold)}
+
+/* GRID */
+.list-section{padding:0 2.5rem 4rem;max-width:1200px;margin:0 auto}
+.list-meta{font-size:11px;letter-spacing:.18em;color:var(--text3);margin-bottom:1.25rem}
+.anime-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px}
+.ac{background:var(--bg2);border:.5px solid var(--border);border-radius:10px;padding:1.6rem 1.5rem 1.4rem;display:flex;flex-direction:column;transition:all .25s;min-height:230px;cursor:pointer;position:relative}
+.ac:hover{border-color:rgba(201,168,76,.4);background:#10131f;transform:translateY(-2px);box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.ac-period{font-family:'EB Garamond',serif;font-size:13px;color:var(--gold);letter-spacing:.04em;margin-bottom:.7rem;font-weight:600}
+.ac-title{font-family:'Shippori Mincho',serif;font-size:20px;font-weight:700;color:var(--text);line-height:1.32;margin-bottom:.4rem}
+.ac-studio{font-size:12px;color:var(--text2);line-height:1.6;margin-bottom:1rem}
+.ac-divider{height:1px;background:var(--border);margin-bottom:.85rem}
+.ac-op-label{font-family:'Shippori Mincho',serif;font-size:11px;font-weight:700;color:var(--gold);letter-spacing:.08em;margin-bottom:.4rem}
+.ac-op{font-size:12.5px;color:var(--text);line-height:1.55;margin-bottom:1rem}
+.ac-tags{display:flex;gap:5px;flex-wrap:wrap;margin-top:auto}
+.ac-tag{font-size:10px;letter-spacing:.04em;border:.5px solid var(--border2);color:var(--text2);padding:2px 8px;border-radius:10px}
+.ac-arrow{position:absolute;top:1.5rem;right:1.5rem;color:var(--text4);transition:all .22s;font-size:14px}
+.ac:hover .ac-arrow{color:var(--gold);transform:translateX(3px)}
+.ac-empty{grid-column:1/-1;text-align:center;padding:4rem 2rem;color:var(--text3);font-size:14px}
+
+/* INTRO BLOCK (4 features) */
+.intro-features{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;max-width:1200px;margin:0 auto;padding:2rem 2.5rem 0}
+.intro-feat{background:var(--bg2);border:.5px solid var(--border);border-radius:10px;padding:1.25rem 1.4rem}
+.intro-feat-num{font-family:'EB Garamond',serif;font-size:14px;color:rgba(80,200,140,.7);font-weight:600;letter-spacing:.06em;margin-bottom:.5rem}
+.intro-feat-name{font-family:'Shippori Mincho',serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:.4rem}
+.intro-feat-desc{font-size:11.5px;color:var(--text2);line-height:1.7}
+
+/* FOOTER */
+.footer{padding:2rem;border-top:.5px solid var(--border);text-align:center;margin-top:3rem}
+.footer-logo{font-family:'Shippori Mincho',serif;font-size:16px;font-weight:700;color:var(--gold);margin-bottom:.4rem}
+.footer-sub{font-size:11px;color:var(--text3)}
+
+.fade{animation:fadeUp .3s ease both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:760px){
+  .nav{padding:.9rem 1.5rem}.nav-menu{gap:1.5rem}.nav-menu a{font-size:12px}
+  .hero,.filter-bar,.list-section,.intro-features{padding-left:1.5rem;padding-right:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="home.html">時代<span class="arch">Archive</span></a>
+  <div class="nav-menu">
+    <a href="anime.html" class="active">アニメ</a>
+    <a href="index.html">シティポップ</a>
+    <a href="#" onclick="return false">映画</a>
+    <a href="home.html">検索</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="eyebrow">Anime × Music Archive</div>
+  <h1 class="h1">一つのアニメから、<br>関わった<span class="accent">すべての音楽</span>へ。</h1>
+  <p class="sub">歴代OP/EDから劇場版主題歌、原作の漫画・小説まで。<br>作品ごとに、関わったアーティスト・スタジオ・関連作品が網の目のように繋がる。</p>
+
+  <div class="search-row">
+    <input class="search" id="search-input" type="search" placeholder="作品名・スタジオ・アーティストで検索..." />
+  </div>
+  <div class="search-hint">エヴァンゲリオン・ジブリ・LiSA・宇多田ヒカル など</div>
+  <div id="ai-search-hint" style="display:none;margin-top:.75rem"><a id="ai-search-link" style="font-size:12px;color:var(--gold);cursor:pointer;border:.5px solid rgba(201,168,76,.3);padding:6px 14px;border-radius:4px;display:inline-block">→ AIで「<span id="ai-search-name"></span>」のページを生成する</a></div>
+
+  <!-- 4つの特徴 -->
+  <div class="intro-features">
+    <div class="intro-feat">
+      <div class="intro-feat-num">01</div>
+      <div class="intro-feat-name">主題歌が一目で分かる</div>
+      <div class="intro-feat-desc">作品とOP/EDの組み合わせが一覧で照らし合わせられる。</div>
+    </div>
+    <div class="intro-feat">
+      <div class="intro-feat-num">02</div>
+      <div class="intro-feat-name">歴代OP/EDをすべて追える</div>
+      <div class="intro-feat-desc">初期から現在まで、誰が歌っているかも順番に見られる。</div>
+    </div>
+    <div class="intro-feat">
+      <div class="intro-feat-num">03</div>
+      <div class="intro-feat-name">劇場版主題歌も網羅</div>
+      <div class="intro-feat-desc">映画化された作品は劇場版の題名・主題歌・歌手まで。</div>
+    </div>
+    <div class="intro-feat">
+      <div class="intro-feat-num">04</div>
+      <div class="intro-feat-name">原作・漫画・小説に飛べる</div>
+      <div class="intro-feat-desc">そのアニメが漫画や本でも存在していたら、そこから辿れる。</div>
+    </div>
+  </div>
+</section>
+
+<!-- STUDIO FILTER -->
+<div class="filter-bar" id="filter-bar">
+  <button class="filter-pill active" data-studio="all">すべて</button>
+  <button class="filter-pill" data-studio="ジブリ">スタジオジブリ</button>
+  <button class="filter-pill" data-studio="GAINAX">GAINAX / カラー</button>
+  <button class="filter-pill" data-studio="サンライズ">サンライズ</button>
+  <button class="filter-pill" data-studio="京アニ">京都アニメーション</button>
+  <button class="filter-pill" data-studio="MAPPA">MAPPA</button>
+  <button class="filter-pill" data-studio="ufotable">ufotable</button>
+  <button class="filter-pill" data-studio="東映">東映アニメーション</button>
+  <button class="filter-pill" data-studio="新海">コミックス・ウェーブ</button>
+</div>
+
+<!-- LIST -->
+<section class="list-section">
+  <div class="list-meta" id="list-meta">作品 — 全リスト</div>
+  <div class="anime-grid" id="anime-grid"></div>
+</section>
+
+<footer class="footer">
+  <div class="footer-logo">時代 Archive</div>
+  <div class="footer-sub">Japan Culture Archive · 1960s — 2020s</div>
+</footer>
+
+<script>
+// ==================== ANIME INDEX ====================
+// id は anime-detail.html?id=xxx で参照される
+const ANIME_INDEX = [
+  { id:'evangelion', title:'新世紀エヴァンゲリオン', studio:'GAINAX', studioFull:'GAINAX / 庵野秀明', period:'1995 — 2021', latestOp:{label:'OP', song:'残酷な天使のテーゼ', artist:'高橋洋子'}, tags:['SF','メカ','深夜'] },
+  { id:'mononoke', title:'もののけ姫', studio:'ジブリ', studioFull:'スタジオジブリ / 宮崎駿', period:'1997', latestOp:{label:'主題歌', song:'もののけ姫', artist:'米良美一'}, tags:['ジブリ','劇場版'] },
+  { id:'totoro', title:'となりのトトロ', studio:'ジブリ', studioFull:'スタジオジブリ / 宮崎駿', period:'1988', latestOp:{label:'主題歌', song:'となりのトトロ', artist:'井上あずみ'}, tags:['ジブリ','劇場版'] },
+  { id:'spiritedaway', title:'千と千尋の神隠し', studio:'ジブリ', studioFull:'スタジオジブリ / 宮崎駿', period:'2001', latestOp:{label:'主題歌', song:'いつも何度でも', artist:'木村弓'}, tags:['ジブリ','劇場版'] },
+  { id:'bebop', title:'カウボーイビバップ', studio:'サンライズ', studioFull:'サンライズ', period:'1998 — 2001', latestOp:{label:'OP', song:'Tank!', artist:'Seatbelts'}, tags:['ジャズ','SF'] },
+  { id:'gundam', title:'機動戦士ガンダム', studio:'サンライズ', studioFull:'日本サンライズ', period:'1979 — 1980', latestOp:{label:'OP', song:'翔べ！ガンダム', artist:'池田鴻'}, tags:['SF','メカ'] },
+  { id:'sailormoon', title:'美少女戦士セーラームーン', studio:'東映', studioFull:'東映アニメーション', period:'1992 — 1997', latestOp:{label:'OP', song:'ムーンライト伝説', artist:'DALI'}, tags:['少女','変身'] },
+  { id:'onepiece', title:'ONE PIECE', studio:'東映', studioFull:'東映アニメーション', period:'1999 — 現在', latestOp:{label:'OP1', song:'ウィーアー！', artist:'きただにひろし'}, tags:['冒険','ジャンプ'] },
+  { id:'conan', title:'名探偵コナン', studio:'東京ムービー', studioFull:'東京ムービー / TMS', period:'1996 — 現在', latestOp:{label:'OP1', song:'胸がドキドキ', artist:'THE HIGH-LOWS'}, tags:['推理','長寿'] },
+  { id:'kimetsu', title:'鬼滅の刃', studio:'ufotable', studioFull:'ufotable', period:'2019 — 現在', latestOp:{label:'OP', song:'紅蓮華', artist:'LiSA'}, tags:['少年','時代劇'] },
+  { id:'attackontitan', title:'進撃の巨人', studio:'WIT', studioFull:'WIT STUDIO / MAPPA', period:'2013 — 2023', latestOp:{label:'OP1', song:'紅蓮の弓矢', artist:'Linked Horizon'}, tags:['ダーク','戦闘'] },
+  { id:'kiminonawa', title:'君の名は。', studio:'新海', studioFull:'コミックス・ウェーブ・フィルム / 新海誠', period:'2016', latestOp:{label:'主題歌', song:'前前前世', artist:'RADWIMPS'}, tags:['新海誠','劇場版'] },
+  { id:'jujutsu', title:'呪術廻戦', studio:'MAPPA', studioFull:'MAPPA', period:'2020 — 現在', latestOp:{label:'OP', song:'廻廻奇譚', artist:'Eve'}, tags:['少年','バトル'] },
+  { id:'haruhi', title:'涼宮ハルヒの憂鬱', studio:'京アニ', studioFull:'京都アニメーション', period:'2006 — 2009', latestOp:{label:'OP', song:'冒険でしょでしょ？', artist:'平野綾'}, tags:['深夜','学園'] },
+  { id:'keion', title:'けいおん！', studio:'京アニ', studioFull:'京都アニメーション', period:'2009 — 2010', latestOp:{label:'OP', song:'Cagayake!GIRLS', artist:'桜高軽音部'}, tags:['日常','音楽'] },
+  { id:'spy', title:'SPY×FAMILY', studio:'WIT', studioFull:'WIT STUDIO / CloverWorks', period:'2022 — 現在', latestOp:{label:'OP', song:'ミックスナッツ', artist:'Official髭男dism'}, tags:['コメディ','アクション'] },
+];
+
+// ==================== RENDER ====================
+function render(){
+  const studio = document.querySelector('.filter-pill.active')?.dataset.studio || 'all';
+  const search = document.getElementById('search-input').value.trim().toLowerCase();
+
+  const filtered = ANIME_INDEX.filter(a => {
+    const studioMatch = studio === 'all' || a.studio === studio;
+    if(!search) return studioMatch;
+    const hay = (a.title + a.studioFull + a.latestOp.song + a.latestOp.artist + a.tags.join('')).toLowerCase();
+    return studioMatch && hay.includes(search);
+  });
+
+  const grid = document.getElementById('anime-grid');
+  document.getElementById('list-meta').textContent = `作品 — ${filtered.length}件`;
+
+  if(filtered.length === 0){
+    grid.innerHTML = `<div class="ac-empty">該当する作品が見つかりません。<br><span style="color:var(--gold)">他のキーワードで試してみてください</span></div>`;
+    return;
+  }
+
+  grid.innerHTML = filtered.map(a => `
+    <a class="ac fade" href="anime-detail.html?id=${a.id}">
+      <div class="ac-period">${a.period}</div>
+      <h3 class="ac-title">${a.title}</h3>
+      <div class="ac-studio">${a.studioFull}</div>
+      <div class="ac-divider"></div>
+      <div class="ac-op-label">${a.latestOp.label}</div>
+      <div class="ac-op">${a.latestOp.song} — ${a.latestOp.artist}</div>
+      <div class="ac-tags">${a.tags.map(t => `<span class="ac-tag">${t}</span>`).join('')}</div>
+      <span class="ac-arrow">→</span>
+    </a>
+  `).join('');
+}
+
+document.querySelectorAll('.filter-pill').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.filter-pill').forEach(x => x.classList.remove('active'));
+    b.classList.add('active');
+    render();
+  });
+});
+document.getElementById('search-input').addEventListener('input', () => {
+  render();
+  const q = document.getElementById('search-input').value.trim();
+  const hint = document.getElementById('ai-search-hint');
+  const nameEl = document.getElementById('ai-search-name');
+  const link = document.getElementById('ai-search-link');
+  if (q.length > 1) {
+    nameEl.textContent = q;
+    link.onclick = () => { window.location.href = 'anime-detail.html?name=' + encodeURIComponent(q); };
+    hint.style.display = 'block';
+  } else {
+    hint.style.display = 'none';
+  }
+});
+
+render();
+</script>
+</body>
+</html>
