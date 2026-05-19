@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>音楽ジャンル — 時代 Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;700;900&family=Zen+Kaku+Gothic+New:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07080f;--bg2:#0c0e1a;--bg3:#111320;--text:#e8e4d9;--text2:rgba(232,228,217,.5);--text3:rgba(232,228,217,.28);--gold:#c9a84c;--border:rgba(232,228,217,.08);--border2:rgba(232,228,217,.15);--radius:8px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Zen Kaku Gothic New',sans-serif;min-height:100vh;padding-bottom:5rem}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+.nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 2rem;border-bottom:.5px solid var(--border);background:rgba(7,8,15,.95);backdrop-filter:blur(12px);position:sticky;top:0;z-index:200}
+.nav-logo{font-family:'Shippori Mincho',serif;font-size:17px;font-weight:700;color:var(--gold)}
+.nav-bc{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text3)}
+.nav-bc a{color:rgba(201,168,76,.6)}.nav-bc a:hover{color:var(--gold)}
+.nav-bc .sep{color:var(--border2)}
+.hero{padding:3rem 2rem 2rem;border-bottom:.5px solid var(--border);position:relative;overflow:hidden}
+.hero-wm{position:absolute;right:-10px;top:-10px;font-family:'Shippori Mincho',serif;font-size:110px;font-weight:900;color:rgba(201,168,76,.04);line-height:1;pointer-events:none}
+.hero-eyebrow{font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:rgba(201,168,76,.55);margin-bottom:.85rem}
+.hero-title{font-family:'Shippori Mincho',serif;font-size:clamp(34px,5vw,52px);font-weight:900;line-height:1.1;margin-bottom:.75rem}
+.hero-desc{font-size:14px;color:var(--text2);line-height:2;max-width:500px;margin-bottom:1.25rem}
+.hero-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1rem}
+.hero-tag{font-size:10px;padding:3px 12px;border-radius:14px;border:.5px solid rgba(201,168,76,.3);color:rgba(201,168,76,.8)}
+/* ジャンル説明バッジ */
+.genre-info-bar{background:rgba(201,168,76,.06);border:.5px solid rgba(201,168,76,.15);border-radius:8px;padding:.75rem 1.25rem;font-size:12px;color:var(--text2);line-height:1.7;margin-top:.75rem}
+.genre-info-bar strong{color:var(--gold)}
+/* TABS */
+.explore-tabs{display:flex;gap:0;padding:0 2rem;border-bottom:.5px solid var(--border);background:var(--bg);position:sticky;top:53px;z-index:190}
+.etab{font-size:13px;font-weight:700;padding:12px 20px;border:none;background:transparent;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .18s;font-family:'Zen Kaku Gothic New',sans-serif;letter-spacing:.04em}
+.etab:hover{color:var(--text)}
+.etab.active{color:var(--gold);border-bottom-color:var(--gold)}
+/* おすすめ */
+.sub-tabs{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;padding:0 2rem;border-bottom:.5px solid var(--border);background:var(--bg2)}
+.sub-tabs::-webkit-scrollbar{display:none}
+.stab{flex-shrink:0;font-family:'Shippori Mincho',serif;font-size:13px;font-weight:700;padding:10px 16px;border:none;background:transparent;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .18s;white-space:nowrap}
+.stab:hover{color:var(--text)}
+.stab.active{color:var(--gold);border-bottom-color:var(--gold)}
+/* artist profile */
+.content{padding:1.5rem 2rem}
+.sec-lbl{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--text3);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+.sec-lbl::after{content:'';flex:1;height:.5px;background:var(--border)}
+.artist-profile{display:flex;gap:1.5rem;align-items:center;padding:1.25rem;background:var(--bg2);border:.5px solid var(--border);border-radius:var(--radius);margin-bottom:1.5rem;flex-wrap:wrap}
+.ap-img-wrap{width:80px;height:80px;border-radius:50%;overflow:hidden;flex-shrink:0;border:.5px solid var(--border2);background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--text3)}
+.ap-info{flex:1}
+.ap-name{font-family:'Shippori Mincho',serif;font-size:20px;font-weight:700;color:var(--text);margin-bottom:3px;cursor:pointer;transition:color .15s;text-decoration:none;display:block}
+.ap-name:hover{color:var(--gold)}
+.ap-desc{font-size:12px;color:var(--text2);line-height:1.7;margin-bottom:.6rem}
+.ap-links{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.ap-link{font-size:10px;padding:4px 12px;border-radius:12px;border:.5px solid;cursor:pointer;transition:all .15s;text-decoration:none}
+.ap-detail-btn{font-size:11px;padding:6px 14px;border-radius:12px;background:rgba(201,168,76,.15);border:.5px solid rgba(201,168,76,.4);color:var(--gold);cursor:pointer;transition:all .18s;text-decoration:none;font-weight:700;letter-spacing:.04em}
+.ap-detail-btn:hover{background:rgba(201,168,76,.25)}
+/* albums */
+.albums-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:10px;margin-bottom:2rem}
+.album-card{background:var(--bg2);border:.5px solid var(--border);border-radius:var(--radius);overflow:hidden;cursor:pointer;transition:all .2s}
+.album-card:hover{border-color:rgba(201,168,76,.4);transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.45)}
+.album-jacket{width:100%;aspect-ratio:1;object-fit:cover;display:block;background:var(--bg3)}
+.album-jacket-ph{width:100%;aspect-ratio:1;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:32px;opacity:.2}
+.album-body{padding:.65rem .75rem}
+.album-name{font-family:'Shippori Mincho',serif;font-size:12px;font-weight:700;color:var(--text);line-height:1.4;margin-bottom:2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.album-artist{font-size:10px;color:rgba(201,168,76,.6);margin-bottom:2px}
+.album-year{font-size:10px;color:var(--text3);margin-bottom:.45rem}
+.album-links{display:flex;gap:4px}
+.alnk{flex:1;font-size:9px;padding:3px 0;border-radius:3px;border:.5px solid;text-align:center;text-decoration:none;display:block;transition:all .15s}
+/* search */
+.search-zone{padding:1.25rem 2rem;background:var(--bg2);border-bottom:.5px solid var(--border)}
+.search-wrap{display:flex;gap:10px;max-width:560px;margin-bottom:.75rem}
+.search-input{flex:1;background:var(--bg);border:.5px solid var(--border2);border-radius:8px;color:var(--text);font-family:'Zen Kaku Gothic New',sans-serif;font-size:14px;padding:10px 16px;outline:none;transition:border-color .2s}
+.search-input:focus{border-color:rgba(201,168,76,.5)}
+.search-input::placeholder{color:var(--text3)}
+.search-btn{background:var(--gold);color:#07080f;border:none;border-radius:8px;padding:10px 20px;font-family:'Zen Kaku Gothic New',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap}
+.search-btn:hover{background:#e0be6a}
+.search-result-item{display:block;padding:.5rem .75rem;background:var(--bg3);border-radius:5px;margin-bottom:4px;text-decoration:none;color:var(--text);font-size:13px;font-family:'Shippori Mincho',serif;font-weight:700;transition:background .15s}
+.search-result-item:hover{background:rgba(201,168,76,.1)}
+.search-no-result{font-size:12px;color:var(--text3);padding:.5rem 0}
+.all-artists-link{font-size:12px;color:rgba(201,168,76,.7);text-decoration:none;display:inline-block;margin-top:.75rem}
+.all-artists-link:hover{color:var(--gold)}
+/* era */
+.era-tabs{display:flex;gap:8px;flex-wrap:wrap;padding:1rem 2rem;border-bottom:.5px solid var(--border);background:var(--bg2)}
+.eratab{font-size:12px;font-weight:700;padding:7px 18px;border-radius:20px;border:.5px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;transition:all .18s;font-family:'Shippori Mincho',serif}
+.eratab:hover{border-color:rgba(201,168,76,.4);color:var(--gold)}
+.eratab.active{background:rgba(201,168,76,.15);border-color:rgba(201,168,76,.5);color:var(--gold);font-weight:900}
+.era-header{background:var(--bg2);border:.5px solid rgba(201,168,76,.15);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1.5rem}
+.era-header-title{font-family:'Shippori Mincho',serif;font-size:20px;font-weight:700;color:var(--text);margin-bottom:.4rem}
+.era-header-sub{font-size:12px;color:var(--text2);line-height:1.8}
+.era-header-keywords{display:flex;gap:6px;flex-wrap:wrap;margin-top:.75rem}
+.era-kw{font-size:10px;padding:2px 9px;border-radius:10px;border:.5px solid rgba(201,168,76,.25);color:rgba(201,168,76,.7)}
+/* loading */
+.loading{padding:3rem;text-align:center;display:none}
+.loading.show{display:block}
+.ld-dots{display:flex;gap:6px;justify-content:center;margin-bottom:.75rem}
+.ld-dot{width:8px;height:8px;border-radius:50%;background:rgba(201,168,76,.4);animation:ldp 1.2s ease-in-out infinite}
+.ld-dot:nth-child(2){animation-delay:.2s}.ld-dot:nth-child(3){animation-delay:.4s}
+@keyframes ldp{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
+.ld-text{font-size:12px;color:var(--text3)}
+.error-msg{display:none;margin:1rem 0;background:rgba(255,80,80,.07);border:.5px solid rgba(255,80,80,.2);border-radius:var(--radius);padding:.85rem 1rem;font-size:12px;color:rgba(255,120,120,.8);line-height:1.7}
+.error-msg.show{display:block}
+.fade-in{animation:fadeIn .3s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+@media(max-width:760px){.nav{padding:.9rem 1.5rem}.hero,.content,.search-zone{padding-left:1.5rem;padding-right:1.5rem}.explore-tabs{padding:0 1.5rem}.albums-grid{grid-template-columns:repeat(auto-fill,minmax(110px,1fr))}}
+</style>
+</head>
+<body>
+<nav class="nav">
+  <span class="nav-logo">時代 Archive</span>
+  <div class="nav-bc"><a href="music.html" id="bc-music">音楽</a><span class="sep">›</span><span id="bc-genre" style="color:var(--text2)">ジャンル</span></div>
+</nav>
+<div class="hero">
+  <div class="hero-wm" id="hero-wm">音</div>
+  <div class="hero-eyebrow" id="hero-eyebrow">JAPANESE MUSIC</div>
+  <h1 class="hero-title" id="hero-title">読み込み中...</h1>
+  <p class="hero-desc" id="hero-desc"></p>
+  <div class="hero-tags" id="hero-tags"></div>
+  <div class="genre-info-bar" id="genre-info-bar" style="display:none"></div>
+</div>
+<div class="explore-tabs">
+  <button class="etab active" id="tab-recommend" onclick="switchTab('recommend')">おすすめ</button>
+  <button class="etab" id="tab-search" onclick="switchTab('search')">全アーティスト検索</button>
+  <button class="etab" id="tab-era" onclick="switchTab('era')">年代別</button>
+</div>
+<!-- おすすめ -->
+<div id="view-recommend">
+  <div class="sub-tabs" id="sub-tabs"></div>
+  <div class="content">
+    <div id="artist-profile-area"></div>
+    <div class="loading" id="loading-artist"><div class="ld-dots"><div class="ld-dot"></div><div class="ld-dot"></div><div class="ld-dot"></div></div><div class="ld-text" id="ld-text-artist">読み込み中...</div></div>
+    <div class="error-msg" id="error-artist"></div>
+    <div class="sec-lbl" id="albums-label-artist" style="display:none">アルバム・シングル</div>
+    <div class="albums-grid" id="albums-grid-artist"></div>
+  </div>
+</div>
+<!-- 全アーティスト検索 -->
+<div id="view-search" style="display:none">
+  <div class="search-zone">
+    <div class="search-wrap">
+      <input class="search-input" id="artist-search-input" type="text" placeholder="アーティスト名を入力..." oninput="onArtistSearch()" onkeydown="if(event.key==='Enter'&&!event.isComposing)goToArtist()">
+      <button class="search-btn" onclick="goToArtist()">検索</button>
+    </div>
+    <div id="artist-search-results"></div>
+    <a class="all-artists-link" id="all-artists-link" href="artists.html">全アーティスト一覧を見る →</a>
+  </div>
+</div>
+<!-- 年代別 -->
+<div id="view-era" style="display:none">
+  <div class="era-tabs" id="era-tabs"></div>
+  <div class="content">
+    <div id="era-header-area"></div>
+    <div class="loading" id="loading-era"><div class="ld-dots"><div class="ld-dot"></div><div class="ld-dot"></div><div class="ld-dot"></div></div><div class="ld-text">読み込み中...</div></div>
+    <div class="error-msg" id="error-era"></div>
+    <div class="sec-lbl" id="albums-label-era" style="display:none">代表アルバム</div>
+    <div class="albums-grid" id="albums-grid-era"></div>
+  </div>
+</div>
+<script>
+const API_BASE = 'https://jidai-archive-next.vercel.app';
+const params = new URLSearchParams(location.search);
+const genreId = params.get('genre') || '';
+
+// ─── ジャンル設定 ───────────────────────────────────────
+const GENRE_CONFIG = {
+  jpop:{name:'J-POP',wm:'J',eyebrow:'1990S — PRESENT · JAPAN',
+    desc:'1990年代のCD黄金期に社会現象を起こした日本の大衆音楽。宇多田ヒカル・Mr.Children・DREAMS COME TRUEなど、キャッチーなメロディと日本語の歌詞が特徴。',
+    tags:['1990年代〜','CD黄金期','ドラマタイアップ'],
+    info:'J-POPは「Japanese Pop」の略。<strong>歌謡曲・ロック・R&Bなど様々なジャンルが混ざり合った</strong>包括的なジャンルです。90年代のCD黄金期に確立され、現在もJ-POPという呼称は幅広い日本の大衆音楽を指します。',
+    recommend:[
+      {name:'宇多田ヒカル',nameEn:'Hikaru Utada',desc:'16歳でデビュー。ファーストアルバム「First Love」が760万枚を記録したJ-POP史上最大のヒットメーカー。'},
+      {name:'Mr.Children',nameEn:'Mr.Children',desc:'「Tomorrow never knows」「名もなき詩」など90年代を代表する国民的バンド。'},
+      {name:'DREAMS COME TRUE',nameEn:'Dreams Come True',desc:'「LOVE LOVE LOVE」「未来予想図Ⅱ」などポップな名曲を量産したユニット。'},
+      {name:'globe',nameEn:'globe',desc:'小室哲哉プロデュース。90年代後半を席巻したテクノポップユニット。'},
+      {name:'SMAP',nameEn:'SMAP',desc:'「世界に一つだけの花」「夜空ノムコウ」など老若男女に愛される楽曲多数。'},
+    ],
+    years:[
+      {era:'1990年代前半',key:'90s-early',title:'J-POPの確立',sub:'小室哲哉がプロデューサーとして台頭。ドラマタイアップが流行する時期。',keywords:['ドラマタイアップ','小室ファミリー','バンドブーム終焉'],artists:[{jp:'DREAMS COME TRUE',en:'Dreams Come True'},{jp:'Mr.Children',en:'Mr.Children'}]},
+      {era:'1990年代後半',key:'90s-late',title:'CD黄金期',sub:'宇多田ヒカル・浜崎あゆみ・globeが登場。CDシングルがミリオン連発した時代。',keywords:['ミリオンヒット','宇多田ヒカル','浜崎あゆみ'],artists:[{jp:'宇多田ヒカル',en:'Hikaru Utada'},{jp:'globe',en:'globe'}]},
+      {era:'2010年代〜現在',key:'2010s',title:'ストリーミングと新世代',sub:'YOASOBIや米津玄師など、ネット発のアーティストが台頭。',keywords:['ストリーミング','YOASOBI','米津玄師'],artists:[{jp:'米津玄師',en:'Kenshi Yonezu'}]},
+    ],
+    localArtists:[
+      {name:'宇多田ヒカル',nameEn:'Hikaru Utada'},{name:'Mr.Children',nameEn:'Mr.Children'},
+      {name:'DREAMS COME TRUE',nameEn:'Dreams Come True'},{name:'globe',nameEn:'globe'},
+      {name:'SMAP',nameEn:'SMAP'},{name:'浜崎あゆみ',nameEn:'Ayumi Hamasaki'},
+      {name:'槇原敬之',nameEn:'Noriyuki Makihara'},{name:'ZARD',nameEn:'ZARD'},
+      {name:'チャゲ&飛鳥',nameEn:'Chage and Aska'},{name:'米津玄師',nameEn:'Kenshi Yonezu'},
+    ]},
+  kayoukyoku:{name:'歌謡曲',wm:'歌',eyebrow:'1960S — 1980S · JAPAN',
+    desc:'昭和を代表する日本の大衆音楽。洋楽の影響を受けた伴奏に日本独自の旋律が乗る。美空ひばりから山口百恵まで、時代を超えた名曲が揃う。',
+    tags:['昭和','1960〜80年代','テレビ歌謡'],
+    info:'歌謡曲は<strong>昭和時代（1960〜80年代）の日本の大衆音楽の総称</strong>です。演歌・アイドル歌謡・グループサウンズなども含む幅広いジャンルで、J-POPの前身にあたります。',
+    recommend:[
+      {name:'美空ひばり',nameEn:'Misora Hibari',desc:'昭和を代表する「歌謡の女王」。圧倒的な歌唱力と表現力で半世紀にわたり第一線に立ち続けた。'},
+      {name:'山口百恵',nameEn:'Momoe Yamaguchi',desc:'70年代の国民的アイドル。「いい日旅立ち」「プレイバックPart2」など名曲多数。21歳で電撃引退。'},
+      {name:'沢田研二',nameEn:'Kenji Sawada',desc:'「TOKIO」「勝手にしやがれ」など圧倒的なカリスマ性で一世を風靡した昭和の大スター。'},
+      {name:'西城秀樹',nameEn:'Hideki Saijo',desc:'「新御三家」の一人。激しいパフォーマンスと甘い声で70〜80年代を席巻した。'},
+      {name:'ピンク・レディー',nameEn:'Pink Lady',desc:'「UFO」「渚のシンドバッド」など社会現象を巻き起こしたダンスポップデュオ。'},
+    ],
+    years:[
+      {era:'1960年代',key:'1960s',title:'歌謡曲の確立とGSブーム',sub:'グループサウンズが大流行。ザ・タイガース・ザ・スパイダースなどビートルズの影響を受けたバンドが続々登場。',keywords:['グループサウンズ','GSブーム','和製ポップス'],artists:[{jp:'ザ・タイガース',en:'The Tigers'}]},
+      {era:'1970年代',key:'1970s',title:'アイドル歌謡の黄金期',sub:'山口百恵・西城秀樹・郷ひろみ「新御三家」が台頭。フォークソングも同時進行で流行。',keywords:['新御三家','花の中三トリオ','フォークソング'],artists:[{jp:'山口百恵',en:'Momoe Yamaguchi'},{jp:'西城秀樹',en:'Hideki Saijo'}]},
+      {era:'1980年代',key:'1980s',title:'歌謡曲からJ-POPへの移行期',sub:'松田聖子・中森明菜が君臨。バブル景気とともに音楽シーンが華やかに。',keywords:['松田聖子','中森明菜','バブル前夜'],artists:[{jp:'松田聖子',en:'Seiko Matsuda'},{jp:'中森明菜',en:'Akina Nakamori'}]},
+    ],
+    localArtists:[
+      {name:'美空ひばり',nameEn:'Misora Hibari'},{name:'山口百恵',nameEn:'Momoe Yamaguchi'},
+      {name:'沢田研二',nameEn:'Kenji Sawada'},{name:'西城秀樹',nameEn:'Hideki Saijo'},
+      {name:'松田聖子',nameEn:'Seiko Matsuda'},{name:'中森明菜',nameEn:'Akina Nakamori'},
+      {name:'郷ひろみ',nameEn:'Hiromi Go'},{name:'野口五郎',nameEn:'Goro Noguchi'},
+    ]},
+  jrock:{name:'J-ROCK',wm:'R',eyebrow:'1990S — PRESENT · JAPAN',
+    desc:'バンドサウンドを重視した日本のロック。90年代バンドブームから始まり、ヴィジュアル系・オルタナなど多様なサブジャンルに発展。',
+    tags:['バンドサウンド','1990s〜','ヴィジュアル系'],
+    info:'J-ROCKは<strong>バンドサウンドを中心とした日本のロック音楽の総称</strong>です。ヴィジュアル系・パンク・オルタナなどサブジャンルが豊富。J-POPとの境界は曖昧で、重なる部分も多いです。',
+    recommend:[
+      {name:"B'z",nameEn:"B'z",desc:'稲葉浩志と松本孝弘によるロックデュオ。累計売上枚数は日本1位。ハードロックを日本的なポップに昇華。'},
+      {name:'X JAPAN',nameEn:'X Japan',desc:'ヴィジュアル系の元祖。「紅」「Endless Rain」で伝説的な存在に。'},
+      {name:'GLAY',nameEn:'GLAY',desc:'「BELOVED」「誘惑」など90年代後半を代表するミリオンヒット連発のロックバンド。'},
+      {name:"L'Arc〜en〜Ciel",nameEn:"L'Arc-en-Ciel",desc:'hydeのカリスマ的ボーカルで世界的人気を誇る。'},
+      {name:'BUCK-TICK',nameEn:'Buck-Tick',desc:'ゴシック・ヴィジュアル系の先駆者。40年以上活動し続けた伝説的バンド。'},
+    ],
+    years:[
+      {era:'1990年代前半',key:'90s-early',title:'ヴィジュアル系の誕生',sub:'X JAPANがヴィジュアル系という新ジャンルを確立。',keywords:['ヴィジュアル系','X JAPAN','イカ天'],artists:[{jp:'X JAPAN',en:'X Japan'}]},
+      {era:'1990年代後半',key:'90s-late',title:'J-ROCKの黄金期',sub:"B'z・GLAY・L'Arc〜en〜Cielがミリオンヒット連発。",keywords:["B'z","GLAY","ミリオンヒット"],artists:[{jp:"B'z",en:"B'z"},{jp:'GLAY',en:'GLAY'}]},
+      {era:'2000年代〜現在',key:'2000s',title:'多様化と世界進出',sub:'ONE OK ROCKが世界進出。バンドのジャンルがさらに多様化。',keywords:['ONE OK ROCK','海外進出','インディーズ'],artists:[{jp:'ONE OK ROCK',en:'ONE OK ROCK'}]},
+    ],
+    localArtists:[
+      {name:"B'z",nameEn:"B'z"},{name:'X JAPAN',nameEn:'X Japan'},
+      {name:'GLAY',nameEn:'GLAY'},{name:"L'Arc〜en〜Ciel",nameEn:"L'Arc-en-Ciel"},
+      {name:'BUCK-TICK',nameEn:'Buck-Tick'},{name:'BOØWY',nameEn:'BOOWY'},
+      {name:'浜田省吾',nameEn:'Shogo Hamada'},{name:'矢沢永吉',nameEn:'Eikichi Yazawa'},
+      {name:'氷室京介',nameEn:'Kyosuke Himuro'},{name:'布袋寅泰',nameEn:'Tomoyasu Hotei'},
+    ]},
+  enka:{name:'演歌',wm:'演',eyebrow:'1960S — PRESENT · JAPAN',
+    desc:'日本独自の情念と日本音階を用いた歌謡ジャンル。男女の恋路や義理人情を情感たっぷうに表現。こぶしと呼ばれる独特の装飾音が特徴。',
+    tags:['日本音階','こぶし','情念'],
+    info:'演歌は<strong>1960年代に確立した日本固有の音楽ジャンル</strong>です。日本の五音音階・こぶし・演歌節が特徴。歌謡曲の一種とも言えますが、より日本的な情緒を前面に出しています。',
+    recommend:[
+      {name:'美空ひばり',nameEn:'Misora Hibari',desc:'「悲しい酒」「柔」など演歌の名曲を数多く残す昭和の歌姫。'},
+      {name:'北島三郎',nameEn:'Saburo Kitajima',desc:'「函館の女」「与作」など国民的演歌歌手。50年以上第一線で活躍。'},
+      {name:'細川たかし',nameEn:'Takashi Hosokawa',desc:'「心のこり」「北酒場」など親しみやすい演歌で幅広いファンを持つ。'},
+      {name:'天童よしみ',nameEn:'Yoshimi Tendo',desc:'圧倒的な声量と表現力で数多くのヒット曲を持つ演歌歌手。'},
+      {name:'石川さゆり',nameEn:'Sayuri Ishikawa',desc:'「津軽海峡・冬景色」「天城越え」など演歌の名曲を歌い続ける。'},
+    ],
+    years:[
+      {era:'1960年代',key:'1960s',title:'演歌の確立',sub:'日本独自の音楽性が明確になり演歌というジャンルが確立。都はるみ・美空ひばりが台頭。',keywords:['都はるみ','美空ひばり','演歌の確立'],artists:[{jp:'美空ひばり',en:'Misora Hibari'}]},
+      {era:'1970〜80年代',key:'1970-80s',title:'演歌の黄金期',sub:'北島三郎・細川たかし・石川さゆりが人気。紅白歌合戦で演歌が主流に。',keywords:['紅白歌合戦','北島三郎','石川さゆり'],artists:[{jp:'北島三郎',en:'Saburo Kitajima'},{jp:'石川さゆり',en:'Sayuri Ishikawa'}]},
+      {era:'1990年代〜現在',key:'1990s',title:'伝統の継承',sub:'J-POPが主流になる中でも演歌の人気は根強い。氷川きよしなど若手演歌歌手も登場。',keywords:['氷川きよし','若手演歌','伝統継承'],artists:[{jp:'氷川きよし',en:'Kiyoshi Hikawa'}]},
+    ],
+    localArtists:[
+      {name:'美空ひばり',nameEn:'Misora Hibari'},{name:'北島三郎',nameEn:'Saburo Kitajima'},
+      {name:'細川たかし',nameEn:'Takashi Hosokawa'},{name:'天童よしみ',nameEn:'Yoshimi Tendo'},
+      {name:'石川さゆり',nameEn:'Sayuri Ishikawa'},{name:'氷川きよし',nameEn:'Kiyoshi Hikawa'},
+      {name:'五木ひろし',nameEn:'Hiroshi Itsuki'},{name:'都はるみ',nameEn:'Harumi Miyako'},
+    ]},
+  newmusic:{name:'ニューミュージック',wm:'新',eyebrow:'1970S — 1980S · JAPAN',
+    desc:'70年代フォークソングから発展した、シンガーソングライターによる日本独自のポップス。吉田拓郎・荒井由実（松任谷由実）が牽引した。',
+    tags:['シンガーソングライター','1970〜80年代','自作自演'],
+    info:'ニューミュージックは<strong>1970年代に日本で生まれたシンガーソングライター文化</strong>です。フォークの政治色が薄れ、都会的・個人的な内容の歌詞へ変化。シティポップとも深く関わるジャンルです。',
+    recommend:[
+      {name:'松任谷由実',nameEn:'Yumi Matsutoya',desc:'「ひこうき雲」「春よ、来い」など日本のポップス史上最重要のシンガーソングライター。'},
+      {name:'井上陽水',nameEn:'Yosui Inoue',desc:'「夢の中へ」「少年時代」など独特の詩的世界観で大きな影響を与えた。'},
+      {name:'吉田拓郎',nameEn:'Takuro Yoshida',desc:'日本のニューミュージック・フォーク界の第一人者。自作自演スタイルを確立した先駆者。'},
+      {name:'中島みゆき',nameEn:'Miyuki Nakajima',desc:'「時代」「糸」など40年以上にわたり第一線で活躍するシンガーソングライター。'},
+      {name:'オフコース',nameEn:'Off Course',desc:'「さよなら」「YES-YES-YES」などで知られる70〜80年代を代表するグループ。'},
+    ],
+    years:[
+      {era:'1970年代前半',key:'70s-early',title:'フォークからの脱却',sub:'吉田拓郎・かぐや姫・荒井由実が登場。フォークの政治色が薄れ個人的な内容の歌詞へ変化。',keywords:['吉田拓郎','荒井由実','かぐや姫'],artists:[{jp:'荒井由実',en:'Yumi Arai'},{jp:'吉田拓郎',en:'Takuro Yoshida'}]},
+      {era:'1970年代後半',key:'70s-late',title:'ニューミュージックの洗練',sub:'松任谷由実・オフコース・サザンオールスターズが台頭。より洗練されたアレンジに。',keywords:['松任谷由実','オフコース','サザン'],artists:[{jp:'松任谷由実',en:'Yumi Matsutoya'},{jp:'オフコース',en:'Off Course'}]},
+      {era:'1980年代',key:'1980s',title:'J-POP前夜の最盛期',sub:'中島みゆき・玉置浩二が活躍。バンドブームとも融合しながらJ-POPへと移行。',keywords:['中島みゆき','玉置浩二','バンドブーム前夜'],artists:[{jp:'中島みゆき',en:'Miyuki Nakajima'}]},
+    ],
+    localArtists:[
+      {name:'松任谷由実',nameEn:'Yumi Matsutoya'},{name:'井上陽水',nameEn:'Yosui Inoue'},
+      {name:'吉田拓郎',nameEn:'Takuro Yoshida'},{name:'中島みゆき',nameEn:'Miyuki Nakajima'},
+      {name:'オフコース',nameEn:'Off Course'},{name:'荒井由実',nameEn:'Yumi Arai'},
+      {name:'財津和夫',nameEn:'Kazuo Zaitsu'},{name:'加藤和彦',nameEn:'Kazuhiko Kato'},
+    ]},
+  idol:{name:'アイドルポップス',wm:'偶',eyebrow:'1980S — PRESENT · JAPAN',
+    desc:'可愛らしいビジュアルとキャッチーな楽曲でファンを魅了する日本固有の文化。松田聖子・中森明菜が君臨した80年代から現代のAKBグループまで。',
+    tags:['アイドル','1980s〜','ファン文化'],
+    info:'アイドルポップスは<strong>日本が世界に誇る固有の音楽・芸能文化</strong>です。楽曲だけでなくアイドルという「存在」そのものがコンテンツ。80年代の松田聖子から現代のK-POPに至るまで世界中に影響を与えています。',
+    recommend:[
+      {name:'松田聖子',nameEn:'Seiko Matsuda',desc:'「赤いスイートピー」「渚のバルコニー」など。80年代を代表するアイドルの女王。'},
+      {name:'中森明菜',nameEn:'Akina Nakamori',desc:'「少女A」「飾りじゃないのよ涙は」など。松田聖子と並ぶ80年代二大アイドル。'},
+      {name:'菊池桃子',nameEn:'Momoko Kikuchi',desc:'「卒業-GRADUATION-」「夏のヴィーナス」など。シティポップとの融合が特徴。'},
+      {name:'小泉今日子',nameEn:'Kyoko Koizumi',desc:'「なんてったってアイドル」など。個性的なキャラクターで長く愛された。'},
+      {name:'南野陽子',nameEn:'Yoko Minamino',desc:'「吐息でネット」「はいからさんが通る」など。清楚なイメージで人気を博した。'},
+    ],
+    years:[
+      {era:'1980年代前半',key:'80s-early',title:'アイドル黄金時代',sub:'松田聖子・中森明菜が台頭。「花の82年組」などアイドルが社会現象に。',keywords:['松田聖子','中森明菜','花の82年組'],artists:[{jp:'松田聖子',en:'Seiko Matsuda'},{jp:'中森明菜',en:'Akina Nakamori'}]},
+      {era:'1980年代後半',key:'80s-late',title:'グループアイドルの台頭',sub:'おニャン子クラブがグループアイドルの原型を作る。後のAKBシステムの原点。',keywords:['おニャン子クラブ','工藤静香','光GENJI'],artists:[{jp:'光GENJI',en:'Hikaru Genji'}]},
+      {era:'2000年代〜現在',key:'2000s',title:'AKBシステムの確立',sub:'AKB48が総選挙という新しいファン参加型文化を確立。',keywords:['AKB48','乃木坂46','K-POP影響'],artists:[{jp:'AKB48',en:'AKB48'}]},
+    ],
+    localArtists:[
+      {name:'松田聖子',nameEn:'Seiko Matsuda'},{name:'中森明菜',nameEn:'Akina Nakamori'},
+      {name:'菊池桃子',nameEn:'Momoko Kikuchi'},{name:'小泉今日子',nameEn:'Kyoko Koizumi'},
+      {name:'南野陽子',nameEn:'Yoko Minamino'},{name:'近藤真彦',nameEn:'Masahiko Kondo'},
+      {name:'本田美奈子',nameEn:'Minako Honda'},{name:'西城秀樹',nameEn:'Hideki Saijo'},
+    ]},
+  fusion:{name:'フュージョン / AOR',wm:'融',eyebrow:'1970S — 1980S · JAPAN',
+    desc:'ジャズとロック・ポップスが融合した都会的サウンド。日本では70〜80年代に独自の発展を遂げ、シティポップと深く関わる洗練されたジャンル。',
+    tags:['ジャズ×ロック','都会的','演奏技術'],
+    info:'フュージョンは<strong>ジャズとロック・ポップスが融合した演奏技術重視のジャンル</strong>です。AOR（Album Oriented Rock）とも呼ばれ、シティポップの背景にある洗練されたサウンドの源流でもあります。',
+    recommend:[
+      {name:'カシオペア',nameEn:'Casiopea',desc:'「ASAYAKE」など圧倒的な演奏技術で日本のフュージョンシーンを牽引したバンド。'},
+      {name:'T-SQUARE',nameEn:'T-Square',desc:'「TRUTH」などF1テーマ曲で有名。世界的に評価されるフュージョンバンド。'},
+      {name:'高中正義',nameEn:'Masayoshi Takanaka',desc:'「BLUE LAGOON」など南国を感じさせるギターサウンドが特徴。'},
+      {name:'佐藤博',nameEn:'Hiroshi Sato',desc:'「AWAKENING」など。シティポップとフュージョンの架け橋となったミュージシャン。'},
+      {name:'渡辺貞夫',nameEn:'Sadao Watanabe',desc:'日本のジャズ・フュージョン界の重鎮。世界に認められたアルトサックスの名手。'},
+    ],
+    years:[
+      {era:'1970年代',key:'1970s',title:'フュージョンの黎明期',sub:'洋楽フュージョンの影響を受け、日本でもジャズとロックの融合が始まる。',keywords:['ジャズ影響','渡辺貞夫','山下洋輔'],artists:[{jp:'渡辺貞夫',en:'Sadao Watanabe'}]},
+      {era:'1980年代前半',key:'80s-early',title:'日本フュージョンの黄金期',sub:'カシオペア・T-SQUAREが台頭。高度な演奏技術と都会的なサウンドが人気。',keywords:['カシオペア','T-SQUARE','テクニカル'],artists:[{jp:'カシオペア',en:'Casiopea'},{jp:'T-SQUARE',en:'T-Square'}]},
+      {era:'1980年代後半',key:'80s-late',title:'シティポップとの融合',sub:'フュージョンがシティポップに融合。より聴きやすいAORとして発展。',keywords:['AOR','シティポップ融合','大人の音楽'],artists:[{jp:'高中正義',en:'Masayoshi Takanaka'},{jp:'佐藤博',en:'Hiroshi Sato'}]},
+    ],
+    localArtists:[
+      {name:'カシオペア',nameEn:'Casiopea'},{name:'T-SQUARE',nameEn:'T-Square'},
+      {name:'高中正義',nameEn:'Masayoshi Takanaka'},{name:'佐藤博',nameEn:'Hiroshi Sato'},
+      {name:'渡辺貞夫',nameEn:'Sadao Watanabe'},{name:'岡村靖幸',nameEn:'Yasuyuki Okamura'},
+      {name:'鈴木雅之',nameEn:'Masayuki Suzuki'},{name:'久保田利伸',nameEn:'Toshinobu Kubota'},
+    ]},
+  vocaloid:{name:'ボカロ',wm:'ボ',eyebrow:'2000S — PRESENT · JAPAN',
+    desc:'ヤマハの音声合成技術VOCALOIDを使った音楽文化。初音ミクを筆頭にニコニコ動画から生まれ、米津玄師・YOASOBIら現代J-POPの礎にもなった。',
+    tags:['初音ミク','ニコニコ動画','2007〜'],
+    info:'ボカロは<strong>音声合成ソフトを使って作られた楽曲とその文化</strong>です。プロではない一般のクリエイターが作曲・投稿するDTM文化から生まれ、米津玄師・YOASOBIなど多くのアーティストを輩出しました。',
+    recommend:[
+      {name:'初音ミク',nameEn:'Hatsune Miku',desc:'2007年発売のVOCALOIDソフト。世界的なバーチャルアイドルに成長し、ボカロ文化を牽引する象徴。'},
+      {name:'livetune',nameEn:'livetune',desc:'「Tell Your World」などを手がけたボカロP。初音ミク楽曲でGoogle CMにも起用された。'},
+      {name:'DECO*27',nameEn:'DECO*27',desc:'「モザイクロール」「ヴァンパイア」など幅広く手がける人気ボカロP。'},
+      {name:'じん(自然の敵P)',nameEn:'Jin',desc:'「カゲロウデイズ」を中心とした「カゲロウプロジェクト」で一世を風靡。'},
+      {name:'Supercell',nameEn:'Supercell',desc:'「君の知らない物語」などが代表曲。メジャーデビューも果たした人気ユニット。'},
+    ],
+    years:[
+      {era:'2007〜2010年',key:'2007-2010',title:'ボカロ文化の誕生',sub:'初音ミク発売・ニコニコ動画での爆発的普及。「メルト」など名曲が次々誕生。',keywords:['初音ミク','ニコニコ動画','メルト'],artists:[{jp:'初音ミク',en:'Hatsune Miku'}]},
+      {era:'2011〜2015年',key:'2011-2015',title:'商業化とメディアミックス',sub:'ボカロ曲のCD化・小説化が相次ぐ。カゲロウプロジェクトがメディアミックスの先駆けに。',keywords:['じん','カゲロウプロジェクト','商業化'],artists:[{jp:'じん(自然の敵P)',en:'Jin'}]},
+      {era:'2016年〜現在',key:'2016-',title:'ボカロ出身アーティストの台頭',sub:'米津玄師・YOASOBIなどボカロP出身アーティストがメジャーシーンで大活躍。',keywords:['米津玄師','YOASOBI','Eve'],artists:[{jp:'米津玄師',en:'Kenshi Yonezu'}]},
+    ],
+    localArtists:[
+      {name:'初音ミク',nameEn:'Hatsune Miku'},{name:'livetune',nameEn:'livetune'},
+      {name:'DECO*27',nameEn:'DECO*27'},{name:'じん(自然の敵P)',nameEn:'Jin'},
+      {name:'Supercell',nameEn:'Supercell'},{name:'米津玄師',nameEn:'Kenshi Yonezu'},
+    ]},
+  technopop:{name:'テクノポップ',wm:'電',eyebrow:'1970S — 1980S · JAPAN',
+    desc:'電子楽器・シンセサイザーを駆使した未来的サウンド。YMOが世界に先駆けて確立し、坂本龍一・細野晴臣・高橋幸宏の才能が結集したジャンル。',
+    tags:['シンセサイザー','YMO','電子音楽'],
+    info:'テクノポップは<strong>電子楽器を主体とした未来的なポップミュージック</strong>です。YMO（イエロー・マジック・オーケストラ）が1970年代末に世界に先駆けて確立し、現在のPerfumeまで脈々と続く日本独自のジャンルです。',
+    recommend:[
+      {name:'YMO（イエロー・マジック・オーケストラ）',nameEn:'Yellow Magic Orchestra',desc:'坂本龍一・細野晴臣・高橋幸宏による世界的テクノポップグループ。「Rydeen」「Technopolis」が代表曲。'},
+      {name:'坂本龍一',nameEn:'Ryuichi Sakamoto',desc:'YMO解散後もソロで活躍。映画音楽でも世界的評価を獲得。2023年逝去。'},
+      {name:'細野晴臣',nameEn:'Haruomi Hosono',desc:'はっぴいえんど→ティン・パン・アレー→YMOと進化し、日本のポップス史を変えた音楽家。'},
+      {name:'TM NETWORK',nameEn:'TM Network',desc:'「Get Wild」「Self Control」など。小室哲哉・宇都宮隆・木根尚登によるシンセポップグループ。'},
+      {name:'Perfume',nameEn:'Perfume',desc:'中田ヤスタカプロデュース。現代テクノポップを代表するグループ。'},
+    ],
+    years:[
+      {era:'1970年代後半',key:'70s-late',title:'YMOの誕生',sub:'1978年YMO結成。「TECHNODELIC」などで世界中にテクノポップを広める。',keywords:['YMO結成','テクノポップ誕生','世界デビュー'],artists:[{jp:'YMO（イエロー・マジック・オーケストラ）',en:'Yellow Magic Orchestra'}]},
+      {era:'1980年代',key:'1980s',title:'テクノポップの全盛期',sub:'TM NETWORKが台頭。小室哲哉がのちのJ-POPに繋がるサウンドを確立。',keywords:['TM NETWORK','小室哲哉','シンセポップ'],artists:[{jp:'TM NETWORK',en:'TM Network'},{jp:'坂本龍一',en:'Ryuichi Sakamoto'}]},
+      {era:'2000年代〜現在',key:'2000s',title:'現代テクノポップの復活',sub:'Perfume・中田ヤスタカがテクノポップを現代に蘇らせ、世界的な評価を獲得。',keywords:['Perfume','中田ヤスタカ','きゃりーぱみゅぱみゅ'],artists:[{jp:'Perfume',en:'Perfume'}]},
+    ],
+    localArtists:[
+      {name:'YMO（イエロー・マジック・オーケストラ）',nameEn:'Yellow Magic Orchestra'},
+      {name:'坂本龍一',nameEn:'Ryuichi Sakamoto'},{name:'細野晴臣',nameEn:'Haruomi Hosono'},
+      {name:'高橋幸宏',nameEn:'Yukihiro Takahashi'},{name:'TM NETWORK',nameEn:'TM Network'},
+      {name:'Perfume',nameEn:'Perfume'},{name:'小室哲哉',nameEn:'Tetsuya Komuro'},
+    ]},
+};
+
+const cfg = GENRE_CONFIG[genreId];
+if (!cfg) { window.location.href = 'music.html'; }
+
+// ─── ページ設定 ─────────────────────────────────────
+document.title = cfg.name + ' — 時代 Archive';
+document.getElementById('bc-genre').textContent = cfg.name;
+document.getElementById('hero-wm').textContent = cfg.wm;
+document.getElementById('hero-eyebrow').textContent = cfg.eyebrow;
+document.getElementById('hero-title').textContent = cfg.name;
+document.getElementById('hero-desc').textContent = cfg.desc;
+document.getElementById('hero-tags').innerHTML = cfg.tags.map(t=>`<span class="hero-tag">${t}</span>`).join('');
+if (cfg.info) {
+  const bar = document.getElementById('genre-info-bar');
+  bar.innerHTML = '💡 ' + cfg.info;
+  bar.style.display = 'block';
+}
+// 全アーティストリンク
+document.getElementById('all-artists-link').href = 'artists.html?genre=' + genreId;
+
+// ─── タブ切り替え ────────────────────────────────────
+function switchTab(tab) {
+  ['recommend','search','era'].forEach(t => {
+    document.getElementById('tab-'+t).classList.toggle('active', t===tab);
+    document.getElementById('view-'+t).style.display = t===tab ? 'block' : 'none';
+  });
+  if (tab==='era') {
+    const activeEra = document.querySelector('.eratab.active');
+    if (activeEra) {
+      const match = activeEra.getAttribute('onclick').match(/'([^']+)'/);
+      if (match) loadEra(activeEra, match[1]);
+    }
+  }
+}
+
+// ─── おすすめタブ：アーティストプロフィール ──────────
+function buildSubTabs() {
+  const el = document.getElementById('sub-tabs');
+  cfg.recommend.forEach((a, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'stab' + (i===0?' active':'');
+    btn.textContent = a.name;
+    btn.onclick = () => loadArtist(btn, a.name, a.nameEn, a.desc);
+    el.appendChild(btn);
+  });
+  // 最初のアーティストを表示
+  loadArtist(el.querySelector('.stab'), cfg.recommend[0].name, cfg.recommend[0].nameEn, cfg.recommend[0].desc);
+}
+
+async function loadArtist(btn, artistJP, artistEN, desc) {
+  document.querySelectorAll('.stab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('artist-profile-area').innerHTML='';
+  document.getElementById('albums-grid-artist').innerHTML='';
+  document.getElementById('albums-label-artist').style.display='none';
+  hideError('artist');
+  showLoading('artist','iTunes APIからジャケットを取得中...');
+  const detailUrl='artist.html?name='+encodeURIComponent(artistJP)+'&en='+encodeURIComponent(artistEN||'')+'&category=musician';
+  document.getElementById('artist-profile-area').innerHTML=`
+    <div class="artist-profile fade-in">
+      <div class="ap-img-wrap">🎵</div>
+      <div class="ap-info">
+        <a class="ap-name" href="${detailUrl}">${artistJP}</a>
+        <div class="ap-desc">${desc}</div>
+        <div class="ap-links">
+          <a class="ap-link" href="https://www.youtube.com/results?search_query=${encodeURIComponent(artistJP)}" target="_blank" style="background:rgba(255,60,60,.08);border-color:rgba(255,60,60,.25);color:#ff8888">YouTube</a>
+          <a class="ap-link" href="https://open.spotify.com/search/${encodeURIComponent(artistEN||artistJP)}" target="_blank" style="background:rgba(29,185,84,.08);border-color:rgba(29,185,84,.25);color:#1db954">Spotify</a>
+          <a class="ap-link" href="https://music.apple.com/jp/search?term=${encodeURIComponent(artistJP)}" target="_blank" style="background:rgba(252,60,68,.07);border-color:rgba(252,60,68,.2);color:#fc8888">Apple Music</a>
+          <a class="ap-detail-btn" href="${detailUrl}">詳細ページを見る →</a>
+        </div>
+      </div>
+    </div>`;
+  await fetchAndRenderAlbums(artistJP, artistEN, 'artist');
+}
+
+// ─── 全アーティスト検索タブ ──────────────────────────
+function onArtistSearch() {
+  const q = document.getElementById('artist-search-input').value.trim();
+  const results = document.getElementById('artist-search-results');
+  if (q.length===0) { results.innerHTML=''; return; }
+  const matched = cfg.localArtists.filter(a=>a.name.includes(q)||a.nameEn.toLowerCase().includes(q.toLowerCase()));
+  if (matched.length>0) {
+    results.innerHTML = matched.map(a=>
+      '<a class="search-result-item" href="artist.html?name='+encodeURIComponent(a.name)+'&en='+encodeURIComponent(a.nameEn)+'&category=musician">'+a.name+
+      ' <span style="font-size:11px;color:var(--text3);font-family:\'Zen Kaku Gothic New\',sans-serif;font-weight:400">'+a.nameEn+'</span></a>'
+    ).join('');
+  } else {
+    results.innerHTML='<div class="search-no-result">一覧にないアーティストは → <a href="artist.html?name='+encodeURIComponent(q)+'&genre='+encodeURIComponent(genreId)+'" style="color:var(--gold);text-decoration:none">AIでページを生成する</a></div>';
+    // adminに送信
+    sendToAdmin(q);
+  }
+}
+
+function goToArtist() {
+  const q = document.getElementById('artist-search-input').value.trim();
+  if (!q) return;
+  const matched = cfg.localArtists.find(a=>a.name.includes(q)||a.nameEn.toLowerCase().includes(q.toLowerCase()));
+  if (matched) {
+    window.location.href='artist.html?name='+encodeURIComponent(matched.name)+'&en='+encodeURIComponent(matched.nameEn)+'&category=musician';
+  } else {
+    sendToAdmin(q);
+    window.location.href='artist.html?name='+encodeURIComponent(q)+'&genre='+encodeURIComponent(genreId);
+  }
+}
+
+async function sendToAdmin(name) {
+  try {
+    await fetch(API_BASE+'/api/artists', {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({name, genre:cfg.name, requestedGenre:genreId, addedAt:new Date().toISOString()})
+    });
+  } catch(e) {}
+}
+
+// ─── 年代別タブ ──────────────────────────────────────
+function buildEraTabs() {
+  const tabsEl = document.getElementById('era-tabs');
+  cfg.years.forEach((y, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'eratab' + (i===0?' active':'');
+    btn.textContent = y.era;
+    btn.setAttribute('data-key', y.key);
+    btn.onclick = () => loadEra(btn, y.key);
+    tabsEl.appendChild(btn);
+  });
+}
+
+async function loadEra(btn, eraKey) {
+  document.querySelectorAll('.eratab').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  const era = cfg.years.find(y=>y.key===eraKey);
+  if (!era) return;
+  document.getElementById('albums-grid-era').innerHTML='';
+  document.getElementById('albums-label-era').style.display='none';
+  hideError('era');
+  showLoading('era','iTunes APIからジャケットを取得中...');
+  document.getElementById('era-header-area').innerHTML=`
+    <div class="era-header fade-in">
+      <div class="era-header-title">${era.era} — ${era.title}</div>
+      <div class="era-header-sub">${era.sub}</div>
+      <div class="era-header-keywords">${(era.keywords||[]).map(k=>`<span class="era-kw">${k}</span>`).join('')}</div>
+    </div>`;
+  const allAlbums=[];
+  for (const artist of era.artists) {
+    const albums = await fetchAlbums(artist.jp, artist.en);
+    albums.slice(0,4).forEach(a=>{a._artistJP=artist.jp;a._artistEN=artist.en;allAlbums.push(a);});
+  }
+  hideLoading('era');
+  renderAlbums(allAlbums,'era');
+}
+
+// ─── iTunes API ───────────────────────────────────────
+async function fetchAlbums(artistJP, artistEN) {
+  try {
+    const res=await fetch('https://itunes.apple.com/search?term='+encodeURIComponent(artistJP)+'&country=JP&media=music&entity=album&limit=10&lang=ja_jp');
+    const data=await res.json();
+    let albums=data.results||[];
+    if(albums.length===0&&artistEN){
+      const res2=await fetch('https://itunes.apple.com/search?term='+encodeURIComponent(artistEN)+'&country=JP&media=music&entity=album&limit=10');
+      const data2=await res2.json();albums=data2.results||[];
+    }
+    const seen=new Set();
+    return albums.filter(a=>{const k=(a.collectionName||'').toLowerCase();if(seen.has(k))return false;seen.add(k);return true;});
+  } catch(e){return[];}
+}
+
+async function fetchAndRenderAlbums(artistJP, artistEN, mode) {
+  const albums=await fetchAlbums(artistJP,artistEN);
+  hideLoading(mode);
+  if(albums.length===0){showError(mode,'アルバムが見つかりませんでした。');return;}
+  albums.forEach(a=>{a._artistJP=artistJP;a._artistEN=artistEN;});
+  renderAlbums(albums.slice(0,16),mode);
+}
+
+function renderAlbums(albums, mode) {
+  const grid=document.getElementById('albums-grid-'+mode);
+  const label=document.getElementById('albums-label-'+mode);
+  grid.innerHTML='';
+  if(albums.length===0){showError(mode,'アルバムが見つかりませんでした。');return;}
+  label.style.display='flex';
+  albums.forEach(album=>{
+    const title=album.collectionName||'';
+    const img=(album.artworkUrl100||'').replace('100x100bb','400x400bb');
+    const year=album.releaseDate?album.releaseDate.substring(0,4):'';
+    const itunesUrl=album.collectionViewUrl||'#';
+    const artistJP=album._artistJP||'';
+    const artistEN=album._artistEN||'';
+    const ytQ=encodeURIComponent(artistJP+' '+title);
+    const spQ=encodeURIComponent(title+' '+(artistEN||artistJP));
+    const card=document.createElement('div');
+    card.className='album-card fade-in';
+    card.innerHTML=`${img?`<img class="album-jacket" src="${img}" alt="${title}" loading="lazy" onerror="this.outerHTML='<div class=album-jacket-ph>🎵</div>'">`:`<div class="album-jacket-ph">🎵</div>`}<div class="album-body"><div class="album-name">${title}</div>${mode==='era'?`<div class="album-artist">${artistJP}</div>`:''}<div class="album-year">${year}</div><div class="album-links"><a class="alnk" href="${itunesUrl}" target="_blank" style="background:rgba(252,60,68,.07);border-color:rgba(252,60,68,.2);color:#fc8888">AM</a><a class="alnk" href="https://open.spotify.com/search/${spQ}" target="_blank" style="background:rgba(29,185,84,.08);border-color:rgba(29,185,84,.25);color:#1db954">SP</a><a class="alnk" href="https://www.youtube.com/results?search_query=${ytQ}" target="_blank" style="background:rgba(255,60,60,.08);border-color:rgba(255,60,60,.25);color:#ff8888">YT</a></div></div>`;
+    grid.appendChild(card);
+  });
+}
+
+// ─── UI helpers ──────────────────────────────────────
+function showLoading(mode,msg){if(document.getElementById('ld-text-'+mode))document.getElementById('ld-text-'+mode).textContent=msg;document.getElementById('loading-'+mode).classList.add('show');}
+function hideLoading(mode){document.getElementById('loading-'+mode).classList.remove('show');}
+function showError(mode,msg){hideLoading(mode);const el=document.getElementById('error-'+mode);el.textContent=msg;el.classList.add('show');}
+function hideError(mode){document.getElementById('error-'+mode).classList.remove('show');}
+
+// ─── INIT ────────────────────────────────────────────
+buildSubTabs();
+buildEraTabs();
+</script>
+</body>
+</html>

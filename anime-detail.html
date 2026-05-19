@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>作品詳細 — 時代 Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;700;900&family=Zen+Kaku+Gothic+New:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#07080f;--bg2:#0c0e1a;--bg3:#111320;
+  --text:#e8e4d9;--text2:rgba(232,228,217,.5);--text3:rgba(232,228,217,.28);--text4:rgba(232,228,217,.18);
+  --gold:#c9a84c;--green:#5dcaa5;--blue:#8ab4d4;--pink:#ed93b1;
+  --border:rgba(232,228,217,.08);--border2:rgba(232,228,217,.15);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Zen Kaku Gothic New',sans-serif;min-height:100vh}
+a{color:inherit;text-decoration:none}
+
+.nav{display:flex;align-items:center;justify-content:space-between;padding:1.1rem 2.5rem;border-bottom:.5px solid var(--border);background:rgba(7,8,15,.95);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100}
+.nav-logo{font-family:'Shippori Mincho',serif;font-size:20px;font-weight:700;color:var(--text)}
+.nav-logo .arch{color:var(--gold);font-family:'EB Garamond',serif;font-style:italic;font-weight:600;margin-left:.4em}
+.nav-menu{display:flex;gap:3rem;align-items:center}
+.nav-menu a{font-size:13px;color:var(--text2);letter-spacing:.1em;transition:color .2s}
+.nav-menu a:hover{color:var(--text)}
+.nav-menu a.active{color:var(--text)}
+
+.crumb{padding:1.5rem 2.5rem 0;max-width:1100px;margin:0 auto;font-size:12px;color:var(--text3);letter-spacing:.04em}
+.crumb a{color:var(--text2);transition:color .2s}
+.crumb a:hover{color:var(--gold)}
+.crumb .sep{margin:0 .6em;color:var(--text4)}
+
+/* LOADING */
+.loading{padding:6rem 2rem;text-align:center}
+.ld-dots{display:flex;gap:6px;justify-content:center;margin-bottom:.75rem}
+.ld-dot{width:8px;height:8px;border-radius:50%;background:rgba(201,168,76,.4);animation:ldp 1.2s ease-in-out infinite}
+.ld-dot:nth-child(2){animation-delay:.2s}.ld-dot:nth-child(3){animation-delay:.4s}
+@keyframes ldp{0%,100%{opacity:.3;transform:scale(.8)}50%{opacity:1;transform:scale(1)}}
+.ld-text{font-size:13px;color:var(--text3)}
+
+.ai-note{font-size:10px;color:var(--text3);padding:.5rem .75rem;background:rgba(232,228,217,.03);border:.5px solid var(--border);border-radius:4px;margin-bottom:1.5rem;max-width:1100px;margin-left:auto;margin-right:auto;margin-top:1rem}
+
+/* HERO */
+.hero{padding:2rem 2.5rem 3rem;max-width:1100px;margin:0 auto;border-bottom:.5px solid var(--border)}
+.hero-eyebrow{font-family:'EB Garamond',serif;font-size:14px;color:var(--gold);letter-spacing:.06em;font-weight:600;margin-bottom:.85rem}
+.hero-title{font-family:'Shippori Mincho',serif;font-size:clamp(36px,5.5vw,58px);font-weight:900;color:var(--text);line-height:1.18;margin-bottom:.5rem;letter-spacing:.005em}
+.hero-alt{font-family:'EB Garamond',serif;font-size:15px;color:var(--text3);letter-spacing:.04em;margin-bottom:1.25rem;font-style:italic}
+.hero-meta{display:flex;flex-wrap:wrap;gap:1.5rem 2rem;margin-bottom:1.25rem}
+.hero-meta-item{font-size:12.5px;color:var(--text2);letter-spacing:.02em}
+.hero-meta-item b{display:block;font-size:10px;letter-spacing:.18em;color:var(--text3);text-transform:uppercase;font-weight:400;margin-bottom:.25rem}
+.hero-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.5rem}
+.hero-tag{font-size:11px;letter-spacing:.04em;border:.5px solid var(--border2);color:var(--text2);padding:3px 11px;border-radius:14px}
+.hero-desc{font-size:14px;color:var(--text2);line-height:1.95;max-width:780px}
+
+/* STREAMING */
+.streaming-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:1.5rem}
+.stream-btn{display:inline-flex;align-items:center;gap:6px;font-size:11px;padding:6px 14px;border-radius:4px;border:.5px solid var(--border2);color:var(--text2);transition:all .18s}
+.stream-btn:hover{border-color:rgba(201,168,76,.4);color:var(--gold)}
+
+/* SECTIONS */
+.section{padding:3.5rem 2.5rem;max-width:1100px;margin:0 auto;border-bottom:.5px solid var(--border)}
+.section:last-of-type{border-bottom:none}
+.section-eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:.6rem;font-weight:700}
+.section-title{font-family:'Shippori Mincho',serif;font-size:24px;font-weight:700;color:var(--text);margin-bottom:.5rem}
+.section-sub{font-size:13px;color:var(--text2);line-height:1.8;margin-bottom:2rem}
+
+/* TV SERIES */
+.tv-series{margin-bottom:2.25rem;background:var(--bg2);border:.5px solid var(--border);border-radius:10px;overflow:hidden}
+.tv-series:last-child{margin-bottom:0}
+.tv-head{padding:1.25rem 1.5rem;border-bottom:.5px solid var(--border);background:rgba(232,228,217,.02)}
+.tv-name{font-family:'Shippori Mincho',serif;font-size:17px;font-weight:700;color:var(--text);margin-bottom:.2rem}
+.tv-meta{font-size:12px;color:var(--text3);letter-spacing:.04em;font-family:'EB Garamond',serif}
+.theme-table{width:100%;border-collapse:collapse}
+.theme-table th{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--text3);font-weight:400;text-align:left;padding:.85rem 1.5rem;border-bottom:.5px solid var(--border)}
+.theme-table th:last-child{text-align:right}
+.theme-table td{padding:1.1rem 1.5rem;font-size:13px;color:var(--text2);border-bottom:.5px solid var(--border);vertical-align:middle}
+.theme-table tr:last-child td{border-bottom:none}
+.theme-table tr:hover td{background:rgba(232,228,217,.025)}
+.badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.08em;padding:3px 8px;border-radius:3px;text-transform:uppercase}
+.badge.op{background:rgba(201,168,76,.12);color:var(--gold);border:.5px solid rgba(201,168,76,.3)}
+.badge.ed{background:rgba(138,180,212,.1);color:var(--blue);border:.5px solid rgba(138,180,212,.3)}
+.badge.insert{background:rgba(232,228,217,.04);color:var(--text2);border:.5px solid var(--border2)}
+.song-cell{font-family:'Shippori Mincho',serif;font-size:14.5px;font-weight:700;color:var(--text)}
+.song-links{display:flex;gap:4px;margin-top:4px}
+.song-link{font-size:9px;padding:2px 6px;border-radius:3px;border:.5px solid;text-align:center;text-decoration:none}
+.artist-link{color:var(--gold);transition:opacity .2s;display:inline-flex;align-items:center;gap:.3rem}
+.artist-link:hover{opacity:.75}
+.artist-link::after{content:'→';font-size:11px;opacity:.6;transition:transform .2s}
+.artist-link:hover::after{transform:translateX(2px)}
+.episodes{font-family:'EB Garamond',serif;font-size:12px;color:var(--text3);text-align:right;letter-spacing:.04em;white-space:nowrap}
+.bpm-badge{font-size:10px;padding:2px 7px;border-radius:10px;background:rgba(93,202,165,.08);border:.5px solid rgba(93,202,165,.2);color:var(--green);font-family:'EB Garamond',serif;letter-spacing:.04em;margin-left:4px}
+
+/* MOVIES */
+.movies-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(440px,1fr));gap:14px}
+.movie-card{background:var(--bg2);border:.5px solid var(--border);border-radius:10px;padding:1.5rem 1.65rem;transition:border-color .22s}
+.movie-card:hover{border-color:rgba(201,168,76,.35)}
+.movie-year{font-family:'EB Garamond',serif;font-size:14px;color:var(--gold);font-weight:600;letter-spacing:.04em;margin-bottom:.4rem}
+.movie-title{font-family:'Shippori Mincho',serif;font-size:18px;font-weight:700;color:var(--text);line-height:1.38;margin-bottom:1rem;letter-spacing:.005em}
+.movie-divider{height:1px;background:var(--border);margin-bottom:.85rem}
+.movie-songs{display:flex;flex-direction:column;gap:.65rem}
+.movie-song{display:flex;align-items:flex-start;gap:.85rem;flex-wrap:wrap}
+.movie-song-info{flex:1;min-width:0}
+.movie-song-name{font-family:'Shippori Mincho',serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:.15rem;line-height:1.4}
+.movie-song-artist{font-size:12px}
+
+/* PILGRIMAGE */
+.pilgrimage-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.pilgrim-card{background:var(--bg2);border:.5px solid var(--border);border-radius:10px;padding:1.25rem 1.4rem;transition:border-color .22s}
+.pilgrim-card:hover{border-color:rgba(201,168,76,.3)}
+.pilgrim-name{font-family:'Shippori Mincho',serif;font-size:15px;font-weight:700;color:var(--text);margin-bottom:.25rem}
+.pilgrim-loc{font-size:11px;color:var(--gold);letter-spacing:.04em;margin-bottom:.5rem;font-family:'EB Garamond',serif}
+.pilgrim-desc{font-size:12px;color:var(--text2);line-height:1.7}
+.pilgrim-map{display:inline-block;font-size:11px;color:var(--text3);margin-top:.6rem;transition:color .18s}
+.pilgrim-map:hover{color:var(--gold)}
+
+/* RELATED MEDIA */
+.related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+.media-card{background:var(--bg2);border:.5px solid var(--border);border-radius:10px;padding:1.5rem;transition:all .22s;display:block}
+.media-card:hover{border-color:rgba(201,168,76,.4);transform:translateY(-2px)}
+.media-type{display:inline-block;font-size:10px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;padding:3px 9px;border-radius:3px;margin-bottom:.85rem}
+.media-type.manga{color:var(--green);border:.5px solid rgba(80,200,140,.3);background:rgba(80,200,140,.05)}
+.media-type.novel{color:var(--pink);border:.5px solid rgba(212,83,126,.3);background:rgba(212,83,126,.05)}
+.media-type.game{color:var(--blue);border:.5px solid rgba(138,180,212,.3);background:rgba(138,180,212,.05)}
+.media-title{font-family:'Shippori Mincho',serif;font-size:17px;font-weight:700;color:var(--text);margin-bottom:.4rem;line-height:1.4}
+.media-author{font-size:12.5px;color:var(--text2);line-height:1.7;margin-bottom:.4rem}
+.media-period{font-family:'EB Garamond',serif;font-size:12px;color:var(--text3);letter-spacing:.04em}
+.media-link{font-size:12px;color:var(--gold);margin-top:.85rem;display:inline-block}
+
+.notfound{padding:6rem 2rem;text-align:center;max-width:600px;margin:0 auto}
+.notfound h2{font-family:'Shippori Mincho',serif;font-size:28px;color:var(--text);margin-bottom:1rem}
+.notfound p{font-size:14px;color:var(--text2);line-height:1.8;margin-bottom:2rem}
+.notfound a{display:inline-block;background:var(--gold);color:#07080f;padding:12px 24px;border-radius:8px;font-weight:700;font-size:13px}
+
+.cta-bar{padding:2.5rem 2.5rem;max-width:1100px;margin:0 auto;display:flex;gap:14px;flex-wrap:wrap;border-top:.5px solid var(--border)}
+.cta-btn{flex:1;min-width:220px;background:transparent;border:.5px solid var(--border2);border-radius:6px;color:var(--text3);font-size:13px;letter-spacing:.04em;padding:1rem 1.5rem;text-align:center;transition:all .22s;display:block}
+.cta-btn:hover{border-color:rgba(201,168,76,.5);color:var(--text2)}
+
+.footer{padding:2rem;border-top:.5px solid var(--border);text-align:center}
+.footer-logo{font-family:'Shippori Mincho',serif;font-size:16px;font-weight:700;color:var(--gold);margin-bottom:.4rem}
+.footer-sub{font-size:11px;color:var(--text3)}
+
+.skeleton{background:linear-gradient(90deg,rgba(232,228,217,.06) 25%,rgba(232,228,217,.12) 50%,rgba(232,228,217,.06) 75%);background-size:200% 100%;animation:shimmer 1.5s infinite;border-radius:4px}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+@media(max-width:760px){
+  .nav{padding:.9rem 1.5rem}.nav-menu{gap:1.5rem}.nav-menu a{font-size:12px}
+  .crumb,.hero,.section,.cta-bar{padding-left:1.5rem;padding-right:1.5rem}
+  .theme-table th,.theme-table td{padding:.75rem .9rem;font-size:12px}
+  .movies-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="home.html">時代<span class="arch">Archive</span></a>
+  <div class="nav-menu">
+    <a href="anime.html" class="active">アニメ</a>
+    <a href="index.html">シティポップ</a>
+    <a href="#" onclick="return false">映画</a>
+    <a href="home.html">検索</a>
+  </div>
+</nav>
+
+<div class="crumb">
+  <a href="home.html">時代 Archive</a>
+  <span class="sep">/</span>
+  <a href="anime.html">アニメ</a>
+  <span class="sep">/</span>
+  <span id="crumb-current">読み込み中...</span>
+</div>
+
+<div id="page">
+  <div class="loading">
+    <div class="ld-dots"><div class="ld-dot"></div><div class="ld-dot"></div><div class="ld-dot"></div></div>
+    <div class="ld-text" id="loading-text">作品情報を取得中...</div>
+  </div>
+</div>
+
+<footer class="footer">
+  <div class="footer-logo">時代 Archive</div>
+  <div class="footer-sub">Japan Culture Archive · 1960s — 2020s</div>
+</footer>
+
+<script>
+const API_BASE = 'https://jidai-archive-next.vercel.app';
+const params = new URLSearchParams(location.search);
+const animeId = params.get('id') || '';
+const animeName = params.get('name') || '';
+
+if (!animeId && !animeName) {
+  showNotFound('IDまたは作品名が指定されていません。');
+} else {
+  init();
+}
+
+async function init() {
+  const displayName = animeName || animeId;
+  document.getElementById('crumb-current').textContent = displayName;
+  document.title = displayName + ' — 時代 Archive';
+
+  // 24時間キャッシュ
+  const cacheKey = 'anime_' + (animeId || animeName);
+  try {
+    const cached = localStorage.getItem(cacheKey);
+    if (cached) {
+      const { data, timestamp } = JSON.parse(cached);
+      if (Date.now() - timestamp < 24 * 60 * 60 * 1000) {
+        render(data);
+        return;
+      }
+    }
+  } catch(e) {}
+
+  try {
+    const url = API_BASE + '/api/anime-info?id=' + encodeURIComponent(animeId) + '&name=' + encodeURIComponent(animeName);
+    const res = await fetch(url);
+    const data = await res.json();
+    if (data.error) { showNotFound(data.error); return; }
+    try { localStorage.setItem(cacheKey, JSON.stringify({ data, timestamp: Date.now() })); } catch(e) {}
+    render(data);
+  } catch(e) {
+    showNotFound('データの取得に失敗しました。');
+    console.error(e);
+  }
+}
+
+function artistLink(artistName, displayName, artistNameEn, category) {
+  const cat = category || 'musician';
+  const url = 'artist.html?name=' + encodeURIComponent(artistName)
+    + '&en=' + encodeURIComponent(artistNameEn || '')
+    + '&category=' + encodeURIComponent(cat);
+  return '<a class="artist-link" href="' + url + '">' + (displayName || artistName) + '</a>';
+}
+
+function itunesLink(song, artist) {
+  const q = encodeURIComponent(song + ' ' + artist);
+  return 'https://music.apple.com/jp/search?term=' + q;
+}
+
+function ytLink(song, artist) {
+  return 'https://www.youtube.com/results?search_query=' + encodeURIComponent(song + ' ' + artist);
+}
+
+function spLink(song, artist) {
+  return 'https://open.spotify.com/search/' + encodeURIComponent(song + ' ' + artist);
+}
+
+function songLinksHTML(song, artist) {
+  return '<div class="song-links">' +
+    '<a class="song-link" href="' + itunesLink(song, artist) + '" target="_blank" style="background:rgba(252,60,68,.07);border-color:rgba(252,60,68,.2);color:#fc8888">AM</a>' +
+    '<a class="song-link" href="' + spLink(song, artist) + '" target="_blank" style="background:rgba(29,185,84,.08);border-color:rgba(29,185,84,.25);color:#1db954">SP</a>' +
+    '<a class="song-link" href="' + ytLink(song, artist) + '" target="_blank" style="background:rgba(255,60,60,.08);border-color:rgba(255,60,60,.25);color:#ff8888">YT</a>' +
+  '</div>';
+}
+
+function render(data) {
+  document.getElementById('crumb-current').textContent = data.title || animeId;
+  document.title = (data.title || animeId) + ' — 時代 Archive';
+
+  // HERO
+  const streamingHTML = data.streaming && data.streaming.length > 0
+    ? '<div class="streaming-row">' +
+        data.streaming.map(s =>
+          '<a class="stream-btn" href="' + s.url + '" target="_blank">▶ ' + s.service + '</a>'
+        ).join('') +
+      '</div>'
+    : '';
+
+  const heroHTML = `
+    <section class="hero">
+      <div class="hero-eyebrow">${data.eyebrow || ''}</div>
+      <h1 class="hero-title">${data.title || ''}</h1>
+      <div class="hero-alt">${data.titleEn || ''}</div>
+      <div class="hero-meta">
+        <div class="hero-meta-item"><b>Studio</b>${data.studio || '—'}</div>
+        <div class="hero-meta-item"><b>Director</b>${data.director || '—'}</div>
+        <div class="hero-meta-item"><b>Period</b>${data.period || '—'}</div>
+      </div>
+      <div class="hero-tags">${(data.tags || []).map(t => '<span class="hero-tag">' + t + '</span>').join('')}</div>
+      <p class="hero-desc">${data.desc || ''}</p>
+      ${streamingHTML}
+    </section>
+    <div class="ai-note">⚠️ AIが生成した情報です。OP/ED・話数等の正確性を保証するものではありません。</div>
+  `;
+
+  // TV
+  let tvHTML = '';
+  if (data.tv && data.tv.length > 0) {
+    tvHTML = `
+      <section class="section">
+        <div class="section-eyebrow">TV Broadcast</div>
+        <h2 class="section-title">テレビ放送 主題歌</h2>
+        <p class="section-sub">放送順に、すべてのOP・ED・挿入歌。BPMはAI推定値。アーティスト名をクリックすると詳細ページへ。</p>
+        ${data.tv.map(tv => `
+          <div class="tv-series">
+            <div class="tv-head">
+              <div class="tv-name">${tv.name}</div>
+              <div class="tv-meta">${tv.meta}</div>
+            </div>
+            <table class="theme-table">
+              <thead>
+                <tr>
+                  <th style="width:60px">区分</th>
+                  <th>曲名</th>
+                  <th>アーティスト</th>
+                  <th style="text-align:right">使用話数</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${tv.themes.map(th => `
+                  <tr>
+                    <td><span class="badge ${th.type}">${th.type === 'op' ? 'OP' : th.type === 'ed' ? 'ED' : '挿入'}</span></td>
+                    <td class="song-cell">
+                      ${th.song}
+                      ${th.bpm ? '<span class="bpm-badge">' + th.bpm + ' BPM</span>' : ''}
+                      ${songLinksHTML(th.song, th.artistName || th.artist)}
+                    </td>
+                    <td>${artistLink(th.artistName || th.artist, th.artist, th.artistNameEn, th.artistCategory)}</td>
+                    <td class="episodes">${th.episodes || '—'}</td>
+                  </tr>
+                `).join('')}
+              </tbody>
+            </table>
+          </div>
+        `).join('')}
+      </section>
+    `;
+  }
+
+  // MOVIES
+  let movieHTML = '';
+  if (data.movies && data.movies.length > 0) {
+    movieHTML = `
+      <section class="section">
+        <div class="section-eyebrow">Films</div>
+        <h2 class="section-title">劇場版</h2>
+        <p class="section-sub">公開順。各作品の主題歌・挿入歌。</p>
+        <div class="movies-grid">
+          ${data.movies.map(m => `
+            <div class="movie-card">
+              <div class="movie-year">${m.year}</div>
+              <div class="movie-title">${m.title}</div>
+              <div class="movie-divider"></div>
+              <div class="movie-songs">
+                ${m.songs.map(s => `
+                  <div class="movie-song">
+                    <span class="badge ${s.type}">${s.label || (s.type === 'op' ? 'OP' : s.type === 'ed' ? 'ED' : '挿入')}</span>
+                    <div class="movie-song-info">
+                      <div class="movie-song-name">
+                        ${s.song}
+                        ${s.bpm ? '<span class="bpm-badge">' + s.bpm + ' BPM</span>' : ''}
+                      </div>
+                      <div class="movie-song-artist">${artistLink(s.artistName || s.artist, s.artist, s.artistNameEn, s.artistCategory)}</div>
+                      ${songLinksHTML(s.song, s.artistName || s.artist)}
+                    </div>
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </section>
+    `;
+  }
+
+  // PILGRIMAGE
+  let pilgrimHTML = '';
+  if (data.pilgrimage && data.pilgrimage.length > 0) {
+    pilgrimHTML = `
+      <section class="section">
+        <div class="section-eyebrow">Pilgrimage</div>
+        <h2 class="section-title">聖地</h2>
+        <p class="section-sub">作品の舞台・モデルになった場所。</p>
+        <div class="pilgrimage-grid">
+          ${data.pilgrimage.map(p => `
+            <div class="pilgrim-card">
+              <div class="pilgrim-name">${p.name}</div>
+              <div class="pilgrim-loc">📍 ${p.location}</div>
+              <div class="pilgrim-desc">${p.desc}</div>
+              <a class="pilgrim-map" href="https://www.google.com/maps/search/${encodeURIComponent(p.name + ' ' + p.location)}" target="_blank">Google マップで見る →</a>
+            </div>
+          `).join('')}
+        </div>
+      </section>
+    `;
+  }
+
+  // RELATED MEDIA
+  let relatedHTML = '';
+  if (data.related && data.related.length > 0) {
+    const typeLabel = { manga:'漫画 / Manga', novel:'小説 / Novel', game:'ゲーム / Game' };
+    relatedHTML = `
+      <section class="section">
+        <div class="section-eyebrow">Related Media</div>
+        <h2 class="section-title">原作・関連メディア</h2>
+        <p class="section-sub">この作品に関連する漫画・小説。</p>
+        <div class="related-grid">
+          ${data.related.map(r => `
+            <a class="media-card" href="${r.link || '#'}">
+              <span class="media-type ${r.name || r.type}">${typeLabel[r.name || r.type] || r.type}</span>
+              <div class="media-title">${r.title}</div>
+              <div class="media-author">${r.author}</div>
+              <div class="media-period">${r.publisher} · ${r.period}</div>
+              <div class="media-link">詳細を見る →</div>
+            </a>
+          `).join('')}
+        </div>
+      </section>
+    `;
+  }
+
+  const ctaHTML = `
+    <div class="cta-bar">
+      <a class="cta-btn" href="anime.html">← アニメ一覧へ戻る</a>
+      <a class="cta-btn" href="home.html">時代 Archive トップへ</a>
+      <a class="cta-btn" href="index.html">音楽アーカイブを見る →</a>
+    </div>
+  `;
+
+  document.getElementById('page').innerHTML = heroHTML + tvHTML + movieHTML + pilgrimHTML + relatedHTML + ctaHTML;
+}
+
+function showNotFound(msg) {
+  document.getElementById('crumb-current').textContent = '見つかりませんでした';
+  document.getElementById('page').innerHTML = `
+    <div class="notfound">
+      <h2>作品が見つかりません</h2>
+      <p>${msg || 'アニメ一覧から作品を選択してください。'}</p>
+      <a href="anime.html">← アニメ一覧へ戻る</a>
+    </div>
+  `;
+}
+</script>
+</body>
+</html>

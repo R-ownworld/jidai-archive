@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>時代 Archive — 年代検索</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;700;900&family=Zen+Kaku+Gothic+New:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#07080f;--bg2:#0c0e1a;--bg3:#111320;--text:#e8e4d9;--text2:rgba(232,228,217,.5);--text3:rgba(232,228,217,.28);--gold:#c9a84c;--border:rgba(232,228,217,.08);--border2:rgba(232,228,217,.15);--radius:8px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Zen Kaku Gothic New',sans-serif;min-height:100vh;overflow-x:hidden}
+
+.nav{display:flex;align-items:center;justify-content:space-between;padding:.9rem 2rem;border-bottom:.5px solid var(--border);background:rgba(7,8,15,.95);backdrop-filter:blur(12px);position:sticky;top:0;z-index:100}
+.nav-logo{font-family:'Shippori Mincho',serif;font-size:17px;font-weight:700;letter-spacing:.1em;color:var(--gold);text-decoration:none}
+.bc{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text3)}
+.bcl{color:rgba(201,168,76,.6);text-decoration:none;transition:color .15s}
+.bcl:hover{color:var(--gold)}
+.bcs{color:var(--border2)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:3rem 2rem;position:relative;overflow:hidden}
+.hero-canvas{position:absolute;inset:0;width:100%;height:100%}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:600px;width:100%}
+.eyebrow{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:rgba(201,168,76,.6);margin-bottom:1.25rem}
+.hero-title{font-family:'Shippori Mincho',serif;font-size:clamp(28px,5vw,52px);font-weight:900;color:var(--text);line-height:1.15;margin-bottom:.75rem}
+.hero-title span{color:var(--gold)}
+.hero-sub{font-size:13px;color:var(--text2);line-height:1.9;margin-bottom:2.5rem}
+
+.year-display{font-family:'EB Garamond',serif;font-size:clamp(72px,12vw,120px);font-weight:400;color:var(--text);line-height:1;margin-bottom:.25rem;transition:color .15s}
+.year-display.active{color:var(--gold)}
+.year-sub{font-size:11px;color:var(--text3);letter-spacing:.14em;text-transform:uppercase;margin-bottom:2rem}
+
+.slider-wrap{width:100%;max-width:480px;margin:0 auto 2rem}
+.year-slider{width:100%;-webkit-appearance:none;appearance:none;height:3px;border-radius:2px;background:linear-gradient(to right,rgba(201,168,76,.8) var(--pct,50%),rgba(232,228,217,.1) var(--pct,50%));outline:none;cursor:pointer}
+.year-slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--gold);border:3px solid var(--bg);cursor:pointer;transition:transform .15s}
+.year-slider::-webkit-slider-thumb:hover{transform:scale(1.2)}
+.range-labels{display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-top:.5rem}
+
+.quick-btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:2.5rem}
+.qbtn{font-size:11px;padding:5px 14px;border-radius:14px;border:.5px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;transition:all .18s;font-family:'Zen Kaku Gothic New',sans-serif}
+.qbtn:hover{border-color:rgba(201,168,76,.4);color:var(--gold)}
+.qbtn.on{background:rgba(201,168,76,.15);border-color:rgba(201,168,76,.5);color:var(--gold);font-weight:700}
+
+.go-btn{display:inline-flex;align-items:center;gap:10px;background:var(--gold);color:#07080f;border:none;border-radius:10px;padding:14px 28px;font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;font-weight:900;cursor:pointer;transition:all .2s}
+.go-btn:hover{background:#e0be6a;transform:translateY(-2px)}
+
+/* RESULTS */
+.results{display:none;min-height:100vh;padding:2.5rem 2rem;max-width:1000px;margin:0 auto}
+.results.show{display:block}
+
+.back-btn{display:inline-flex;align-items:center;gap:6px;font-size:11px;padding:7px 14px;border-radius:6px;border:.5px solid var(--border2);background:transparent;color:var(--text2);cursor:pointer;transition:all .18s;text-decoration:none;margin-bottom:1.5rem}
+.back-btn:hover{border-color:var(--gold);color:var(--gold)}
+
+.era-header{text-align:center;margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:.5px solid var(--border)}
+.eh-year{font-family:'EB Garamond',serif;font-size:80px;color:var(--gold);line-height:1}
+.eh-title{font-family:'Shippori Mincho',serif;font-size:22px;font-weight:700;color:var(--text);margin:.4rem 0}
+.eh-sub{font-size:13px;color:var(--text2);line-height:1.8;max-width:500px;margin:0 auto}
+
+/* CATEGORY TABS */
+.cat-tabs{display:flex;gap:0;border-bottom:.5px solid var(--border);margin-bottom:1.5rem;overflow-x:auto;scrollbar-width:none}
+.cat-tabs::-webkit-scrollbar{display:none}
+.ctab{flex-shrink:0;font-size:12px;letter-spacing:.08em;padding:10px 16px;border:none;background:transparent;color:var(--text3);cursor:pointer;border-bottom:2px solid transparent;transition:all .18s;font-family:'Zen Kaku Gothic New',sans-serif;white-space:nowrap}
+.ctab:hover{color:var(--text)}
+.ctab.on{color:var(--text);border-bottom-color:rgba(201,168,76,.6)}
+
+.cat-panel{display:none}
+.cat-panel.show{display:block}
+
+/* ARTIST LIST */
+.artist-list{display:flex;flex-direction:column;gap:1px;background:var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:1.5rem}
+.artist-row{display:grid;grid-template-columns:1fr auto;align-items:center;padding:.8rem 1rem;background:var(--bg2);transition:background .15s;text-decoration:none}
+.artist-row:hover{background:var(--bg3)}
+.ar-left{display:flex;align-items:center;gap:.85rem}
+.ar-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ar-name{font-family:'Shippori Mincho',serif;font-size:15px;font-weight:700;color:var(--text)}
+.ar-en{font-size:11px;color:var(--text3)}
+.ar-right{display:flex;align-items:center;gap:8px}
+.ar-tag{font-size:10px;padding:2px 8px;border-radius:10px;border:.5px solid rgba(201,168,76,.25);color:rgba(201,168,76,.7)}
+.ar-arrow{font-size:12px;color:var(--text3)}
+
+.coming-soon{padding:3rem;text-align:center;background:var(--bg2);border:.5px solid var(--border);border-radius:var(--radius)}
+.cs-icon{font-size:36px;margin-bottom:.75rem;opacity:.4}
+.cs-title{font-family:'Shippori Mincho',serif;font-size:18px;color:var(--text);margin-bottom:.4rem}
+.cs-sub{font-size:12px;color:var(--text3);line-height:1.8}
+
+.bg-context{background:var(--bg2);border:.5px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.5rem;margin-bottom:1.5rem}
+.bc-title{font-family:'Shippori Mincho',serif;font-size:16px;font-weight:700;color:var(--text);margin-bottom:.75rem}
+.bc-items{display:flex;flex-direction:column;gap:6px}
+.bc-item{display:grid;grid-template-columns:56px 1fr;gap:10px;padding:.5rem 0;border-bottom:.5px solid rgba(232,228,217,.05)}
+.bc-item:last-child{border-bottom:none}
+.bc-yr{font-family:'EB Garamond',serif;font-size:12px;color:rgba(201,168,76,.65)}
+.bc-ev{font-size:12px;color:var(--text2);line-height:1.6}
+
+.sec-lbl{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:var(--text3);margin-bottom:.85rem;display:flex;align-items:center;gap:.5rem}
+.sec-lbl::after{content:'';flex:1;height:.5px;background:var(--border)}
+
+.fade-in{animation:fadeIn .35s ease}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-logo" href="home.html">時代 Archive</a>
+  <div class="bc">
+    <a class="bcl" href="home.html">ホーム</a>
+    <span class="bcs">›</span>
+    <span style="color:var(--text2)">年代検索</span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="hero">
+  <canvas class="hero-canvas" id="hero-canvas"></canvas>
+  <div class="hero-content">
+    <div class="eyebrow">Era Search</div>
+    <h1 class="hero-title">年代を選んで<br><span>時代を丸ごと見る</span></h1>
+    <p class="hero-sub">音楽・アニメ・映画・カルチャー——<br>その時代に何があったかを全部まとめて見られます。<br>自分と関係なく、気になる時代を客観的に調べる。</p>
+
+    <div class="year-display" id="year-disp">1980</div>
+    <div class="year-sub">年代のカルチャーを見る</div>
+
+    <div class="slider-wrap">
+      <input class="year-slider" id="yr-slider" type="range" min="1950" max="2010" value="1980" step="1" oninput="onSlide(this)"/>
+      <div class="range-labels"><span>1950</span><span>1965</span><span>1980</span><span>1995</span><span>2010</span></div>
+    </div>
+
+    <div class="quick-btns">
+      <button class="qbtn" onclick="setYr(1963,this)">60年代</button>
+      <button class="qbtn" onclick="setYr(1972,this)">70年代前半</button>
+      <button class="qbtn" onclick="setYr(1977,this)">70年代後半</button>
+      <button class="qbtn on" onclick="setYr(1981,this)">80年代前半</button>
+      <button class="qbtn" onclick="setYr(1986,this)">80年代後半</button>
+      <button class="qbtn" onclick="setYr(1991,this)">90年代前半</button>
+      <button class="qbtn" onclick="setYr(1996,this)">90年代後半</button>
+      <button class="qbtn" onclick="setYr(2002,this)">2000年代</button>
+    </div>
+
+    <button class="go-btn" onclick="showResults()">この時代を見る →</button>
+  </div>
+</div>
+
+<!-- RESULTS -->
+<div class="results" id="results">
+  <button class="back-btn" onclick="goBack()">← 年代を選び直す</button>
+
+  <div class="era-header fade-in">
+    <div class="eh-year" id="eh-year">1980</div>
+    <div class="eh-title" id="eh-title"></div>
+    <div class="eh-sub" id="eh-sub"></div>
+  </div>
+
+  <div class="cat-tabs">
+    <button class="ctab on" onclick="setTab(this,'music')">🎵 音楽</button>
+    <button class="ctab" onclick="setTab(this,'art')">🎨 アート・ビジュアル</button>
+    <button class="ctab" onclick="setTab(this,'anime')">✨ アニメ</button>
+    <button class="ctab" onclick="setTab(this,'movie')">🎬 映画</button>
+    <button class="ctab" onclick="setTab(this,'bg')">📖 時代背景</button>
+  </div>
+
+  <div class="cat-panel show" id="panel-music">
+    <div class="sec-lbl">この時代のアーティスト</div>
+    <div class="artist-list" id="music-list"></div>
+    <a href="index.html" style="font-size:12px;color:rgba(201,168,76,.7);text-decoration:none">シティポップページで全部見る →</a>
+  </div>
+
+  <div class="cat-panel" id="panel-art">
+    <div class="sec-lbl">アート・イラストレーター</div>
+    <div class="artist-list" id="art-list"></div>
+  </div>
+
+  <div class="cat-panel" id="panel-anime">
+    <div class="coming-soon">
+      <div class="cs-icon">✨</div>
+      <div class="cs-title">アニメ — Coming Soon</div>
+      <div class="cs-sub">準備中です。もうすぐ公開予定。<br>ガンダム、マクロス、ジブリなど時代を代表する作品が追加されます。</div>
+    </div>
+  </div>
+
+  <div class="cat-panel" id="panel-movie">
+    <div class="coming-soon">
+      <div class="cs-icon">🎬</div>
+      <div class="cs-title">映画 — Coming Soon</div>
+      <div class="cs-sub">準備中です。もうすぐ公開予定。<br>その年代を代表する邦画・洋画が追加されます。</div>
+    </div>
+  </div>
+
+  <div class="cat-panel" id="panel-bg">
+    <div class="sec-lbl">時代背景・社会の出来事</div>
+    <div class="bg-context">
+      <div class="bc-title" id="bg-title"></div>
+      <div class="bc-items" id="bg-items"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+let curYear = 1980;
+
+const eraDB = {
+  1950:{title:'1950年代 — 戦後復興',sub:'戦後の復興期。ジャズや歌謡曲が人々の心を慰めた時代。',music:[{name:'美空ひばり',en:'Hibari Misora',tag:'歌謡曲'},{name:'笠置シヅ子',en:'Shizuko Kasagi',tag:'歌謡曲'}],art:[],bg:{title:'戦後復興の時代',items:[{yr:'1950',ev:'朝鮮戦争勃発。日本は特需景気で経済復興が加速'},{yr:'1953',ev:'NHKがテレビ本放送開始。大衆文化が変わり始める'},{yr:'1956',ev:'「もはや戦後ではない」経済白書に記載。高度成長へ'}]}},
+  1960:{title:'1960年代 — グループサウンズ',sub:'ビートルズの影響を受けたグループサウンズが誕生。若者文化が花開いた。',music:[{name:'坂本九',en:'Kyu Sakamoto',tag:'ポップス'},{name:'タイガース',en:'The Tigers',tag:'GS'},{name:'スパイダース',en:'The Spiders',tag:'GS'}],art:[],bg:{title:'高度経済成長の絶頂',items:[{yr:'1964',ev:'東京オリンピック開催。新幹線が開通'},{yr:'1966',ev:'ビートルズ来日公演。グループサウンズブーム加速'},{yr:'1968',ev:'日本のGNPが世界第2位に。豊かさと文化が花開く'}]}},
+  1970:{title:'1970年代前半 — ニューミュージック誕生',sub:'フォークからニューミュージックへ。荒井由実・吉田拓郎らが登場した転換期。',music:[{name:'荒井由実',en:'Yumi Arai',tag:'ニューミュージック'},{name:'吉田拓郎',en:'Takuro Yoshida',tag:'フォーク'},{name:'井上陽水',en:'Yosui Inoue',tag:'フォーク'},{name:'中島みゆき',en:'Miyuki Nakajima',tag:'フォーク'}],art:[{name:'横尾忠則',en:'Tadanori Yokoo',tag:'グラフィック',cat:'illustrator'}],bg:{title:'オイルショックと文化の模索',items:[{yr:'1970',ev:'大阪万博開催。「人類の進歩と調和」テーマに6400万人来場'},{yr:'1973',ev:'オイルショック。高度成長が終わり、新しい文化模索へ'},{yr:'1975',ev:'ソニーがベータマックス発売。映像文化が家庭へ普及'}]}},
+  1977:{title:'1970年代後半 — シティポップの誕生',sub:'山下達郎・松原みきらが登場。都会的なサウンドが生まれた。ウォークマン発売前夜。',music:[{name:'山下達郎',en:'Tatsuro Yamashita',tag:'シティポップ'},{name:'松原みき',en:'Miki Matsubara',tag:'シティポップ'},{name:'竹内まりや',en:'Mariya Takeuchi',tag:'シティポップ'},{name:'大貫妙子',en:'Taeko Ohnuki',tag:'シティポップ'},{name:'八神純子',en:'Junko Yagami',tag:'シティポップ'}],art:[{name:'永井博',en:'Hiroshi Nagai',tag:'イラスト',cat:'illustrator'},{name:'鈴木英人',en:'Eijin Suzuki',tag:'イラスト',cat:'illustrator'}],bg:{title:'ニューミュージック全盛期',items:[{yr:'1977',ev:'山下達郎がソロデビュー。シティポップの夜明け'},{yr:'1979',ev:'ソニーがウォークマン発売。音楽を「持ち歩く」文化が誕生'},{yr:'1979',ev:'松原みき「真夜中のドア〜Stay With Me」発売'}]}},
+  1981:{title:'1980年代前半 — シティポップの黄金期',sub:'バブル前夜の東京。ウォークマンが普及し、都会的なサウンドが街に溢れた。歴史的名盤が続々誕生。',music:[{name:'大滝詠一',en:'Eiichi Ohtaki',tag:'シティポップ'},{name:'角松敏生',en:'Toshiki Kadomatsu',tag:'シティポップ'},{name:'EPO',en:'EPO',tag:'シティポップ'},{name:'杏里',en:'Anri',tag:'シティポップ'},{name:'山下達郎',en:'Tatsuro Yamashita',tag:'シティポップ'},{name:'亜蘭知子',en:'Tomoko Aran',tag:'シティポップ'},{name:'松下誠',en:'Makoto Matsushita',tag:'シティポップ'},{name:'ハイファイセット',en:'Hi-Fi Set',tag:'シティポップ'}],art:[{name:'永井博',en:'Hiroshi Nagai',tag:'イラスト',cat:'illustrator'},{name:'鈴木英人',en:'Eijin Suzuki',tag:'イラスト',cat:'illustrator'}],bg:{title:'バブル前夜・消費文化の爆発',items:[{yr:'1981',ev:'大滝詠一「A LONG VACATION」発売。永井博のジャケットも話題'},{yr:'1982',ev:'CDが日本で発売開始。音楽の形が変わる転換点'},{yr:'1983',ev:'ファミコン発売。ゲーム文化が家庭に普及'},{yr:'1984',ev:'竹内まりや「Plastic Love」発売。後に世界的ヒットへ'}]}},
+  1986:{title:'1980年代後半 — バブル最高潮',sub:'バブル景気の絶頂期。アイドルブームとともに多彩な音楽が溢れた狂乱の時代。',music:[{name:'杉山清貴',en:'Kiyotaka Sugiyama',tag:'シティポップ'},{name:'稲垣潤一',en:'Junichi Inagaki',tag:'シティポップ'},{name:'TM NETWORK',en:'TM Network',tag:'シンセポップ'},{name:'BARBEE BOYS',en:'Barbee Boys',tag:'ロック'},{name:'中森明菜',en:'Akina Nakamori',tag:'アイドル'},{name:'松田聖子',en:'Seiko Matsuda',tag:'アイドル'}],art:[{name:'永井博',en:'Hiroshi Nagai',tag:'イラスト',cat:'illustrator'}],bg:{title:'バブル経済の絶頂',items:[{yr:'1986',ev:'バブル景気が本格化。土地・株価が急騰'},{yr:'1987',ev:'国鉄が分割民営化されJRに。時代の転換点'},{yr:'1988',ev:'東京ドーム開場。コンサート・スポーツ文化が変化'},{yr:'1989',ev:'昭和天皇崩御。平成に改元。バブルはまだ続く'}]}},
+  1991:{title:'1990年代前半 — バブル崩壊とJ-POP',sub:'バブルが弾けた時代。J-POPという言葉が生まれ、新しい音楽の形が模索された。',music:[{name:'Dreams Come True',en:'Dreams Come True',tag:'J-POP'},{name:'ZARD',en:'ZARD',tag:'J-POP'},{name:'槇原敬之',en:'Noriyuki Makihara',tag:'J-POP'},{name:'KAN',en:'KAN',tag:'J-POP'},{name:'玉置浩二',en:'Koji Tamaki',tag:'ロック'}],art:[],bg:{title:'バブル崩壊と失われた10年',items:[{yr:'1991',ev:'バブル崩壊。株価・土地価格が急落し始める'},{yr:'1992',ev:'CDシングルが爆発的に売れる時代へ。J-POP全盛'},{yr:'1994',ev:'インターネットが一般向けに普及し始める'},{yr:'1995',ev:'阪神淡路大震災。Windows 95発売。時代の転換点'}]}},
+  1996:{title:'1990年代後半 — J-POPの絶頂',sub:'CDが最も売れた黄金期。小室哲哉・B\'zらが席巻。音楽産業が最大規模に膨らんだ。',music:[{name:'B\'z',en:"B'z",tag:'ロック'},{name:'小室哲哉',en:'Tetsuya Komuro',tag:'テクノポップ'},{name:'久保田利伸',en:'Toshinobu Kubota',tag:'R&B'},{name:'安室奈美恵',en:'Namie Amuro',tag:'J-POP'},{name:'SPEED',en:'SPEED',tag:'J-POP'}],art:[],bg:{title:'CD全盛期とデジタル化の夜明け',items:[{yr:'1996',ev:'CD売上が史上最高水準。音楽産業の絶頂期'},{yr:'1997',ev:'山一證券・北海道拓殖銀行が破綻。不況が深刻化'},{yr:'1998',ev:'iMac発売。PCとデザインが融合した転換点'},{yr:'1999',ev:'ナップスターが登場。音楽のデジタル流通が始まる'}]}},
+  2002:{title:'2000年代 — ネット時代と音楽の変革',sub:'インターネットの普及により音楽の聴き方が根本から変わった時代。',music:[{name:'宇多田ヒカル',en:'Hikaru Utada',tag:'J-POP'},{name:'椎名林檎',en:'Ringo Sheena',tag:'ロック'},{name:'BUMP OF CHICKEN',en:'Bump of Chicken',tag:'ロック'},{name:'YUI',en:'YUI',tag:'J-POP'}],art:[],bg:{title:'デジタル化と失われた時代',items:[{yr:'2001',ev:'iPod発売。「1000曲をポケットに」音楽体験が変わる'},{yr:'2003',ev:'iTunes Music Store開始。合法的な音楽ダウンロード普及'},{yr:'2005',ev:'YouTube誕生。動画共有が始まり文化の発信が民主化'},{yr:'2007',ev:'iPhone発売。スマートフォンが文化を根本から変える'}]}},
+};
+
+function getEra(year) {
+  const keys = Object.keys(eraDB).map(Number).sort((a,b)=>a-b);
+  let best = keys[0];
+  for(const k of keys){ if(year >= k) best = k; }
+  return eraDB[best];
+}
+
+function onSlide(el) {
+  const val = parseInt(el.value);
+  const pct = ((val-1950)/(2010-1950)*100).toFixed(1);
+  el.style.setProperty('--pct', pct+'%');
+  curYear = val;
+  const d = document.getElementById('year-disp');
+  d.textContent = val;
+  d.classList.add('active');
+  setTimeout(()=>d.classList.remove('active'),300);
+  document.querySelectorAll('.qbtn').forEach(b=>b.classList.remove('on'));
+}
+
+function setYr(year, btn) {
+  curYear = year;
+  const sl = document.getElementById('yr-slider');
+  sl.value = year;
+  const pct = ((year-1950)/(2010-1950)*100).toFixed(1);
+  sl.style.setProperty('--pct', pct+'%');
+  document.getElementById('year-disp').textContent = year;
+  document.querySelectorAll('.qbtn').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+}
+
+function showResults() {
+  document.getElementById('hero').style.display = 'none';
+  document.getElementById('results').classList.add('show');
+  window.scrollTo(0,0);
+  renderResults(curYear);
+}
+
+function renderResults(year) {
+  const era = getEra(year);
+  document.getElementById('eh-year').textContent = year;
+  document.getElementById('eh-title').textContent = era.title;
+  document.getElementById('eh-sub').textContent = era.sub;
+
+  // 音楽リスト
+  const mList = document.getElementById('music-list');
+  mList.innerHTML = '';
+  era.music.forEach((a,i) => {
+    const colors = ['rgba(201,168,76,.7)','rgba(100,180,255,.7)','rgba(80,200,140,.7)','rgba(212,83,126,.7)','rgba(127,119,221,.7)'];
+    const row = document.createElement('a');
+    row.className = 'artist-row';
+    row.href = 'artist.html?name='+encodeURIComponent(a.name)+'&en='+encodeURIComponent(a.en);
+    row.innerHTML = `<div class="ar-left"><div class="ar-dot" style="background:${colors[i%colors.length]}"></div><div><div class="ar-name">${a.name}</div><div class="ar-en">${a.en}</div></div></div><div class="ar-right"><span class="ar-tag">${a.tag}</span><span class="ar-arrow">›</span></div>`;
+    mList.appendChild(row);
+  });
+
+  // アートリスト
+  const aList = document.getElementById('art-list');
+  aList.innerHTML = '';
+  if (era.art.length === 0) {
+    aList.innerHTML = '<div style="padding:1.5rem;text-align:center;font-size:12px;color:var(--text3)">この時代のアートデータを追加中です</div>';
+  } else {
+    era.art.forEach((a,i) => {
+      const row = document.createElement('a');
+      row.className = 'artist-row';
+      row.href = 'artist.html?name='+encodeURIComponent(a.name)+'&en='+encodeURIComponent(a.en)+'&category='+(a.cat||'illustrator');
+      row.innerHTML = `<div class="ar-left"><div class="ar-dot" style="background:rgba(212,83,126,.7)"></div><div><div class="ar-name">${a.name}</div><div class="ar-en">${a.en}</div></div></div><div class="ar-right"><span class="ar-tag" style="border-color:rgba(212,83,126,.25);color:#ed93b1">${a.tag}</span><span class="ar-arrow">›</span></div>`;
+      aList.appendChild(row);
+    });
+  }
+
+  // 時代背景
+  document.getElementById('bg-title').textContent = era.bg.title;
+  const bgItems = document.getElementById('bg-items');
+  bgItems.innerHTML = '';
+  era.bg.items.forEach(item => {
+    bgItems.innerHTML += `<div class="bc-item"><div class="bc-yr">${item.yr}</div><div class="bc-ev">${item.ev}</div></div>`;
+  });
+}
+
+function setTab(btn, id) {
+  document.querySelectorAll('.ctab').forEach(b=>b.classList.remove('on'));
+  btn.classList.add('on');
+  document.querySelectorAll('.cat-panel').forEach(p=>p.classList.remove('show'));
+  document.getElementById('panel-'+id).classList.add('show');
+}
+
+function goBack() {
+  document.getElementById('results').classList.remove('show');
+  document.getElementById('hero').style.display = 'flex';
+  window.scrollTo(0,0);
+}
+
+// CANVAS
+function drawCanvas() {
+  const canvas = document.getElementById('hero-canvas');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  const ctx = canvas.getContext('2d');
+  const w = canvas.width, h = canvas.height;
+  const bg = ctx.createLinearGradient(0,0,0,h);
+  bg.addColorStop(0,'#03040a'); bg.addColorStop(.6,'#060810'); bg.addColorStop(1,'#0a0d18');
+  ctx.fillStyle=bg; ctx.fillRect(0,0,w,h);
+  for(let i=0;i<100;i++){ctx.beginPath();ctx.arc(Math.random()*w,Math.random()*h*.65,Math.random()*1.8,0,Math.PI*2);ctx.fillStyle='rgba(255,255,255,'+(Math.random()*.5+.15)+')';ctx.fill();}
+  const blds=[{x:0,y:h*.5,w:55,h:h*.5},{x:60,y:h*.38,w:40,h:h*.62},{x:105,y:h*.55,w:30,h:h*.45},{x:140,y:h*.42,w:50,h:h*.58},{x:195,y:h*.3,w:38,h:h*.7},{x:238,y:h*.5,w:28,h:h*.5}];
+  const blds2=[{x:w-290,y:h*.42,w:48,h:h*.58},{x:w-238,y:h*.32,w:38,h:h*.68},{x:w-196,y:h*.52,w:32,h:h*.48},{x:w-160,y:h*.37,w:52,h:h*.63},{x:w-104,y:h*.27,w:42,h:h*.73},{x:w-58,y:h*.44,w:55,h:h*.56}];
+  [...blds,...blds2].forEach(b=>{ctx.fillStyle='rgba(8,15,40,.9)';ctx.fillRect(b.x,b.y,b.w,b.h);for(let i=0;i<6;i++){if(Math.random()>.42){ctx.fillStyle='rgba(138,180,212,'+(Math.random()*.3+.08)+')';ctx.fillRect(b.x+5+Math.random()*(b.w-12),b.y+10+i*Math.floor(b.h/7),5,5);}}});
+  const hz=h*.73;ctx.fillStyle='rgba(4,7,18,.95)';ctx.fillRect(0,hz,w,h-hz);
+  ctx.strokeStyle='rgba(138,180,212,.1)';ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(0,hz);ctx.lineTo(w,hz);ctx.stroke();
+  ctx.strokeStyle='rgba(138,180,212,.18)';ctx.lineWidth=2.5;ctx.beginPath();ctx.moveTo(w*.2,hz+18);ctx.lineTo(w*.52,hz+18);ctx.stroke();
+}
+drawCanvas();
+window.addEventListener('resize',drawCanvas);
+document.getElementById('yr-slider').style.setProperty('--pct','50%');
+</script>
+</body>
+</html>
