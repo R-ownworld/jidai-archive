@@ -9,35 +9,36 @@ const headers = {
   "Access-Control-Allow-Headers": "Content-Type",
 };
 
-// GET: 承認済みアーティスト一覧を取得
-export async function GET() {
+// GET: 承認済みアーティスト一覧（ジャンルフィルタ対応）
+export async function GET(request: NextRequest) {
   try {
+    const { searchParams } = new URL(request.url);
+    const genre = searchParams.get("genre"); // optional: ジャンルフィルタ
+
     const artists = await redis.get<any[]>("artists:approved") || [];
+
+    if (genre) {
+      const filtered = artists.filter(a => (a.genre || "").includes(genre));
+      return NextResponse.json(filtered, { headers });
+    }
+
     return NextResponse.json(artists, { headers });
   } catch (e) {
     return NextResponse.json({ error: String(e) }, { status: 500, headers });
   }
 }
 
-// POST: 新しいアーティストを承認待ちとして保存
+// POST: 新しいアーティストを承認待ちとして保存（全ジャンル対応）
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { name, nameEn, genre, era, kana } = body;
+    const { name, nameEn, genre, era, kana, requestedGenre } = body;
 
     if (!name) {
       return NextResponse.json({ error: "Name required" }, { status: 400, headers });
     }
 
-    // シティポップ系かどうか判定
-    const citypopGenres = ["シティポップ", "ニューミュージック", "AOR", "フュージョン", "R&B", "ソウル", "テクノポップ", "フォーク"];
-    const isCitypop = citypopGenres.some(g => (genre || "").includes(g));
-
-    if (!isCitypop) {
-      return NextResponse.json({ message: "Not citypop genre, skipped" }, { headers });
-    }
-
-    // 既に承認済みかチェック
+    // 承認済みかチェック
     const approved = await redis.get<any[]>("artists:approved") || [];
     if (approved.some(a => a.name === name)) {
       return NextResponse.json({ message: "Already exists" }, { headers });
@@ -49,13 +50,14 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ message: "Already pending" }, { headers });
     }
 
-    // 承認待ちに追加
+    // 承認待ちに追加（ジャンル情報も保存）
     const newArtist = {
       name,
       nameEn: nameEn || "",
       genre: genre || "",
-      era: era || "1970s-80s",
+      era: era || "",
       kana: kana || name.charAt(0),
+      requestedGenre: requestedGenre || genre || "", // どのジャンルページから検索されたか
       addedAt: new Date().toISOString(),
     };
 
