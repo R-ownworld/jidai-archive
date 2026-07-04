@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>音楽 — 時代 Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;700;800;900&family=Zen+Kaku+Gothic+New:wght@300;400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=DotGothic16&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0a0d16;--bg2:#0e1220;--bg3:#141930;
+  --text:#e8e4d9;--text2:rgba(232,228,217,.6);--text3:rgba(232,228,217,.35);--text4:rgba(232,228,217,.15);
+  --gold:#d9b96a;--gold2:#c9a84c;
+  --sun-pink:#c95f7e;--sun-orange:#d98a5f;
+  --scan:rgba(120,160,255,.6);
+  --border:rgba(232,228,217,.08);--border2:rgba(232,228,217,.16);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Zen Kaku Gothic New',sans-serif;min-height:100vh;overflow-x:hidden}
+a{color:inherit;text-decoration:none}
+
+/* ===== 背景写真＋走査線 ===== */
+.photo-bg{position:fixed;inset:0;z-index:-3;overflow:hidden}
+.photo-bg img{width:100%;height:112%;object-fit:cover;object-position:center 40%;opacity:.42;transition:opacity 1.4s ease;will-change:transform}
+.photo-overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,13,22,.62) 0%,rgba(10,13,22,.55) 40%,rgba(10,13,22,.92) 80%,var(--bg) 100%)}
+/* 夕日の円 */
+.sun{position:fixed;top:24vh;left:50%;transform:translateX(-18%);width:min(56vw,600px);aspect-ratio:1;border-radius:50%;z-index:-2;pointer-events:none;
+  background:radial-gradient(circle at 42% 38%,rgba(217,138,95,.5),rgba(201,95,126,.42) 45%,rgba(150,70,120,.18) 70%,transparent 78%);
+  filter:blur(2px);mix-blend-mode:screen;animation:sunFloat 14s ease-in-out infinite}
+@keyframes sunFloat{0%,100%{transform:translateX(-18%) translateY(0)}50%{transform:translateX(-18%) translateY(-14px)}}
+/* 走査線 */
+.scanlines{position:fixed;inset:0;z-index:50;pointer-events:none;opacity:.05;
+  background:repeating-linear-gradient(0deg,transparent 0 2px,rgba(0,0,0,.7) 2px 3px)}
+
+/* ===== ニュースティッカー ===== */
+.ticker{position:sticky;top:0;z-index:210;background:rgba(8,10,18,.94);backdrop-filter:blur(10px);border-bottom:1px solid rgba(120,160,255,.25);overflow:hidden;white-space:nowrap;padding:7px 0}
+.ticker-inner{display:inline-block;animation:tick 38s linear infinite;font-family:'DotGothic16',monospace;font-size:13px;color:rgba(180,200,255,.85);letter-spacing:.1em}
+.ticker-inner span{margin:0 1.4em;color:var(--gold)}
+@keyframes tick{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+
+/* ===== NAV ===== */
+.nav{display:flex;align-items:center;justify-content:space-between;padding:1.2rem 2.5rem;position:relative;z-index:100}
+.nav-logo{font-family:'Shippori Mincho',serif;font-size:22px;font-weight:800;color:var(--text);letter-spacing:.14em}
+.nav-logo .sub{font-family:'EB Garamond',serif;font-size:11px;color:var(--gold);letter-spacing:.42em;margin-left:1em;font-style:normal;text-transform:uppercase;vertical-align:middle}
+.nav-menu{display:flex;gap:2.6rem;align-items:center}
+.nav-menu a{font-size:14px;color:var(--text2);letter-spacing:.22em;transition:color .25s;font-family:'Shippori Mincho',serif;font-weight:700}
+.nav-menu a:hover,.nav-menu a.active{color:var(--gold)}
+.nav-cta{border:1px solid rgba(217,185,106,.5);border-radius:999px;padding:9px 22px;font-size:13px;color:var(--gold);letter-spacing:.18em;transition:all .3s;font-family:'Shippori Mincho',serif}
+.nav-cta:hover{background:rgba(217,185,106,.12);box-shadow:0 0 24px rgba(217,185,106,.15)}
+
+/* 上部ライン */
+.hud-line{height:2px;background:linear-gradient(90deg,transparent,var(--scan) 20%,var(--scan) 80%,transparent);margin:0 2rem;position:relative;z-index:100;opacity:.55}
+
+/* ===== HERO ===== */
+.hero{max-width:1200px;margin:0 auto;padding:6rem 2.5rem 7rem;position:relative;z-index:10}
+.hero-est{font-family:'DotGothic16',monospace;font-size:13px;color:var(--text2);letter-spacing:.3em;margin-bottom:2.2rem;display:flex;align-items:center;gap:1rem}
+.hero-est::before{content:'';width:44px;height:1px;background:var(--gold)}
+.hero-title{font-family:'Shippori Mincho',serif;font-size:clamp(52px,9vw,110px);font-weight:800;line-height:1.28;letter-spacing:.04em;margin-bottom:2.4rem;text-shadow:0 2px 40px rgba(0,0,0,.6)}
+.hero-sub{font-size:15.5px;color:var(--text2);line-height:2.3;max-width:600px;margin-bottom:3rem;font-weight:300;letter-spacing:.06em;text-shadow:0 1px 16px rgba(0,0,0,.8)}
+.hero-actions{display:flex;gap:1.5rem;align-items:center;flex-wrap:wrap}
+.hero-btn{background:linear-gradient(135deg,#e5c87e,var(--gold2));color:#0a0d16;padding:16px 38px;font-size:15px;font-weight:700;letter-spacing:.14em;font-family:'Shippori Mincho',serif;transition:all .3s;position:relative;cursor:pointer;border:none}
+.hero-btn:hover{transform:translateY(-2px);box-shadow:0 10px 36px rgba(217,185,106,.4)}
+.hero-note{font-family:'DotGothic16',monospace;font-size:12px;color:var(--text3);letter-spacing:.14em;display:flex;align-items:center;gap:.6em}
+.hero-note::before{content:'▶';font-size:9px;color:var(--gold)}
+
+/* 縦書き装飾 */
+.vertical-deco{position:fixed;right:2rem;top:50%;transform:translateY(-50%);writing-mode:vertical-rl;font-family:'EB Garamond',serif;font-size:12px;letter-spacing:.55em;color:var(--text3);z-index:40;text-transform:uppercase;pointer-events:none}
+.vertical-deco .jp{font-family:'Shippori Mincho',serif;margin-top:2em;color:var(--text4)}
+/* スクロールインジケータ */
+.scroll-ind{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);font-family:'DotGothic16',monospace;font-size:12px;letter-spacing:.4em;color:var(--text3);animation:bob 2.4s ease-in-out infinite}
+@keyframes bob{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(7px)}}
+
+/* ===== SEARCH ===== */
+.search-belt{max-width:1200px;margin:0 auto;padding:0 2.5rem 4rem;position:relative;z-index:10}
+.search-inner{background:rgba(14,18,32,.72);border:1px solid var(--border2);padding:1.6rem 1.8rem;backdrop-filter:blur(16px);position:relative}
+.search-inner::before{content:'SEARCH';position:absolute;top:-9px;left:1.4rem;background:var(--bg);padding:0 .8em;font-family:'DotGothic16',monospace;font-size:10px;letter-spacing:.3em;color:var(--gold)}
+.search-row{display:flex;gap:12px}
+.search-input{flex:1;background:rgba(232,228,217,.05);border:1px solid var(--border2);color:var(--text);font-family:'Zen Kaku Gothic New',sans-serif;font-size:15px;padding:13px 18px;outline:none;transition:all .3s}
+.search-input:focus{border-color:rgba(217,185,106,.6);background:rgba(232,228,217,.08)}
+.search-input::placeholder{color:var(--text3)}
+.search-btn{background:transparent;color:var(--gold);border:1px solid rgba(217,185,106,.5);padding:13px 30px;font-family:'Shippori Mincho',serif;font-size:14px;font-weight:700;letter-spacing:.2em;cursor:pointer;transition:all .3s}
+.search-btn:hover{background:rgba(217,185,106,.14)}
+.search-hint{font-size:11px;color:var(--text3);margin-top:.8rem;letter-spacing:.08em;font-family:'DotGothic16',monospace}
+
+/* ===== GENRE SECTION ===== */
+.section{max-width:1200px;margin:0 auto;padding:2rem 2.5rem 7rem;position:relative;z-index:10}
+.section-head{margin-bottom:3rem;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.sh-left{display:flex;flex-direction:column;gap:.6rem}
+.section-no{font-family:'EB Garamond',serif;font-size:13px;color:var(--gold);letter-spacing:.3em;font-style:italic}
+.section-title{font-family:'Shippori Mincho',serif;font-size:34px;font-weight:800;letter-spacing:.06em}
+.section-count{font-family:'DotGothic16',monospace;font-size:12px;color:var(--text3);letter-spacing:.2em}
+
+.genre-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:2px;background:var(--border)}
+.genre-card{position:relative;background:var(--bg);padding:2.2rem 2rem 1.9rem;display:flex;flex-direction:column;transition:background .4s;overflow:hidden;cursor:pointer;min-height:300px}
+.genre-card::before{content:'';position:absolute;inset:0;background:linear-gradient(150deg,rgba(217,138,95,.09),rgba(201,95,126,.05) 50%,transparent);opacity:0;transition:opacity .45s}
+.genre-card:hover{background:var(--bg2)}
+.genre-card:hover::before{opacity:1}
+.genre-num{font-family:'EB Garamond',serif;font-size:13px;color:var(--text3);font-style:italic;margin-bottom:1.4rem;letter-spacing:.14em;transition:color .3s;display:flex;align-items:center;gap:.9em}
+.genre-num::after{content:'';flex:1;height:1px;background:var(--border)}
+.genre-card:hover .genre-num{color:var(--gold)}
+.genre-name{font-family:'Shippori Mincho',serif;font-size:24px;font-weight:800;color:var(--text);margin-bottom:.35rem;letter-spacing:.05em;position:relative}
+.genre-name-en{font-family:'EB Garamond',serif;font-size:12px;color:var(--text3);letter-spacing:.22em;margin-bottom:1rem;font-style:italic;text-transform:uppercase}
+.genre-era{font-family:'DotGothic16',monospace;font-size:11px;color:var(--gold);letter-spacing:.14em;margin-bottom:.9rem}
+.genre-desc{font-size:12.5px;color:var(--text2);line-height:1.95;margin-bottom:1.3rem;flex:1;font-weight:300}
+.genre-artists{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:1.4rem}
+.genre-artist-tag{font-size:10.5px;padding:3px 11px;border:1px solid var(--border2);color:var(--text2);letter-spacing:.04em;transition:all .3s}
+.genre-card:hover .genre-artist-tag{border-color:rgba(217,185,106,.35)}
+.genre-cta{font-family:'Shippori Mincho',serif;font-size:13px;color:var(--gold);letter-spacing:.16em;display:flex;align-items:center;gap:.55rem;transition:gap .3s;font-weight:700}
+.genre-card:hover .genre-cta{gap:1rem}
+.genre-badge{position:absolute;top:1.6rem;right:1.7rem;font-family:'DotGothic16',monospace;font-size:9px;letter-spacing:.2em;padding:3px 9px;border:1px solid}
+.badge-live{color:#7fd4b0;border-color:rgba(127,212,176,.45)}
+.badge-ai{color:var(--text3);border-color:var(--border2)}
+
+/* ===== FOOTER ===== */
+.footer{border-top:1px solid var(--border);padding:3.5rem 2rem;text-align:center;position:relative;z-index:10;background:rgba(10,13,22,.85);backdrop-filter:blur(10px)}
+.footer-logo{font-family:'Shippori Mincho',serif;font-size:19px;font-weight:800;color:var(--gold);margin-bottom:.5rem;letter-spacing:.2em}
+.footer-sub{font-family:'DotGothic16',monospace;font-size:10.5px;color:var(--text3);letter-spacing:.32em}
+
+.fade{animation:fadeUp .6s cubic-bezier(.22,.68,.35,1) both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:760px){
+  .nav{padding:1rem 1.4rem}.nav-menu{gap:1.3rem}.nav-cta{display:none}
+  .hero{padding:4rem 1.4rem 5rem}
+  .search-belt,.section{padding-left:1.4rem;padding-right:1.4rem}
+  .genre-grid{grid-template-columns:1fr}
+  .vertical-deco{display:none}
+}
+</style>
+</head>
+<body>
+
+<!-- 背景写真 -->
+<div class="photo-bg">
+  <img src="tokyo-skyline.jpg" alt="" id="bg-photo">
+  <div class="photo-overlay"></div>
+</div>
+<div class="sun"></div>
+<div class="scanlines"></div>
+
+<!-- ニュースティッカー -->
+<div class="ticker">
+  <div class="ticker-inner" id="ticker-inner"></div>
+</div>
+
+<nav class="nav">
+  <a class="nav-logo" href="home.html">時代 Archive<span class="sub">JIDAI</span></a>
+  <div class="nav-menu">
+    <a href="music.html" class="active">音楽</a>
+    <a href="anime.html">アニメ</a>
+    <a href="home.html">検索</a>
+    <a class="nav-cta" href="artists.html">アーティスト一覧</a>
+  </div>
+</nav>
+<div class="hud-line"></div>
+
+<!-- 縦書き装飾 -->
+<div class="vertical-deco">JIDAI ARCHIVE / MUSIC<span class="jp">音楽</span></div>
+
+<section class="hero">
+  <div class="hero-est">MUSIC ARCHIVE · JAPAN · 1960s — 2020s</div>
+  <h1 class="hero-title">日本の音楽を、<br>ジャンルごとに遡る。</h1>
+  <p class="hero-sub">シティポップ、J-POP、演歌、歌謡曲——<br>時代を彩った音楽ジャンルを探索しながら、アーティストや名曲を掘り下げる。</p>
+  <div class="hero-actions">
+    <button class="hero-btn" onclick="document.getElementById('genres').scrollIntoView({behavior:'smooth'})">ジャンルを探す →</button>
+    <span class="hero-note">10 のジャンルを収録</span>
+  </div>
+  <div class="scroll-ind">SCROLL ↓</div>
+</section>
+
+<div class="search-belt">
+  <div class="search-inner">
+    <div class="search-row">
+      <input class="search-input" id="search-input" type="text" placeholder="アーティスト名で検索...">
+      <button class="search-btn" onclick="doSearch()">検索</button>
+    </div>
+    <div class="search-hint">山下達郎 / 松原みき / 美空ひばり ...</div>
+  </div>
+</div>
+
+<section class="section" id="genres">
+  <div class="section-head">
+    <div class="sh-left">
+      <div class="section-no">— Chapter 01</div>
+      <h2 class="section-title">ジャンルから探す</h2>
+    </div>
+    <span class="section-count">ALL 10 GENRES</span>
+  </div>
+  <div class="genre-grid" id="genre-grid"></div>
+</section>
+
+<footer class="footer">
+  <div class="footer-logo">時代 Archive</div>
+  <div class="footer-sub">JAPAN CULTURE ARCHIVE · 1960s — 2020s</div>
+</footer>
+
+<script>
+const GENRES = [
+  { id:'citypop', name:'シティポップ', nameEn:'City Pop', era:'1970s — 1990s',
+    desc:'都会的なサウンドと洗練されたメロディが特徴。バブル期に花開き、近年は世界中で再評価されている日本を代表するジャンル。',
+    artists:['山下達郎','竹内まりや','松原みき','角松敏生','大貫妙子'],
+    url:'index.html', status:'live' },
+  { id:'jpop', name:'J-POP', nameEn:'Japanese Pop', era:'1990s — NOW',
+    desc:'1988年にJ-WAVEが命名。CD黄金期の90年代に社会現象を起こし、現在も日本の音楽シーンの中心。キャッチーなメロディと日本語の歌詞が特徴。',
+    artists:['宇多田ヒカル','Mr.Children','SMAP',"B'z",'globe'],
+    url:'genre-detail.html?genre=jpop', status:'ai' },
+  { id:'kayoukyoku', name:'歌謡曲', nameEn:'Kayōkyoku', era:'1960s — 1980s',
+    desc:'昭和を代表する大衆音楽。洋楽の影響を受けた伴奏に日本独自の旋律が乗る。美空ひばりから山口百恵まで、時代を超えた名曲が揃う。',
+    artists:['美空ひばり','山口百恵','沢田研二','西城秀樹'],
+    url:'genre-detail.html?genre=kayoukyoku', status:'ai' },
+  { id:'jrock', name:'J-ROCK', nameEn:'Japanese Rock', era:'1990s — NOW',
+    desc:'バンドサウンドを重視した日本のロック。90年代バンドブームからヴィジュアル系、オルタナまで。B\'z・GLAY・X JAPANが時代を牽引した。',
+    artists:["B'z",'GLAY','X JAPAN',"L'Arc〜en〜Ciel"],
+    url:'genre-detail.html?genre=jrock', status:'ai' },
+  { id:'enka', name:'演歌', nameEn:'Enka', era:'1960s — NOW',
+    desc:'日本独自の情念と日本音階を用いた歌謡ジャンル。男女の恋路や義理人情を情感たっぷりに表現。こぶしと呼ばれる独特の装飾音が特徴。',
+    artists:['美空ひばり','北島三郎','石川さゆり','天童よしみ'],
+    url:'genre-detail.html?genre=enka', status:'ai' },
+  { id:'newmusic', name:'ニューミュージック', nameEn:'New Music', era:'1970s — 1980s',
+    desc:'70年代フォークソングから発展した、シンガーソングライターによる日本独自のポップス。吉田拓郎・荒井由実（松任谷由実）が牽引した。',
+    artists:['松任谷由実','吉田拓郎','井上陽水','中島みゆき'],
+    url:'genre-detail.html?genre=newmusic', status:'ai' },
+  { id:'idol', name:'アイドルポップス', nameEn:'Idol Pop', era:'1980s — NOW',
+    desc:'可愛らしいビジュアルとキャッチーな楽曲でファンを魅了する日本固有の文化。松田聖子・中森明菜が君臨した80年代から現代のAKBグループまで。',
+    artists:['松田聖子','中森明菜','小泉今日子','AKB48'],
+    url:'genre-detail.html?genre=idol', status:'ai' },
+  { id:'fusion', name:'フュージョン / AOR', nameEn:'Fusion / AOR', era:'1970s — 1980s',
+    desc:'ジャズとロック・ポップスが融合した都会的サウンド。日本では70〜80年代に独自の発展を遂げ、シティポップと深く関わる洗練されたジャンル。',
+    artists:['カシオペア','T-SQUARE','高中正義','渡辺貞夫'],
+    url:'genre-detail.html?genre=fusion', status:'ai' },
+  { id:'vocaloid', name:'ボカロ', nameEn:'Vocaloid', era:'2000s — NOW',
+    desc:'ヤマハの音声合成技術VOCALOIDを使った音楽文化。初音ミクを筆頭にニコニコ動画から生まれ、米津玄師・YOASOBIら現代J-POPの礎にもなった。',
+    artists:['初音ミク','DECO*27','じん','Supercell'],
+    url:'genre-detail.html?genre=vocaloid', status:'ai' },
+  { id:'technopop', name:'テクノポップ', nameEn:'Techno Pop', era:'1970s — 1980s',
+    desc:'電子楽器・シンセサイザーを駆使した未来的サウンド。YMOが世界に先駆けて確立し、坂本龍一・細野晴臣・高橋幸宏の才能が結集したジャンル。',
+    artists:['YMO','坂本龍一','細野晴臣','Perfume'],
+    url:'genre-detail.html?genre=technopop', status:'ai' },
+];
+
+function buildGrid() {
+  const grid = document.getElementById('genre-grid');
+  grid.innerHTML = GENRES.map((g, i) => `
+    <a class="genre-card fade" href="${g.url}" style="animation-delay:${i * 0.05}s">
+      ${g.status === 'live'
+        ? '<span class="genre-badge badge-live">LIVE</span>'
+        : '<span class="genre-badge badge-ai">AI</span>'}
+      <div class="genre-num">No. ${String(i+1).padStart(2,'0')}</div>
+      <div class="genre-name">${g.name}</div>
+      <div class="genre-name-en">${g.nameEn}</div>
+      <div class="genre-era">${g.era}</div>
+      <div class="genre-desc">${g.desc}</div>
+      <div class="genre-artists">
+        ${g.artists.map(a => `<span class="genre-artist-tag">${a}</span>`).join('')}
+      </div>
+      <div class="genre-cta">探索する →</div>
+    </a>
+  `).join('');
+}
+
+function doSearch() {
+  const q = document.getElementById('search-input').value.trim();
+  if (!q) return;
+  window.location.href = 'artist.html?name=' + encodeURIComponent(q) + '&category=musician';
+}
+
+document.getElementById('search-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.isComposing) doSearch();
+});
+
+// ニュースティッカー
+(function(){
+  const items = '時代 Archive ◆ 日本の音楽をジャンルごとに遡る ◆ シティポップ・J-POP・演歌・歌謡曲 全10ジャンル収録 ◆ 山下達郎 / 松原みき / 美空ひばり / YMO ◆ ';
+  document.getElementById('ticker-inner').innerHTML =
+    items.replaceAll('◆', '<span>◆</span>') + items.replaceAll('◆', '<span>◆</span>');
+})();
+
+// 背景写真スライドショー
+(function(){
+  const photos = ['tokyo-skyline.jpg', 'tokyo-station.jpg', 'tokyo-shibuya.jpg'];
+  let idx = 0;
+  const img = document.getElementById('bg-photo');
+  setInterval(() => {
+    img.style.opacity = '0';
+    setTimeout(() => {
+      idx = (idx + 1) % photos.length;
+      img.src = photos[idx];
+      img.onload = () => { img.style.opacity = '.42'; };
+    }, 1400);
+  }, 10000);
+})();
+
+// パララックス
+(function(){
+  const photo = document.getElementById('bg-photo');
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        photo.style.transform = 'translateY(' + (window.scrollY * 0.22) + 'px)';
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }, { passive: true });
+})();
+
+buildGrid();
+</script>
+</body>
+</html>
